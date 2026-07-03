@@ -16,6 +16,7 @@ MonoBehaviour:
   recipeName: "\uBC84\uC12F \uBAA8\uB4EC \uAD6C\uC774"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: c8d6a92100442d54faee5076ce4b607f, type: 2}
+    requiredCookingMethod: 1
     amount: 1
   moneyReward: 18
   scoreReward: 180
