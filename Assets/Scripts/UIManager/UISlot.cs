@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class UISlot : UIBase
 {
     enum Images       { MenuImage }
+<<<<<<< HEAD
     enum Sliders      { Gauge }
     enum GameObjects  { IngredientRow }
 
@@ -38,6 +39,26 @@ public class UISlot : UIBase
     }
 
     private void FillRecipe(RecipeData recipe)
+=======
+    enum GameObjects  { IngredientRow }
+
+    private const string IngredientPrefabPath = "UI/Slot/Ingredient";
+
+    private Image     _menuImage;
+    private Transform _ingredientRow;
+
+    public override void Init()
+    {
+        Bind<Image>(typeof(Images));
+        Bind<GameObject>(typeof(GameObjects));
+
+        _menuImage     = Get<Image>((int)Images.MenuImage);
+        _ingredientRow = Get<GameObject>((int)GameObjects.IngredientRow).transform;
+    }
+
+    // RecipeData로 카드 내용 채우기
+    public void Setup(RecipeData recipe)
+>>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
     {
         if (recipe == null) return;
 
@@ -47,7 +68,11 @@ public class UISlot : UIBase
         for (int i = _ingredientRow.childCount - 1; i >= 0; i--)
             Destroy(_ingredientRow.GetChild(i).gameObject);
 
+<<<<<<< HEAD
         // 레시피 재료마다 IngredientSlot 스폰
+=======
+        // 레시피 재료마다 Ingredient 스폰
+>>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
         var prefab = Resources.Load<GameObject>(IngredientPrefabPath);
         foreach (var entry in recipe.ingredients)
         {
@@ -56,6 +81,7 @@ public class UISlot : UIBase
             var go   = Instantiate(prefab, _ingredientRow);
             var icon = go.transform.Find("Icon")?.GetComponent<Image>();
             if (icon != null) icon.sprite = entry.ingredientType.ingredientIcon;
+<<<<<<< HEAD
         }
     }
 
@@ -81,5 +107,12 @@ public class UISlot : UIBase
         SetGauge(_remaining / _tolerance);
 
         if (_remaining <= 0f) _counting = false;
+=======
+
+            // 조리방법 데이터 없음 → 숨김
+            var method = go.transform.Find("method");
+            if (method != null) method.gameObject.SetActive(false);
+        }
+>>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
     }
 }
