@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     private InputAction interactAction;
 
     private Vector2 moveInput;
+
+    public Vector2 FacingDirection { get; private set; } = Vector2.down;
+    public event Action InteractPressed;
 
     private void Awake()
     {
@@ -48,6 +52,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
+        if (moveInput.sqrMagnitude > 0f) FacingDirection = moveInput.normalized;
         playerController.ChangeState(moveInput.sqrMagnitude > 0f ? PlayerState.Moving : PlayerState.Idle);
     }
 
@@ -59,5 +64,6 @@ public class PlayerMovement : MonoBehaviour
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
         playerController.ChangeState(PlayerState.Fetching);
+        InteractPressed?.Invoke();
     }
 }
