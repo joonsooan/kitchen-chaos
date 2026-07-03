@@ -1,0 +1,82 @@
+using System;
+using UnityEngine;
+
+public enum CustomerState
+{
+    Idle,
+    Moving,
+    Waiting,
+    LeavingSuccess,
+    LeavingFailure,
+}
+
+public class Customer : MonoBehaviour
+{
+    public event Action<CustomerState> OnStateChanged;
+    public event Action OnOrderSucceeded;
+    public event Action OnOrderFailed;
+
+    [SerializeField] private CustomerData customerData;
+
+    private CustomerState currentState = CustomerState.Idle;
+    private float waitTimer;
+
+    public CustomerData CustomerData => customerData;
+
+    public CustomerState CurrentState
+    {
+        get => currentState;
+        private set
+        {
+            if (currentState != value)
+            {
+                currentState = value;
+                OnStateChanged?.Invoke(currentState);
+            }
+        }
+    }
+
+    public void ChangeState(CustomerState newState)
+    {
+        CurrentState = newState;
+    }
+
+    public void Seat()
+    {
+        CurrentState = CustomerState.Waiting;
+        waitTimer = customerData.toleranceSeconds;
+    }
+
+    public void ReceiveRecipe(RecipeData deliveredRecipe)
+    {
+        if (CurrentState != CustomerState.Waiting) return;
+
+        bool isCorrect = deliveredRecipe == customerData.requiredRecipe;
+        Leave(isCorrect);
+    }
+
+    private void Update()
+    {
+        if (CurrentState != CustomerState.Waiting) return;
+
+        waitTimer -= Time.deltaTime;
+        if (waitTimer <= 0f)
+        {
+            Leave(false);
+        }
+    }
+
+    private void Leave(bool success)
+    {
+        CurrentState = success ? CustomerState.LeavingSuccess : CustomerState.LeavingFailure;
+
+        if (success)
+        {
+            OnOrderSucceeded?.Invoke();
+        }
+        else
+        {
+            OnOrderFailed?.Invoke();
+        }
+    }
+}
