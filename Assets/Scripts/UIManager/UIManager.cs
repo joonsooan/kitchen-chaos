@@ -23,6 +23,12 @@ public class UIManager : KSingleton<UIManager>
         DontDestroyOnLoad(this.gameObject);
     }
 
+    //for test
+    private void Start()
+    {
+        ShowHUDUI<InGameHUD>();
+    }
+
     GameObject GetOrCreateRoot(string name, UIType type)
     {
         // Unity fake-null 대응: ?? 대신 명시적 null 체크
