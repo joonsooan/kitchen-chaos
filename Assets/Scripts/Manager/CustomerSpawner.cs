@@ -8,6 +8,7 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
     [SerializeField] private Vector2Int spawnCell;
     [SerializeField] private GameObject[] customerPrefabs;
     [SerializeField] private bool randomOrder = false;
+    [SerializeField] private Transform poolParent;
 
     private float timer;
     private int sequentialIndex;
@@ -46,13 +47,13 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
         pool = new ObjectPool<GameObject>(
             createFunc: () =>
             {
-                GameObject instance = Instantiate(prefab);
+                GameObject instance = Instantiate(prefab, poolParent);
                 instance.GetComponent<Customer>().SetPool(pool);
                 return instance;
             },
             actionOnGet: OnCustomerSpawned,
             actionOnRelease: instance => instance.SetActive(false),
-            actionOnDestroy: instance => Destroy(instance));
+            actionOnDestroy: instance => DestroyImmediate(instance));
 
         pools[prefab] = pool;
         return pool;

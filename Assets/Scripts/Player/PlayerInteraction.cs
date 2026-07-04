@@ -32,7 +32,11 @@ public class PlayerInteraction : MonoBehaviour
         movement.InteractPressed -= HandleInteractPressed;
     }
 
-    private void HandleInteractPressed() => TryInteract(movement.FacingDirection);
+    private void HandleInteractPressed()
+    {
+        if (TryInteract(movement.FacingDirection)) return;
+        TryPlaceHeldItem();
+    }
 
     /// <summary>
     /// Raycasts from the player toward direction looking for the nearest IInteractable.
@@ -56,6 +60,21 @@ public class PlayerInteraction : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void TryPlaceHeldItem()
+    {
+        HeldItem held = controller.CurrentHeldItem;
+        if (held.Type == CarryingItemType.None || held.WorldObject == null) return;
+
+        GridSystem grid = GridSystem.Instance;
+        Vector2Int targetCell = grid.GetFacingCell(transform.position, movement.FacingDirection);
+        if (!grid.CanPlaceOnCell(targetCell)) return;
+
+        GridPlaceable placeable = held.WorldObject.GetComponent<GridPlaceable>();
+        if (placeable == null || !placeable.PlaceAt(targetCell)) return;
+
+        controller.ClearHeldItem();
     }
 
     private void OnDrawGizmosSelected()

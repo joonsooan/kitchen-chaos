@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum PlayerState
@@ -16,6 +17,8 @@ public enum CarryingItemType
     // 재료 이외에 추가로 들고 다닐 아이템 생기면 State 추가 예정
     None,
     Ingredient,
+    Plate,
+    Cup,
 }
 
 public class PlayerController : MonoBehaviour
@@ -29,7 +32,7 @@ public class PlayerController : MonoBehaviour
     public static event Action OnChopCompleted;
 
     private PlayerState currentState = PlayerState.Idle;
-    private CarryingItemType currentItemType = CarryingItemType.None;
+    private HeldItem currentHeldItem = HeldItem.None;
 
     public PlayerState CurrentState
     {
@@ -44,33 +47,37 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public CarryingItemType CurrentItemType
-    {
-        get => currentItemType;
-        private set => currentItemType = value;
-    }
+    // 손엔 항상 HeldItem 1개만 존재
+    public HeldItem CurrentHeldItem => currentHeldItem;
+    public CarryingItemType CurrentItemType => currentHeldItem.Type;
 
     public void ChangeState(PlayerState newState)
     {
         CurrentState = newState;
     }
 
-    public void PickUpItem(CarryingItemType itemType)
+    public void PickUpIngredient(IngredientInstance ingredient, GameObject worldObject)
     {
-        CurrentItemType = itemType;
-        OnItemPickedUp?.Invoke(itemType);
+        currentHeldItem = HeldItem.OfIngredient(ingredient, worldObject);
+        OnItemPickedUp?.Invoke(currentHeldItem.Type);
     }
 
-    public void DropItem()
+    public void PickUpContainer(CarryingItemType containerType, List<IngredientInstance> contents, RecipeData completedRecipe, GameObject worldObject)
     {
-        CarryingItemType droppedType = CurrentItemType;
-        CurrentItemType = CarryingItemType.None;
+        currentHeldItem = HeldItem.OfContainer(containerType, new List<IngredientInstance>(contents), completedRecipe, worldObject);
+        OnItemPickedUp?.Invoke(currentHeldItem.Type);
+    }
+
+    public void ClearHeldItem()
+    {
+        CarryingItemType droppedType = currentHeldItem.Type;
+        currentHeldItem = HeldItem.None;
         OnItemDropped?.Invoke(droppedType);
     }
 
     public void ServeDish()
     {
-        CurrentItemType = CarryingItemType.None;
+        currentHeldItem = HeldItem.None;
         OnDishServed?.Invoke();
     }
 
