@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3336fb7fc12964185f38892248f612, type: 3}
   m_Name: Base Map
   m_EditorClassIdentifier: Assembly-CSharp::MapData
-  width: 36
-  height: 20
-  cellSize: 1
+  width: 25
+  height: 15
+  cellSize: 1.5
   defaultTile: 0
   tileOverrides:
   - cell: {x: 0, y: 19}
@@ -233,5 +233,211 @@ MonoBehaviour:
     type: 1
   - cell: {x: 0, y: 0}
     type: 1
-  playerSpawn: {x: 15, y: 9}
+  - cell: {x: 1, y: 14}
+    type: 1
+  - cell: {x: 2, y: 14}
+    type: 1
+  - cell: {x: 3, y: 14}
+    type: 1
+  - cell: {x: 4, y: 14}
+    type: 1
+  - cell: {x: 5, y: 14}
+    type: 1
+  - cell: {x: 7, y: 14}
+    type: 1
+  - cell: {x: 8, y: 14}
+    type: 1
+  - cell: {x: 9, y: 14}
+    type: 1
+  - cell: {x: 10, y: 14}
+    type: 1
+  - cell: {x: 11, y: 14}
+    type: 1
+  - cell: {x: 12, y: 14}
+    type: 1
+  - cell: {x: 6, y: 14}
+    type: 1
+  - cell: {x: 13, y: 14}
+    type: 1
+  - cell: {x: 14, y: 14}
+    type: 1
+  - cell: {x: 15, y: 14}
+    type: 1
+  - cell: {x: 17, y: 14}
+    type: 1
+  - cell: {x: 18, y: 14}
+    type: 1
+  - cell: {x: 22, y: 14}
+    type: 1
+  - cell: {x: 20, y: 14}
+    type: 1
+  - cell: {x: 16, y: 14}
+    type: 1
+  - cell: {x: 21, y: 14}
+    type: 1
+  - cell: {x: 23, y: 14}
+    type: 1
+  - cell: {x: 24, y: 14}
+    type: 1
+  - cell: {x: 24, y: 13}
+    type: 1
+  - cell: {x: 24, y: 12}
+    type: 1
+  - cell: {x: 24, y: 6}
+    type: 1
+  - cell: {x: 24, y: 11}
+    type: 1
+  - cell: {x: 24, y: 10}
+    type: 1
+  - cell: {x: 24, y: 9}
+    type: 1
+  - cell: {x: 24, y: 1}
+    type: 1
+  - cell: {x: 24, y: 2}
+    type: 1
+  - cell: {x: 24, y: 3}
+    type: 1
+  - cell: {x: 24, y: 4}
+    type: 1
+  - cell: {x: 24, y: 5}
+    type: 1
+  - cell: {x: 24, y: 7}
+    type: 1
+  - cell: {x: 24, y: 8}
+    type: 1
+  - cell: {x: 19, y: 14}
+    type: 1
+  - cell: {x: 1, y: 13}
+    type: 1
+  - cell: {x: 2, y: 13}
+    type: 1
+  - cell: {x: 3, y: 13}
+    type: 1
+  - cell: {x: 4, y: 13}
+    type: 1
+  - cell: {x: 5, y: 13}
+    type: 1
+  - cell: {x: 6, y: 13}
+    type: 1
+  - cell: {x: 7, y: 13}
+    type: 1
+  - cell: {x: 8, y: 13}
+    type: 1
+  - cell: {x: 9, y: 13}
+    type: 1
+  - cell: {x: 10, y: 13}
+    type: 1
+  - cell: {x: 11, y: 13}
+    type: 1
+  - cell: {x: 12, y: 13}
+    type: 1
+  - cell: {x: 13, y: 13}
+    type: 1
+  - cell: {x: 15, y: 13}
+    type: 1
+  - cell: {x: 14, y: 13}
+    type: 1
+  - cell: {x: 1, y: 12}
+    type: 1
+  - cell: {x: 2, y: 12}
+    type: 1
+  - cell: {x: 3, y: 12}
+    type: 1
+  - cell: {x: 4, y: 12}
+    type: 1
+  - cell: {x: 5, y: 12}
+    type: 1
+  - cell: {x: 6, y: 12}
+    type: 1
+  - cell: {x: 7, y: 12}
+    type: 1
+  - cell: {x: 8, y: 12}
+    type: 1
+  - cell: {x: 9, y: 12}
+    type: 1
+  - cell: {x: 10, y: 12}
+    type: 1
+  - cell: {x: 11, y: 12}
+    type: 1
+  - cell: {x: 12, y: 12}
+    type: 1
+  - cell: {x: 13, y: 12}
+    type: 1
+  - cell: {x: 14, y: 12}
+    type: 1
+  - cell: {x: 15, y: 12}
+    type: 1
+  - cell: {x: 1, y: 11}
+    type: 1
+  - cell: {x: 2, y: 11}
+    type: 1
+  - cell: {x: 3, y: 11}
+    type: 1
+  - cell: {x: 4, y: 11}
+    type: 1
+  - cell: {x: 6, y: 11}
+    type: 1
+  - cell: {x: 7, y: 11}
+    type: 1
+  - cell: {x: 9, y: 11}
+    type: 1
+  - cell: {x: 11, y: 11}
+    type: 1
+  - cell: {x: 12, y: 11}
+    type: 1
+  - cell: {x: 13, y: 11}
+    type: 1
+  - cell: {x: 14, y: 11}
+    type: 1
+  - cell: {x: 15, y: 11}
+    type: 1
+  - cell: {x: 5, y: 11}
+    type: 1
+  - cell: {x: 10, y: 11}
+    type: 1
+  - cell: {x: 8, y: 11}
+    type: 1
+  - cell: {x: 1, y: 6}
+    type: 1
+  - cell: {x: 3, y: 6}
+    type: 1
+  - cell: {x: 2, y: 6}
+    type: 1
+  - cell: {x: 7, y: 6}
+    type: 1
+  - cell: {x: 8, y: 6}
+    type: 1
+  - cell: {x: 9, y: 6}
+    type: 1
+  - cell: {x: 10, y: 6}
+    type: 1
+  - cell: {x: 2, y: 10}
+    type: 1
+  - cell: {x: 3, y: 10}
+    type: 1
+  - cell: {x: 4, y: 10}
+    type: 1
+  - cell: {x: 5, y: 10}
+    type: 1
+  - cell: {x: 9, y: 10}
+    type: 1
+  - cell: {x: 10, y: 10}
+    type: 1
+  - cell: {x: 11, y: 10}
+    type: 1
+  - cell: {x: 12, y: 10}
+    type: 1
+  - cell: {x: 13, y: 10}
+    type: 1
+  - cell: {x: 14, y: 10}
+    type: 1
+  - cell: {x: 15, y: 10}
+    type: 1
+  - cell: {x: 13, y: 6}
+    type: 1
+  - cell: {x: 14, y: 6}
+    type: 1
+  - cell: {x: 15, y: 6}
+    type: 1
+  playerSpawn: {x: 1, y: 0}
   monsterSpawns: []
