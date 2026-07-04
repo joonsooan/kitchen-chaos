@@ -82,7 +82,7 @@ public class InGameHUD : UIHUD
     }
 
     // J. HUD 요소 스태거 입장 — 순차적으로 뿅뿅 자리 잡음
-    private void PlayIntroFx()
+    public void PlayIntroFx()
     {
         Transform[] targets =
         {

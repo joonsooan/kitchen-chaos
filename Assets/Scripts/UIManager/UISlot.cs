@@ -213,7 +213,8 @@ public class UISlot : UIBase
         if (!_urgent && t <= 0.2f)
         {
             _urgent = true;
-            transform.DOShakePosition(1f, new Vector3(4f, 4f, 0f), 12)
+            // 위치 셰이크 금지 — HLG 재배치와 싸워 카드가 옛 자리에 고정됨. 회전만.
+            transform.DOShakeRotation(1f, new Vector3(0f, 0f, 4f), 12)
                      .SetLoops(-1)
                      .SetLink(gameObject);
         }
