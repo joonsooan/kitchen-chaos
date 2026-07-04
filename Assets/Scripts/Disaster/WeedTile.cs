@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class WeedTile : MonoBehaviour, IAttackable
+public class WeedTile : MonoBehaviour, IAttackable, IHasHealth
 {
     [SerializeField] private int hitsToRemove = 3;
 
@@ -9,6 +9,9 @@ public class WeedTile : MonoBehaviour, IAttackable
     private Vector2Int cell;
     private int hitsRemaining;
     private bool despawned;
+
+    public int MaxHealth     => hitsToRemove;
+    public int CurrentHealth => hitsRemaining;
 
     private void Awake()
     {
@@ -22,6 +25,7 @@ public class WeedTile : MonoBehaviour, IAttackable
         grid = GridSystem.Instance;
         grid.SetOccupant(cell, gameObject);
         StartCoroutine(LifetimeRoutine(lifetime));
+        MonsterHPBarView.Show(this);   // 스폰 즉시 HP 바 노출 (피격 전에도 표시)
     }
 
     public void Hit(PlayerController player)

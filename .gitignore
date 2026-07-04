@@ -78,5 +78,7 @@ crashlytics-build.properties
 # Large BGM kept local (exceeds GitHub 100MB file limit)
 Assets/Audio/BGM/Stage.wav
 Assets/Audio/BGM/Stage.wav.meta
+Assets/Audio/BGM/main.wav
+Assets/Audio/BGM/main.wav.meta
 
 Assets/Fonts/EF_jejudoldam SDF.asset

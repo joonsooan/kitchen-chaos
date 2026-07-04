@@ -25,19 +25,26 @@ public class PlayerInteraction : MonoBehaviour
     private void OnEnable()
     {
         movement.InteractPressed += HandleInteractPressed;
+        movement.AttackPressed += HandleAttackPressed;
     }
 
     private void OnDisable()
     {
         movement.InteractPressed -= HandleInteractPressed;
+        movement.AttackPressed -= HandleAttackPressed;
     }
 
-    // F 한 키로 통합: 상호작용 대상 우선 → 타격 대상 → 들고 있는 아이템 내려놓기 순으로 시도.
+    // F: 상호작용 대상 우선 → 없으면 들고 있는 아이템 내려놓기
     private void HandleInteractPressed()
     {
         if (TryInteract(movement.FacingDirection)) return;
-        if (TryAttack(movement.FacingDirection)) return;
         TryPlaceHeldItem();
+    }
+
+    // 마우스 좌클릭: 타격 (양배추 괴물·잡초)
+    private void HandleAttackPressed()
+    {
+        TryAttack(movement.FacingDirection);
     }
 
     /// <summary>
