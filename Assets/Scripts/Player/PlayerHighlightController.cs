@@ -1,6 +1,5 @@
 using UnityEngine;
 
-[RequireComponent(typeof(PlayerController))]
 [RequireComponent(typeof(PlayerMovement))]
 [RequireComponent(typeof(PlayerInteraction))]
 public class PlayerHighlightController : MonoBehaviour
@@ -10,7 +9,6 @@ public class PlayerHighlightController : MonoBehaviour
     [SerializeField] private string sortingLayerName = "Default";
     [SerializeField] private int highlightSortingOrder = 500;
 
-    private PlayerController controller;
     private PlayerMovement movement;
     private PlayerInteraction interaction;
 
@@ -18,7 +16,6 @@ public class PlayerHighlightController : MonoBehaviour
 
     private void Awake()
     {
-        controller = GetComponent<PlayerController>();
         movement = GetComponent<PlayerMovement>();
         interaction = GetComponent<PlayerInteraction>();
 
@@ -32,16 +29,7 @@ public class PlayerHighlightController : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector2 facing = movement.FacingDirection;
-
-        if (controller.CurrentHeldItem.Type == CarryingItemType.None)
-        {
-            UpdateObjectHighlight(facing);
-        }
-        else
-        {
-            objectHighlight.Hide();
-        }
+        UpdateObjectHighlight(movement.FacingDirection);
     }
 
     private void UpdateObjectHighlight(Vector2 facing)

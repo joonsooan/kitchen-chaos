@@ -16,13 +16,15 @@ public class PlayerMovement : MonoBehaviour
 
     private InputAction moveAction;
     private InputAction interactAction;
+    private InputAction attackAction;
 
     private Vector2 moveInput;
 
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
     public event Action InteractPressed;
+    public event Action AttackPressed;
 
-    // 재난 이벤트(키보드 반전)가 켜고 끄는 플래그. 좌우 입력만 반전(상하는 그대로).
+    // 환각 마법이 켜고 끄는 플래그. 좌우(x축) 입력만 반전(상하는 그대로).
     public bool InputInverted { get; set; }
 
     // 도마 등 requiresPresence 조리 중엔 false — 이동/상호작용 입력 자체를 막음.
@@ -40,35 +42,42 @@ public class PlayerMovement : MonoBehaviour
             .With("Left", "<Keyboard>/a")
             .With("Right", "<Keyboard>/d");
 
-        // 상호작용/공격 키 = F (양배추 괴물·잡초 타격도 동일 키로 통합)
+        // 상호작용 = F 키
         interactAction = new InputAction("Interact", InputActionType.Button, "<Keyboard>/f");
+        // 공격(타격) = 마우스 좌클릭 (양배추 괴물·잡초)
+        attackAction = new InputAction("Attack", InputActionType.Button, "<Mouse>/leftButton");
     }
 
     private void OnEnable()
     {
         moveAction.Enable();
         interactAction.Enable();
+        attackAction.Enable();
         interactAction.performed += OnInteractPerformed;
+        attackAction.performed += OnAttackPerformed;
     }
 
     private void OnDisable()
     {
         interactAction.performed -= OnInteractPerformed;
+        attackAction.performed -= OnAttackPerformed;
         moveAction.Disable();
         interactAction.Disable();
+        attackAction.Disable();
     }
 
+    // 조리(requiresPresence) 등에서 입력 잠금 — 이동·상호작용·공격 모두 차단.
     public void SetInputEnabled(bool enabled)
     {
         inputEnabled = enabled;
-        if (enabled) interactAction.Enable();
-        else interactAction.Disable();
+        if (enabled) { interactAction.Enable(); attackAction.Enable(); }
+        else { interactAction.Disable(); attackAction.Disable(); }
     }
 
     private void Update()
     {
         moveInput = inputEnabled ? moveAction.ReadValue<Vector2>() : Vector2.zero;
-        if (inputEnabled && InputInverted) moveInput.x = -moveInput.x;
+        if (inputEnabled && InputInverted) moveInput.x = -moveInput.x;   // 환각 마법: 좌우만 반전
         if (moveInput.sqrMagnitude > 0f) FacingDirection = moveInput.normalized;
 
         if (playerController.CurrentState == PlayerState.Busy) return;
@@ -84,5 +93,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
         InteractPressed?.Invoke();
+    }
+
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        AttackPressed?.Invoke();
     }
 }

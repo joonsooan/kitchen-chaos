@@ -18,6 +18,15 @@ public class OrderUIBridge : MonoBehaviour
             // 타이틀(홈)~이름 입력 동안 게임 전체 정지 (스포너·이동 포함)
             Time.timeScale = 0f;
             UIManager.Instance.ShowHUDUI<HomeHUD>();
+            SoundManager.Instance?.SetPhase(GamePhase.MainMenu);   // 홈~스테이지 진입 전까지 메인메뉴 BGM
+        }
+
+        // 퇴식구마다 남은 그릇 수 표시 부착
+        var stockPrefab = Resources.Load<GameObject>("UI/World/StockCount");
+        if (stockPrefab != null)
+        {
+            foreach (var station in FindObjectsByType<ReturnStation>(FindObjectsSortMode.None))
+                Instantiate(stockPrefab).GetComponent<StockCountView>().Bind(station);
         }
 
         // 퇴식구마다 남은 그릇 수 표시 부착

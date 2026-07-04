@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 
 /// <summary>
@@ -15,6 +16,15 @@ public class CookingStation : MonoBehaviour, IInteractable
     [SerializeField] private float cookDuration = 5f;
     [SerializeField] private bool requiresPresence;
 
+    [Header("Mix Visual (Mixer only)")]
+    [SerializeField] private SpriteRenderer visualSpriteRenderer;
+    [SerializeField] private Sprite mixingSprite;
+    [SerializeField] private float shakeStrength = 0.15f;
+    [SerializeField] private float shakeSpeed = 0.05f;
+
+    [Header("Cooking Particles")]
+    [SerializeField] private ParticleSystem cookingParticles;
+
     public event Action<CookingStation> OnCookingStarted;
     public event Action<CookingStation, IngredientInstance> OnCookingFinished;
 
@@ -22,6 +32,9 @@ public class CookingStation : MonoBehaviour, IInteractable
     private IngredientPickup loadedItem;
     private bool isCooking;
     private float cookStartTime;
+    private Sprite defaultSprite;
+    private Vector3 defaultVisualLocalPosition;
+    private Tween shakeTween;
 
     public float CookProgress01 =>
         isCooking ? Mathf.Clamp01((Time.time - cookStartTime) / cookDuration) : 0f;
@@ -31,7 +44,14 @@ public class CookingStation : MonoBehaviour, IInteractable
 
     private void Awake()
     {
+        if (cookingParticles != null) cookingParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
         building = GetComponent<Building>();
+        if (visualSpriteRenderer != null)
+        {
+            defaultSprite = visualSpriteRenderer.sprite;
+            defaultVisualLocalPosition = visualSpriteRenderer.transform.localPosition;
+        }
     }
 
     public void Interact(PlayerController player)
@@ -98,11 +118,25 @@ public class CookingStation : MonoBehaviour, IInteractable
         switch (Method)
         {
             case CookingMethod.Chop: SoundManager.Instance?.PlaySFX(SFXType.Chop); break;
-            case CookingMethod.Fry:  SoundManager.Instance?.PlaySFX(SFXType.Fry);  break;
-            case CookingMethod.Mix:  SoundManager.Instance?.PlaySFX(SFXType.Mix);  break;
+            case CookingMethod.Fry: SoundManager.Instance?.PlaySFX(SFXType.Fry); break;
+            case CookingMethod.Mix: SoundManager.Instance?.PlaySFX(SFXType.Mix); break;
         }
 
+        if (Method == CookingMethod.Mix)
+        {
+            StartMixVisual();
+        }
+
+        if (cookingParticles != null) cookingParticles.Play(true);
+
         yield return new WaitForSeconds(cookDuration);
+
+        if (cookingParticles != null) cookingParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
+        if (Method == CookingMethod.Mix)
+        {
+            StopMixVisual();
+        }
 
         loadedItem.Instance.ApplyCookingMethod(Method);
         OnCookingFinished?.Invoke(this, loadedItem.Instance);
@@ -114,6 +148,40 @@ public class CookingStation : MonoBehaviour, IInteractable
             player.ChangeState(PlayerState.Idle);
         }
         Debug.Log($"[CookingStation] {name}: done - {loadedItem.Instance.Data.ingredientName} is now {Method}");
+    }
+
+    private void StartMixVisual()
+    {
+        if (visualSpriteRenderer == null) return;
+
+        if (mixingSprite != null)
+        {
+            visualSpriteRenderer.sprite = mixingSprite;
+        }
+
+        shakeTween?.Kill();
+        Vector3 pos = defaultVisualLocalPosition;
+        pos.x -= shakeStrength;
+        visualSpriteRenderer.transform.localPosition = pos;
+        shakeTween = visualSpriteRenderer.transform
+            .DOLocalMoveX(defaultVisualLocalPosition.x + shakeStrength, shakeSpeed)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
+    }
+
+    private void StopMixVisual()
+    {
+        if (visualSpriteRenderer == null) return;
+
+        shakeTween?.Kill();
+        shakeTween = null;
+        visualSpriteRenderer.transform.localPosition = defaultVisualLocalPosition;
+        visualSpriteRenderer.sprite = defaultSprite;
+    }
+
+    private void OnDestroy()
+    {
+        shakeTween?.Kill();
     }
 
     private void TakeCooked(PlayerController player)

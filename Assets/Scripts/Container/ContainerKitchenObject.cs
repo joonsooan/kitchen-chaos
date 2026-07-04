@@ -17,12 +17,19 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
 
     private readonly List<IngredientInstance> contents = new List<IngredientInstance>();
     private readonly List<GameObject> ingredientVisuals = new List<GameObject>();
+    private SpriteRenderer spriteRenderer;
 
     public CarryingItemType ContainerType => containerType;
     public IReadOnlyList<IngredientInstance> Contents => contents;
     public RecipeData CompletedRecipe { get; private set; }
     public bool HasCompletedDish => CompletedRecipe != null;
     public ContainerState State { get; private set; } = ContainerState.InProgress;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+    }
 
     public void Interact(PlayerController player)
     {
@@ -70,6 +77,7 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
             contents.Clear();
             ClearIngredientVisuals();
             SpawnIngredientVisual(matched.recipeIcon);
+            if (spriteRenderer != null) spriteRenderer.enabled = false;
             return;
         }
 
@@ -115,5 +123,6 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
         CompletedRecipe = null;
         State = ContainerState.InProgress;
         ClearIngredientVisuals();
+        if (spriteRenderer != null) spriteRenderer.enabled = true;
     }
 }

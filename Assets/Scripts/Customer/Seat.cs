@@ -12,6 +12,12 @@ public class Seat : MonoBehaviour
 
     public Vector2Int Cell => cell;
     public Vector3 SitWorldPosition => sitWorldPosition;
+    public int IndexInTable { get; private set; } = -1;
+
+    public void AssignTable(int indexInTable)
+    {
+        IndexInTable = indexInTable;
+    }
 
     private void Awake()
     {
