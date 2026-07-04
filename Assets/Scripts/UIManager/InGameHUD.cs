@@ -14,6 +14,7 @@ public class InGameHUD : UIHUD
     enum GameObjects
     {
         OrderLayout,
+        RandomBoxIcon,
     }
 
     private const string OrderPrefabPath = "UI/Slot/OrderSlot";
@@ -37,6 +38,13 @@ public class InGameHUD : UIHUD
         coinText    = Get<TextMeshProUGUI>((int)Texts.CoinText);
         scoreText   = Get<TextMeshProUGUI>((int)Texts.ScoreText);
         orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+
+        // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
+        BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
+        {
+            if (RandomBoxManager.Instance != null)
+                RandomBoxManager.Instance.TryOpen();
+        });
     }
 
     // 씬에 직접 배치된 경우 대비
@@ -45,16 +53,24 @@ public class InGameHUD : UIHUD
     // ── 전역 HUD 이벤트 (static — 노션 규칙: 매니저급 UI 한 번 구독) ──
     private void OnEnable()
     {
-        GameManager.OnMoneyChanged += HandleMoneyChanged;
-        GameManager.OnScoreChanged += HandleScoreChanged;
-        GameManager.OnTimeTick     += HandleTimeTick;
+        GameManager.OnMoneyChanged     += HandleMoneyChanged;
+        GameManager.OnScoreChanged     += HandleScoreChanged;
+        GameManager.OnTimeTick         += HandleTimeTick;
+        RandomBoxManager.OnBoxOpened   += HandleBoxOpened;
     }
 
     private void OnDisable()
     {
-        GameManager.OnMoneyChanged -= HandleMoneyChanged;
-        GameManager.OnScoreChanged -= HandleScoreChanged;
-        GameManager.OnTimeTick     -= HandleTimeTick;
+        GameManager.OnMoneyChanged     -= HandleMoneyChanged;
+        GameManager.OnScoreChanged     -= HandleScoreChanged;
+        GameManager.OnTimeTick         -= HandleTimeTick;
+        RandomBoxManager.OnBoxOpened   -= HandleBoxOpened;
+    }
+
+    // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
+    private void HandleBoxOpened()
+    {
+        UIManager.Instance.ShowPopupUI<RandomBoxPopup>();
     }
 
     private void HandleMoneyChanged(int money)
