@@ -10,11 +10,17 @@ public class UISlot : UIBase
 
     private const string IngredientPrefabPath = "UI/Slot/IngredientSlot";
 
+    private static readonly Color GaugeGreen  = new Color(0.35f, 0.85f, 0.35f);
+    private static readonly Color GaugeYellow = new Color(0.95f, 0.8f, 0.25f);
+    private static readonly Color GaugeRed    = new Color(0.9f, 0.25f, 0.25f);
+
     private Image     _menuImage;
     private Slider    _gauge;
+    private Image     _gaugeFill;
     private Transform _ingredientRow;
 
     private Customer _customer;   // 게이지·카드 수명 단일 소스
+    private bool _closing;        // 퇴장 연출 중
 
     public override void Init()
     {
@@ -25,6 +31,9 @@ public class UISlot : UIBase
         _menuImage     = Get<Image>((int)Images.MenuImage);
         _gauge         = Get<Slider>((int)Sliders.Gauge);
         _ingredientRow = Get<GameObject>((int)GameObjects.IngredientRow).transform;
+
+        if (_gauge != null && _gauge.fillRect != null)
+            _gaugeFill = _gauge.fillRect.GetComponent<Image>();
     }
 
     // 손님으로 카드 채우기 — 레시피 표시 + 성공/실패 이벤트 구독
@@ -52,7 +61,7 @@ public class UISlot : UIBase
         rt.anchoredPosition = target + new Vector2(0f, 140f);
 
         rt.DOAnchorPos(target, 0.22f)
-          .SetEase(DG.Tweening.Ease.OutCubic)
+          .SetEase(Ease.OutCubic)
           .SetLink(gameObject);
     }
 
@@ -65,24 +74,48 @@ public class UISlot : UIBase
         if (_customer == null) return;
 
         // 중복 방지: -= 후 +=
-        _customer.OnOrderSucceeded -= HandleOrderClosed;
-        _customer.OnOrderFailed    -= HandleOrderClosed;
-        _customer.OnOrderSucceeded += HandleOrderClosed;
-        _customer.OnOrderFailed    += HandleOrderClosed;
+        _customer.OnOrderSucceeded -= HandleOrderSucceeded;
+        _customer.OnOrderFailed    -= HandleOrderFailed;
+        _customer.OnOrderSucceeded += HandleOrderSucceeded;
+        _customer.OnOrderFailed    += HandleOrderFailed;
     }
 
     private void Unsubscribe()
     {
         if (_customer == null) return;
 
-        _customer.OnOrderSucceeded -= HandleOrderClosed;
-        _customer.OnOrderFailed    -= HandleOrderClosed;
+        _customer.OnOrderSucceeded -= HandleOrderSucceeded;
+        _customer.OnOrderFailed    -= HandleOrderFailed;
     }
 
-    // 성공/실패 공통 — 주문 카드 제거
-    private void HandleOrderClosed(Customer customer, RecipeData recipe)
+    // 성공 — 위로 날아가며 축소 소멸
+    private void HandleOrderSucceeded(Customer customer, RecipeData recipe)
     {
-        Destroy(gameObject);
+        if (_closing) return;
+        _closing = true;
+
+        var rt  = (RectTransform)transform;
+        var seq = DOTween.Sequence().SetLink(gameObject);
+        seq.Append(rt.DOAnchorPosY(rt.anchoredPosition.y + 160f, 0.3f).SetEase(Ease.InCubic));
+        seq.Join(rt.DOScale(0.6f, 0.3f));
+        seq.OnComplete(() => Destroy(gameObject));
+    }
+
+    // 실패 — 회색으로 식으며 아래로 툭
+    private void HandleOrderFailed(Customer customer, RecipeData recipe)
+    {
+        if (_closing) return;
+        _closing = true;
+
+        var rt  = (RectTransform)transform;
+        var seq = DOTween.Sequence().SetLink(gameObject);
+        seq.Append(rt.DOShakeRotation(0.2f, new Vector3(0f, 0f, 8f)));
+        seq.Append(rt.DOAnchorPosY(rt.anchoredPosition.y - 200f, 0.35f).SetEase(Ease.InBack));
+        seq.OnComplete(() => Destroy(gameObject));
+
+        // 회색 틴트
+        foreach (var img in GetComponentsInChildren<Image>())
+            img.DOColor(new Color(0.5f, 0.5f, 0.5f, img.color.a), 0.25f).SetLink(gameObject);
     }
 
     // ── 레시피 표시 ───────────────────────────────────────────────
@@ -108,10 +141,10 @@ public class UISlot : UIBase
         }
     }
 
-    // ── 게이지 (RemainingPatience 폴링) ───────────────────────────
+    // ── 게이지 (RemainingPatience 폴링 + 잔량 색: 초록→노랑→빨강) ───
     private void Update()
     {
-        if (_customer == null || _gauge == null) return;
+        if (_closing || _customer == null || _gauge == null) return;
         if (_customer.CurrentState != CustomerState.Waiting) return;
 
         float tolerance = _customer.CustomerData != null
@@ -119,6 +152,18 @@ public class UISlot : UIBase
             : 0f;
         if (tolerance <= 0f) return;
 
-        _gauge.value = Mathf.Clamp01(_customer.RemainingPatience / tolerance);
+        float t = Mathf.Clamp01(_customer.RemainingPatience / tolerance);
+        _gauge.value = t;
+
+        if (_gaugeFill != null)
+            _gaugeFill.color = GaugeColor(t);
+    }
+
+    // 잔량 비율 → 색 (>0.5 초록~노랑, <0.5 노랑~빨강)
+    public static Color GaugeColor(float t)
+    {
+        return t > 0.5f
+            ? Color.Lerp(GaugeYellow, GaugeGreen, (t - 0.5f) * 2f)
+            : Color.Lerp(GaugeRed, GaugeYellow, t * 2f);
     }
 }

@@ -20,4 +20,17 @@ public class UIPopup : UIBase
               .SetUpdate(true)          // 일시정지 중에도 재생
               .SetLink(target.gameObject);
     }
+
+    // 닫힘 연출 — 역방향 축소 후 콜백에서 실제 파괴 (UIManager가 호출)
+    public void PlayHideFx(System.Action onComplete)
+    {
+        var target = transform.Find("Panel") ?? transform;
+
+        target.DOKill();
+        target.DOScale(0f, 0.18f)
+              .SetEase(Ease.InBack)
+              .SetUpdate(true)
+              .SetLink(target.gameObject)
+              .OnComplete(() => onComplete?.Invoke());
+    }
 }

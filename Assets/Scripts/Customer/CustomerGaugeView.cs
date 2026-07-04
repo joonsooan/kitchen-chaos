@@ -33,9 +33,11 @@ public class CustomerGaugeView : MonoBehaviour
             : 0f;
         if (fill != null && tolerance > 0f)
         {
+            float t = Mathf.Clamp01(target.RemainingPatience / tolerance);
             var s = fill.rectTransform.localScale;
-            s.x = Mathf.Clamp01(target.RemainingPatience / tolerance);
+            s.x = t;
             fill.rectTransform.localScale = s;
+            fill.color = UISlot.GaugeColor(t);   // 주문 카드 게이지와 동일 색 규칙
         }
 
         // 대기 종료(성공/실패/퇴장) 시 게이지 제거

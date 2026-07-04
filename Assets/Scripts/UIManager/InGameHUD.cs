@@ -24,6 +24,9 @@ public class InGameHUD : UIHUD
     private const string CoinFloatPrefabPath = "UI/HUD/HudFloatText";
 
     private int lastMoney = -1;   // 코인 증가분 감지용 (-1 = 초기화 전)
+    private int lastScore = -1;
+    private DG.Tweening.Tween coinRollTween;
+    private DG.Tweening.Tween scoreRollTween;
     private readonly HashSet<BuffData> activeBuffs = new();   // 동시·재획득 버프 추적
     private BuffData lastBuff;    // 남은시간 표시 대상 (가장 최근 버프)
 
@@ -33,6 +36,7 @@ public class InGameHUD : UIHUD
     private TextMeshProUGUI buffTimeText;
     private Transform orderLayout;
     private GameObject buffIcon;
+    private UnityEngine.UI.Image buffIconImage;
     private bool initialized;
 
     // ShowHUDUI가 호출 — AddOrder 전에 바인딩 보장 (Start는 한 프레임 늦어 순서버그)
@@ -50,6 +54,7 @@ public class InGameHUD : UIHUD
         buffTimeText = Get<TextMeshProUGUI>((int)Texts.BuffTimeText);
         orderLayout  = Get<GameObject>((int)GameObjects.OrderLayout).transform;
         buffIcon     = Get<GameObject>((int)GameObjects.BuffIcon);
+        if (buffIcon != null) buffIconImage = buffIcon.GetComponent<UnityEngine.UI.Image>();
 
         // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
         BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
@@ -110,7 +115,7 @@ public class InGameHUD : UIHUD
             buffIcon.SetActive(false);
     }
 
-    // 남은시간 폴링 — BuffIcon 밑 BuffTimeText 갱신
+    // 남은시간 폴링 — BuffIcon 밑 BuffTimeText 갱신 + 만료 5초 전 깜빡
     private void Update()
     {
         if (buffTimeText == null || lastBuff == null || !buffIcon.activeSelf) return;
@@ -118,6 +123,16 @@ public class InGameHUD : UIHUD
 
         float remaining = BuffManager.Instance.GetRemaining(lastBuff);
         buffTimeText.text = Mathf.CeilToInt(remaining).ToString();
+
+        // 만료 임박 — 아이콘·시간 깜빡 (알파 진동)
+        if (buffIconImage != null)
+        {
+            float alpha = remaining <= 5f
+                ? 0.35f + 0.65f * Mathf.PingPong(Time.time * 5f, 1f)
+                : 1f;
+            var c = buffIconImage.color; c.a = alpha; buffIconImage.color = c;
+            var tc = buffTimeText.color; tc.a = alpha; buffTimeText.color = tc;
+        }
     }
 
     // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
@@ -131,9 +146,10 @@ public class InGameHUD : UIHUD
         // 변화량 플로팅 — 증가 초록 +N, 감소 빨강 -N (코인 카운터 위에서 떠오름)
         if (lastMoney >= 0 && money != lastMoney)
             SpawnCoinFloat(money - lastMoney);
-        lastMoney = money;
 
-        if (coinText != null) coinText.text = money.ToString();
+        // 숫자 롤링 카운트업 + 도착 펀치
+        RollNumber(coinText, lastMoney < 0 ? money : lastMoney, money, ref coinRollTween);
+        lastMoney = money;
     }
 
     private void SpawnCoinFloat(int delta)
@@ -161,7 +177,29 @@ public class InGameHUD : UIHUD
 
     private void HandleScoreChanged(int score)
     {
-        if (scoreText != null) scoreText.text = score.ToString();
+        RollNumber(scoreText, lastScore < 0 ? score : lastScore, score, ref scoreRollTween);
+        lastScore = score;
+    }
+
+    // 숫자 롤링 — from→to 착착 올라가고 도착 시 펀치
+    private void RollNumber(TMPro.TextMeshProUGUI label, int from, int to, ref DG.Tweening.Tween tween)
+    {
+        if (label == null) return;
+
+        tween?.Kill();
+        if (from == to) { label.text = to.ToString(); return; }
+
+        int shown = from;
+        tween = DG.Tweening.DOTween.To(() => shown, x => { shown = x; label.text = x.ToString(); }, to, 0.4f)
+            .SetEase(DG.Tweening.Ease.OutQuad)
+            .SetLink(label.gameObject)
+            .OnComplete(() =>
+            {
+                label.transform.DOKill();
+                label.transform.localScale = Vector3.one;
+                label.transform.DOPunchScale(Vector3.one * 0.25f, 0.2f, 6, 0.6f)
+                    .SetLink(label.gameObject);
+            });
     }
 
     private void HandleTimeTick(float elapsedTime)
