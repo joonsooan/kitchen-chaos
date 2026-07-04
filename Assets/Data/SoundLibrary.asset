@@ -19,7 +19,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9691d41e6f7b305438a36de723d472dd, type: 3}
   - type: 1
     volume: 1
-    clips: []
+    clips:
+    - {fileID: 8300000, guid: ee2236ff695e63f469b0953fbcc6eccf, type: 3}
   - type: 2
     volume: 1
     clips:
@@ -75,7 +76,7 @@ MonoBehaviour:
   bgmEntries:
   - phase: 0
     volume: 1
-    clip: {fileID: 0}
+    clip: {fileID: 8300000, guid: 5ca4f6fa150b56e42817ac39d9d998cb, type: 3}
   - phase: 1
     volume: 1
     clip: {fileID: 8300000, guid: 68364b0916674fb4aaea3a7e4d54f64f, type: 3}
