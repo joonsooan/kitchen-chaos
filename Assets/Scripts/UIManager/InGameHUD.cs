@@ -29,6 +29,7 @@ public class InGameHUD : UIHUD
     private DG.Tweening.Tween coinRollTween;
     private DG.Tweening.Tween scoreRollTween;
     private readonly HashSet<BuffData> activeBuffs = new();   // 동시·재획득 버프 추적
+    private readonly Dictionary<Customer, UISlot> activeSlots = new();   // 손님당 카드 1개
     private BuffData lastBuff;    // 남은시간 표시 대상 (가장 최근 버프)
 
     // 날아가는 동전 목표 지점 (ServeResultView가 사용)
@@ -282,6 +283,10 @@ public class InGameHUD : UIHUD
     // 카드 게이지·제거는 UISlot이 손님 이벤트로 처리.
     public UISlot AddOrder(Customer customer)
     {
+        // 같은 손님 카드가 이미 살아있으면 중복 생성 방지
+        if (activeSlots.TryGetValue(customer, out var existing) && existing != null)
+            return existing;
+
         var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
         var slot = go.GetComponent<UISlot>();
         if (slot == null)
@@ -290,6 +295,7 @@ public class InGameHUD : UIHUD
         }
         slot.Init();
         slot.Setup(customer);
+        activeSlots[customer] = slot;
         return slot;
     }
 }

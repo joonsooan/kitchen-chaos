@@ -154,7 +154,26 @@ public class UISlot : UIBase
     // ── 게이지 (RemainingPatience 폴링 + 잔량 색: 초록→노랑→빨강) ───
     private void Update()
     {
-        if (_closing || _customer == null || _gauge == null) return;
+        if (_closing) return;
+
+        // 안전망 — 이벤트를 놓쳤어도 손님이 떠났으면(파괴/풀복귀/퇴장) 카드 정리
+        if (_customer == null || !_customer.gameObject.activeInHierarchy)
+        {
+            HandleOrderFailed(_customer, null);
+            return;
+        }
+        if (_customer.CurrentState == CustomerState.LeavingSuccess)
+        {
+            HandleOrderSucceeded(_customer, null);
+            return;
+        }
+        if (_customer.CurrentState == CustomerState.LeavingFailure)
+        {
+            HandleOrderFailed(_customer, null);
+            return;
+        }
+
+        if (_gauge == null) return;
         if (_customer.CurrentState != CustomerState.Waiting) return;
 
         float tolerance = _customer.CustomerData != null
