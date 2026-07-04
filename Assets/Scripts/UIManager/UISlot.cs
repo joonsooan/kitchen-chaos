@@ -8,7 +8,7 @@ public class UISlot : UIBase
     enum Sliders      { Gauge }
     enum GameObjects  { IngredientRow }
 
-    private const string IngredientPrefabPath = "UI/Slot/IngredientSlot";
+    private const string IngredientPrefabPath = "UI/Slot/RecipeSlot";   // 재료 + 조리방법 아이콘
 
     private static readonly Color GaugeGreen  = new Color(0.35f, 0.85f, 0.35f);
     private static readonly Color GaugeYellow = new Color(0.95f, 0.8f, 0.25f);
@@ -152,19 +152,14 @@ public class UISlot : UIBase
         for (int i = _ingredientRow.childCount - 1; i >= 0; i--)
             Destroy(_ingredientRow.GetChild(i).gameObject);
 
-        // 레시피 재료마다 IngredientSlot 프리팹 스폰
+        // 레시피 재료마다 RecipeSlot 프리팹 스폰 (재료 아이콘 + 아래 조리방법)
         var prefab = Resources.Load<GameObject>(IngredientPrefabPath);
         foreach (var entry in recipe.ingredients)
         {
             if (entry.ingredientType == null) continue;
 
-            var go   = Instantiate(prefab, _ingredientRow);
-            var icon = go.transform.Find("Icon")?.GetComponent<Image>();
-            if (icon != null)
-            {
-                var combinedIcon = entry.ingredientType.GetCookingMethodIcon(entry.requiredCookingMethod);
-                icon.sprite = combinedIcon != null ? combinedIcon : entry.ingredientType.ingredientIcon;
-            }
+            var go = Instantiate(prefab, _ingredientRow);
+            go.GetComponent<RecipeSlotView>()?.Setup(entry);
         }
     }
 
@@ -204,8 +199,8 @@ public class UISlot : UIBase
         if (_gaugeFill != null)
             _gaugeFill.color = GaugeColor(t);
 
-        // 긴급 — 잔여 20% 이하부터 카드 부르르
-        if (!_urgent && t <= 0.2f)
+        // 긴급 — 카운트다운(잔여 3초)과 같은 순간부터 카드 부르르
+        if (!_urgent && _customer.RemainingPatience <= 3f)
         {
             _urgent = true;
             // 위치 셰이크 금지 — HLG 재배치와 싸워 카드가 옛 자리에 고정됨. 회전만.

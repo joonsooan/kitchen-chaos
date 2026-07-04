@@ -23,8 +23,13 @@ public class LeaderboardPopup : UIPopup
     private TextMeshProUGUI subText;
     private TextMeshProUGUI rowsText;
 
+    // 결과창 떠 있는 동안 게임 정지 (UIManager가 open/close 시 timeScale 관리)
+    public override bool PauseGameWhileOpen => true;
+
     public override void Init()
     {
+        CloseOnEsc = false;   // 게임오버 화면 — 메인/종료 중 선택해야 함
+
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
@@ -39,8 +44,8 @@ public class LeaderboardPopup : UIPopup
     // 게임 종료 시 호출 — 성공/실패에 따라 문구 전환
     public void Setup(bool success)
     {
-        if (titleText != null) titleText.text = success ? "Success!" : "Fail";
-        if (subText != null)   subText.text   = success ? "당신은 최고의 셰프입니다" : "까비까비";
+        if (titleText != null) titleText.text = success ? "Success" : "Fail";
+        if (subText != null)   subText.text   = success ? "숲속 최고의 식당으로 인정받았습니다!" : "오늘은 운이 따라주지 않았습니다...";
     }
 
     // 순위 데이터 연동용 — 한 줄당 한 순위
@@ -51,9 +56,16 @@ public class LeaderboardPopup : UIPopup
 
     private void OnMainClicked(PointerEventData evt)
     {
-        // TODO: 메인 화면 씬/상태 흐름 확정되면 전환 연결
-        Debug.Log("[LeaderboardPopup] 메인 화면으로 (흐름 미정)");
-        UIManager.Instance.ClosePopupUI(this);
+        GoToTitle();
+    }
+
+    // 씬 리로드 → 게임 상태 초기화 + 브리지가 타이틀(HomeHUD) 다시 표시
+    public static void GoToTitle()
+    {
+        UIManager.Instance.CloseAllPopupUI();
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
     }
 
     private void OnQuitClicked(PointerEventData evt)
