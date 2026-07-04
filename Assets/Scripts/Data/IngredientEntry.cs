@@ -4,5 +4,6 @@ using System;
 public struct IngredientEntry
 {
     public Ingredient ingredientType;
+    public CookingMethod requiredCookingMethod;
     public int amount;
 }

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2d1d09558cf6dc41a51eca8cbf263bd, type: 3}
-  m_Name: Base Customer
-  m_EditorClassIdentifier: Assembly-CSharp::CustomerData
-  customerName: 
-  requiredRecipe: {fileID: 0}
-  toleranceSeconds: 0
+  m_Script: {fileID: 11500000, guid: 5fd2eb77b297f8b489a5bbebd97cc849, type: 3}
+  m_Name: FryPan
+  m_EditorClassIdentifier: Assembly-CSharp::BuildingData
+  buildingName: "\uD504\uB77C\uC774\uD32C"
+  footprintCells:
+  - {x: 0, y: 0}
+  cookingMethod: 1

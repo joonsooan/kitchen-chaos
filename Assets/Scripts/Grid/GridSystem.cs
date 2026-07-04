@@ -143,14 +143,18 @@ public class GridSystem : MonoBehaviour
         if (occupants[index] == go) occupants[index] = null;
     }
 
-    /// <summary>Fills buffer with the walkable 4-way (up/down/left/right) neighbors of cell. No allocations.</summary>
+    /// <summary>
+    /// Fills buffer with the passable 4-way (up/down/left/right) neighbors of cell. No allocations.
+    /// Passability is tile-type only (Blocked tiles, e.g. walls) — occupants (furniture like
+    /// tables/chairs) reserve a cell but don't block foot traffic through/around it.
+    /// </summary>
     public int GetWalkableNeighborsNonAlloc(Vector2Int cell, Vector2Int[] buffer)
     {
         int count = 0;
         for (int i = 0; i < NeighborOffsets.Length; i++)
         {
             Vector2Int neighbor = cell + NeighborOffsets[i];
-            if (!IsWalkable(neighbor)) continue;
+            if (GetTileType(neighbor) == TileType.Blocked) continue;
 
             if (count < buffer.Length) buffer[count] = neighbor;
             count++;
