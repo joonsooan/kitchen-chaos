@@ -47,7 +47,7 @@ MonoBehaviour:
   disasterName: "\uC7A1\uCD08 \uBC88\uC2DD"
   disasterDescription: "\uC7A1\uCD08\uAC00 \uBB34\uC131\uD558\uAC8C \uC790\uB77C\uB0A9\uB2C8\uB2E4!"
   weedPrefab: {fileID: 8891624871928063836, guid: b2c290d201d110a4f979c8f79bcc5752, type: 3}
-  weedCount: 30
+  weedCount: 20
   duration: 180
 --- !u!1 &1764774685301756242
 GameObject:
@@ -204,7 +204,7 @@ MonoBehaviour:
   disasterDescription: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!"
   monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
   spawnCells:
-  - {x: 2, y: 4}
-  - {x: 4, y: 4}
+  - {x: 2, y: 5}
+  - {x: 4, y: 5}
   spawnChance: 0.7
   duration: 180

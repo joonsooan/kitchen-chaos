@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41383859ae1d2ef4194812a1a41152f5, type: 3}
   m_Name: Berry_Juice
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
-  recipeIcon: {fileID: 21300000, guid: 68a6fd0c46b9a3a4b892d75c226739dd, type: 3}
+  recipeIcon: {fileID: 21300000, guid: 9fc0d2b014dee7e4b80cb907e7d6d962, type: 3}
   recipeName: "\uBCA0\uB9AC \uC8FC\uC2A4"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 91d838b6fb503d846b866c973322cca3, type: 2}

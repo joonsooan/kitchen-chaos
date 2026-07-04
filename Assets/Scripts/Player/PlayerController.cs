@@ -31,6 +31,7 @@ public class PlayerController : MonoBehaviour
     private PlayerState currentState = PlayerState.Idle;
     private HeldItem currentHeldItem = HeldItem.None;
     private Collider2D col;
+    private PlayerMovement movement;
 
     public PlayerState CurrentState
     {
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         col = GetComponent<Collider2D>();
+        movement = GetComponent<PlayerMovement>();
     }
 
     public void ChangeState(PlayerState newState)
@@ -62,6 +64,11 @@ public class PlayerController : MonoBehaviour
     public void SetColliderEnabled(bool enabled)
     {
         if (col != null) col.enabled = enabled;
+    }
+
+    public void SetInputEnabled(bool enabled)
+    {
+        if (movement != null) movement.SetInputEnabled(enabled);
     }
 
     public void PickUpIngredient(IngredientInstance ingredient, GameObject worldObject)

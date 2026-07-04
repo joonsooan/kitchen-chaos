@@ -90,6 +90,7 @@ public class CookingStation : MonoBehaviour, IInteractable
         {
             player.ChangeState(PlayerState.Busy);
             player.SetColliderEnabled(false);
+            player.SetInputEnabled(false);
         }
         OnCookingStarted?.Invoke(this);
 
@@ -109,6 +110,7 @@ public class CookingStation : MonoBehaviour, IInteractable
         if (requiresPresence)
         {
             player.SetColliderEnabled(true);
+            player.SetInputEnabled(true);
             player.ChangeState(PlayerState.Idle);
         }
         Debug.Log($"[CookingStation] {name}: done - {loadedItem.Instance.Data.ingredientName} is now {Method}");

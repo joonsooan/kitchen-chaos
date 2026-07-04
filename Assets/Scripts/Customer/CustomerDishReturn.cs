@@ -50,7 +50,7 @@ public class CustomerDishReturn : MonoBehaviour
         Vector2Int startCell = GridSystem.Instance.WorldToCell(transform.position);
         Vector2Int returnCell = GridSystem.Instance.WorldToCell(station.transform.position) + Vector2Int.down;
 
-        List<Vector2Int> path = AStarPathfinder.FindPath(startCell, returnCell);
+        List<Vector2Int> path = AStarPathfinder.FindPath(startCell, returnCell, avoidOccupants: true);
         for (int i = 0; i < path.Count; i++)
         {
             Vector3 target = GridSystem.Instance.CellToWorld(path[i]);
