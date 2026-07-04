@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -37,6 +38,22 @@ public class UISlot : UIBase
 
         if (customer.CustomerData != null)
             FillRecipe(customer.CustomerData.requiredRecipe);
+
+        PlayEnterFx();
+    }
+
+    // 등장 연출 — 레이아웃 확정 후 위에서 슥 내려옴
+    private void PlayEnterFx()
+    {
+        Canvas.ForceUpdateCanvases();   // HLG 배치 확정 (이후 트윈이 안 덮임)
+
+        var rt = (RectTransform)transform;
+        Vector2 target = rt.anchoredPosition;
+        rt.anchoredPosition = target + new Vector2(0f, 140f);
+
+        rt.DOAnchorPos(target, 0.22f)
+          .SetEase(DG.Tweening.Ease.OutCubic)
+          .SetLink(gameObject);
     }
 
     // ── 이벤트 구독 (인스턴스 이벤트 — OnEnable/OnDisable 짝 규칙) ────
