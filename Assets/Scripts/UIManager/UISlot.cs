@@ -24,6 +24,7 @@ public class UISlot : UIBase
     private bool _urgent;         // 긴급 흔들림 시작됨
     private int  _lastCountShown = -1;
     private TMPro.TextMeshProUGUI _countText;   // 3·2·1 카운트다운 (프리팹 optional)
+    private TMPro.TextMeshProUGUI _stampText;   // Success/Fail 도장 (프리팹 optional)
 
     public override void Init()
     {
@@ -40,6 +41,9 @@ public class UISlot : UIBase
 
         var count = transform.Find("CountText");
         if (count != null) _countText = count.GetComponent<TMPro.TextMeshProUGUI>();
+
+        var stamp = transform.Find("StampText");
+        if (stamp != null) _stampText = stamp.GetComponent<TMPro.TextMeshProUGUI>();
     }
 
     // 손님으로 카드 채우기 — 레시피 표시 + 성공/실패 이벤트 구독
@@ -92,6 +96,24 @@ public class UISlot : UIBase
 
         _customer.OnOrderSucceeded -= HandleOrderSucceeded;
         _customer.OnOrderFailed    -= HandleOrderFailed;
+    }
+
+    // 서빙 판정 순간 도장 쾅 — 카드 제거 연출 전 즉시 피드백
+    public void ShowStamp(bool success)
+    {
+        if (_stampText == null) return;
+
+        _stampText.text  = success ? "Success!" : "Fail..";
+        _stampText.color = success
+            ? new Color(0.2f, 0.8f, 0.25f)
+            : new Color(0.9f, 0.25f, 0.25f);
+
+        _stampText.gameObject.SetActive(true);
+        _stampText.transform.DOKill();
+        _stampText.transform.localScale = Vector3.one * 2.2f;   // 크게서 쾅 내려찍힘
+        _stampText.transform.DOScale(1f, 0.18f)
+                  .SetEase(Ease.InCubic)
+                  .SetLink(_stampText.gameObject);
     }
 
     // 성공 — 위로 날아가며 축소 소멸
