@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3124925169295739312}
   - component: {fileID: 3124925169295739313}
   - component: {fileID: -4302395104013463494}
+  - component: {fileID: 7559640786876302495}
   m_Layer: 0
   m_Name: Customer_Rabbit_BerrySalad
   m_TagString: Untagged
@@ -153,3 +154,17 @@ MonoBehaviour:
   downSprite: {fileID: 0}
   leftSprite: {fileID: 0}
   rightSprite: {fileID: 0}
+--- !u!114 &7559640786876302495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808573775356351771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3198db6702f017e4a950d035d988d637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerIdleBobber
+  bobHeight: 0.08
+  bobDuration: 1

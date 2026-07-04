@@ -22,6 +22,9 @@ public class CookingStation : MonoBehaviour, IInteractable
     [SerializeField] private float shakeStrength = 0.15f;
     [SerializeField] private float shakeSpeed = 0.05f;
 
+    [Header("Cooking Particles")]
+    [SerializeField] private ParticleSystem cookingParticles;
+
     public event Action<CookingStation> OnCookingStarted;
     public event Action<CookingStation, IngredientInstance> OnCookingFinished;
 
@@ -40,6 +43,8 @@ public class CookingStation : MonoBehaviour, IInteractable
 
     private void Awake()
     {
+        if (cookingParticles != null) cookingParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+
         building = GetComponent<Building>();
         if (visualSpriteRenderer != null)
         {
@@ -111,8 +116,8 @@ public class CookingStation : MonoBehaviour, IInteractable
         switch (Method)
         {
             case CookingMethod.Chop: SoundManager.Instance?.PlaySFX(SFXType.Chop); break;
-            case CookingMethod.Fry:  SoundManager.Instance?.PlaySFX(SFXType.Fry);  break;
-            case CookingMethod.Mix:  SoundManager.Instance?.PlaySFX(SFXType.Mix);  break;
+            case CookingMethod.Fry: SoundManager.Instance?.PlaySFX(SFXType.Fry); break;
+            case CookingMethod.Mix: SoundManager.Instance?.PlaySFX(SFXType.Mix); break;
         }
 
         if (Method == CookingMethod.Mix)
@@ -120,7 +125,11 @@ public class CookingStation : MonoBehaviour, IInteractable
             StartMixVisual();
         }
 
+        if (cookingParticles != null) cookingParticles.Play(true);
+
         yield return new WaitForSeconds(cookDuration);
+
+        if (cookingParticles != null) cookingParticles.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
 
         if (Method == CookingMethod.Mix)
         {

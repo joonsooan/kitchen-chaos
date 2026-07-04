@@ -73,6 +73,7 @@ public class PlayerJump : MonoBehaviour
     {
         isJumping = true;
         controller.ChangeState(PlayerState.Busy);   // 이동 입력 잠금
+        DOTween.Kill(PlayerIdleBobber.TweenId);      // Busy 전환 시 붙는 bobbing과 충돌 방지
         rb.simulated = false;                       // 점프 중 충돌 무시 (벽 통과)
 
         float half = jumpDuration * 0.5f;
