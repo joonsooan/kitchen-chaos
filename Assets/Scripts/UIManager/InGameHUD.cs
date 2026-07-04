@@ -76,6 +76,34 @@ public class InGameHUD : UIHUD
         {
             UIManager.Instance.ShowPopupUI<OptionPopup>();
         });
+
+        PlayIntroFx();
+    }
+
+    // J. HUD 요소 스태거 입장 — 순차적으로 뿅뿅 자리 잡음
+    private void PlayIntroFx()
+    {
+        Transform[] targets =
+        {
+            timeText  != null ? timeText.transform.parent : null,
+            coinText  != null ? coinText.transform.parent : null,
+            scoreText != null ? scoreText.transform.parent : null,
+            randomBoxIcon,
+            Get<GameObject>((int)GameObjects.SettingIcon)?.transform,
+        };
+
+        float delay = 0f;
+        foreach (var t in targets)
+        {
+            if (t == null) continue;
+
+            t.localScale = Vector3.zero;
+            t.DOScale(1f, 0.28f)
+             .SetDelay(delay)
+             .SetEase(Ease.OutBack)
+             .SetLink(t.gameObject);
+            delay += 0.08f;
+        }
     }
 
     // 씬에 직접 배치된 경우 대비
@@ -110,6 +138,11 @@ public class InGameHUD : UIHUD
         if (buffIcon == null) return;
 
         buffIcon.SetActive(true);
+
+        // L. 획득 순간 뿅 등장
+        buffIcon.transform.DOKill();
+        buffIcon.transform.localScale = Vector3.zero;
+        buffIcon.transform.DOScale(1f, 0.35f).SetEase(Ease.OutBack).SetLink(buffIcon);
 
         // 버프 아이콘 스프라이트 지정돼 있으면 교체 (없으면 기존 이미지 유지)
         if (buff.icon != null && buffIcon.TryGetComponent(out UnityEngine.UI.Image image))
