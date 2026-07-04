@@ -19,6 +19,7 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     public IReadOnlyList<IngredientInstance> Contents => contents;
     public RecipeData CompletedRecipe { get; private set; }
     public bool HasCompletedDish => CompletedRecipe != null;
+    public ContainerState State { get; private set; } = ContainerState.InProgress;
 
     public void Interact(PlayerController player)
     {
@@ -61,11 +62,18 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
 
         if (RecipeMatcher.TryMatch(contents, availableRecipes, out RecipeData matched))
         {
+            State = ContainerState.Complete;
             CompletedRecipe = matched;
             contents.Clear();
             ClearIngredientVisuals();
             SpawnIngredientVisual(matched.recipeIcon);
+            return;
         }
+
+        // 완성은 아님 — 아직 완성 가능하면 미완성, 어떤 레시피도 불가능하면 실패.
+        State = RecipeMatcher.CanEventuallyMatch(contents, availableRecipes)
+            ? ContainerState.InProgress
+            : ContainerState.Failed;
     }
 
     private void SpawnIngredientVisual(Sprite sprite)
@@ -99,6 +107,7 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     {
         contents.Clear();
         CompletedRecipe = null;
+        State = ContainerState.InProgress;
         ClearIngredientVisuals();
     }
 }

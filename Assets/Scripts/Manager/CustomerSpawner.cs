@@ -7,11 +7,10 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private Vector2Int spawnCell;
     [SerializeField] private GameObject[] customerPrefabs;
-    [SerializeField] private bool randomOrder = false;
+    [SerializeField] private float[] spawnWeights;   // customerPrefabs와 1:1. 비었거나 짧으면 해당 항목 가중치 1로 취급.
     [SerializeField] private Transform poolParent;
 
     private float timer;
-    private int sequentialIndex;
     private readonly Dictionary<GameObject, IObjectPool<GameObject>> pools = new();
 
     public Vector2Int SpawnCell => spawnCell;
@@ -29,14 +28,31 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
     {
         if (customerPrefabs == null || customerPrefabs.Length == 0) return;
 
-        GameObject prefab = randomOrder
-            ? customerPrefabs[Random.Range(0, customerPrefabs.Length)]
-            : customerPrefabs[sequentialIndex % customerPrefabs.Length];
-
-        if (!randomOrder)
-            sequentialIndex = (sequentialIndex + 1) % customerPrefabs.Length;
-
+        GameObject prefab = customerPrefabs[PickWeightedIndex()];
         GetOrCreatePool(prefab).Get();
+    }
+
+    // 가중치는 매 스폰마다 읽는다 → 나중에 시간 등에 따라 가중치를 바꾸는 로직이 생겨도
+    // 이 메서드만 고치면 선택 로직은 그대로 동작한다(지금은 시간가변 로직 없음).
+    private float GetWeight(int index)
+    {
+        if (spawnWeights != null && index < spawnWeights.Length) return Mathf.Max(0f, spawnWeights[index]);
+        return 1f;
+    }
+
+    private int PickWeightedIndex()
+    {
+        float total = 0f;
+        for (int i = 0; i < customerPrefabs.Length; i++) total += GetWeight(i);
+        if (total <= 0f) return Random.Range(0, customerPrefabs.Length);   // 전부 0이면 균등
+
+        float r = Random.value * total;                                    // [0, total) — 합이 얼마든 자동 정규화
+        for (int i = 0; i < customerPrefabs.Length; i++)
+        {
+            r -= GetWeight(i);
+            if (r < 0f) return i;
+        }
+        return customerPrefabs.Length - 1;                                 // 부동소수 안전망
     }
 
     private IObjectPool<GameObject> GetOrCreatePool(GameObject prefab)

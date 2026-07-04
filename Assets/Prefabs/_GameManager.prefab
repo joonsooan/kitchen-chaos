@@ -78,14 +78,19 @@ MonoBehaviour:
   spawnInterval: 10
   spawnCell: {x: 18, y: 4}
   customerPrefabs:
-  - {fileID: 7808573775356351771, guid: 7bba90334c3f48644a0578b7cb193521, type: 3}
+  - {fileID: 7808573775356351771, guid: 4a4ab08c1bd34440b6b9425ca88a5f87, type: 3}
   - {fileID: 7808573775356351771, guid: 9672556857398b847a99f934227904c4, type: 3}
   - {fileID: 7808573775356351771, guid: f4968b5c815492a4c98709ca47ae4e61, type: 3}
+  - {fileID: 7808573775356351771, guid: fdb346be45534f0780de3253cf4f6d7c, type: 3}
   - {fileID: 7808573775356351771, guid: 7fa540d9dea7204438824f1f328964d9, type: 3}
-  - {fileID: 7808573775356351771, guid: b3c0d4713dd59954eb7f20f072625289, type: 3}
-  - {fileID: 7808573775356351771, guid: 5cde8d981fd3bfb4eb12b906eb2d85dc, type: 3}
   - {fileID: 7808573775356351771, guid: 07f10bbddb60f3b4b826b65721d3362e, type: 3}
-  randomOrder: 0
+  spawnWeights:
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
+  - 1
   poolParent: {fileID: 0}
 --- !u!114 &5383739955041838011
 MonoBehaviour:

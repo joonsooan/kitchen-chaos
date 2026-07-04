@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class WeedTile : MonoBehaviour, IInteractable
+public class WeedTile : MonoBehaviour, IAttackable
 {
     [SerializeField] private int hitsToRemove = 3;
 
@@ -24,7 +24,7 @@ public class WeedTile : MonoBehaviour, IInteractable
         StartCoroutine(LifetimeRoutine(lifetime));
     }
 
-    public void Interact(PlayerController player)
+    public void Hit(PlayerController player)
     {
         hitsRemaining--;
         if (hitsRemaining <= 0) Despawn();

@@ -25,11 +25,13 @@ public class PlayerInteraction : MonoBehaviour
     private void OnEnable()
     {
         movement.InteractPressed += HandleInteractPressed;
+        movement.AttackPressed += HandleAttackPressed;
     }
 
     private void OnDisable()
     {
         movement.InteractPressed -= HandleInteractPressed;
+        movement.AttackPressed -= HandleAttackPressed;
     }
 
     private void HandleInteractPressed()
@@ -38,24 +40,38 @@ public class PlayerInteraction : MonoBehaviour
         TryPlaceHeldItem();
     }
 
+    private void HandleAttackPressed()
+    {
+        TryAttack(movement.FacingDirection);
+    }
+
     /// <summary>
     /// Raycasts from the player toward direction looking for the nearest IInteractable.
     /// Public with a direction parameter so tests/AI can drive it directly.
     /// </summary>
     public bool TryInteract(Vector2 direction)
     {
-        if (!TryFindInteractable(direction, out IInteractable interactable, out _)) return false;
+        if (!TryFindInDirection(direction, out IInteractable interactable, out _)) return false;
 
         interactable.Interact(controller);
         return true;
     }
 
-    public bool TryPeekInteractable(Vector2 direction, out Transform hitTransform)
+    /// <summary>
+    /// Raycasts toward direction for the nearest IAttackable (양배추 괴물·잡초) and hits it.
+    /// 타격 소리는 여기서 통합 재생(히트 성공 시 1회).
+    /// </summary>
+    public bool TryAttack(Vector2 direction)
     {
-        return TryFindInteractable(direction, out _, out hitTransform);
+        if (!TryFindInDirection(direction, out IAttackable attackable, out _)) return false;
+
+        SoundManager.Instance?.PlaySFX(SFXType.Hit);
+        attackable.Hit(controller);
+        return true;
     }
 
-    private bool TryFindInteractable(Vector2 direction, out IInteractable interactable, out Transform hitTransform)
+    // 하이라이트용: 상호작용 대상(IInteractable) 또는 타격 대상(IAttackable) 중 가장 가까운 것을 반환.
+    public bool TryPeekTarget(Vector2 direction, out Transform hitTransform)
     {
         int count = Physics2D.Raycast(transform.position, direction.normalized, contactFilter, hitBuffer, interactDistance);
 
@@ -64,16 +80,37 @@ public class PlayerInteraction : MonoBehaviour
             Transform candidateTransform = hitBuffer[i].collider.transform;
             if (candidateTransform == transform || candidateTransform.IsChildOf(transform)) continue;
 
-            IInteractable candidate = hitBuffer[i].collider.GetComponentInParent<IInteractable>();
-            if (candidate != null)
+            if (hitBuffer[i].collider.GetComponentInParent<IInteractable>() != null ||
+                hitBuffer[i].collider.GetComponentInParent<IAttackable>() != null)
             {
-                interactable = candidate;
                 hitTransform = candidateTransform;
                 return true;
             }
         }
 
-        interactable = null;
+        hitTransform = null;
+        return false;
+    }
+
+    private bool TryFindInDirection<T>(Vector2 direction, out T found, out Transform hitTransform) where T : class
+    {
+        int count = Physics2D.Raycast(transform.position, direction.normalized, contactFilter, hitBuffer, interactDistance);
+
+        for (int i = 0; i < count; i++)
+        {
+            Transform candidateTransform = hitBuffer[i].collider.transform;
+            if (candidateTransform == transform || candidateTransform.IsChildOf(transform)) continue;
+
+            T candidate = hitBuffer[i].collider.GetComponentInParent<T>();
+            if (candidate != null)
+            {
+                found = candidate;
+                hitTransform = candidateTransform;
+                return true;
+            }
+        }
+
+        found = null;
         hitTransform = null;
         return false;
     }

@@ -16,11 +16,13 @@ public class PlayerMovement : MonoBehaviour
 
     private InputAction moveAction;
     private InputAction interactAction;
+    private InputAction attackAction;
 
     private Vector2 moveInput;
 
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
     public event Action InteractPressed;
+    public event Action AttackPressed;
 
     // 재난 이벤트(키보드 반전)가 켜고 끄는 플래그. 상하좌우 입력을 벡터 negate로 동시 반전.
     public bool InputInverted { get; set; }
@@ -39,20 +41,27 @@ public class PlayerMovement : MonoBehaviour
 
         // 상호작용 키 = F
         interactAction = new InputAction("Interact", InputActionType.Button, "<Keyboard>/f");
+
+        // 타격(공격) 키 = Q. 양배추 괴물·잡초 타격 전용.
+        attackAction = new InputAction("Attack", InputActionType.Button, "<Keyboard>/q");
     }
 
     private void OnEnable()
     {
         moveAction.Enable();
         interactAction.Enable();
+        attackAction.Enable();
         interactAction.performed += OnInteractPerformed;
+        attackAction.performed += OnAttackPerformed;
     }
 
     private void OnDisable()
     {
         interactAction.performed -= OnInteractPerformed;
+        attackAction.performed -= OnAttackPerformed;
         moveAction.Disable();
         interactAction.Disable();
+        attackAction.Disable();
     }
 
     private void Update()
@@ -74,5 +83,10 @@ public class PlayerMovement : MonoBehaviour
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
         InteractPressed?.Invoke();
+    }
+
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        AttackPressed?.Invoke();
     }
 }

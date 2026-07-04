@@ -10,19 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 41383859ae1d2ef4194812a1a41152f5, type: 3}
-  m_Name: Forest_Feast
+  m_Name: GreenJuice
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
-  recipeIcon: {fileID: 21300000, guid: 51a53b8eb5c7c3547875f74812a629dd, type: 3}
-  recipeName: "\uC232\uC18D \uB9CC\uCC2C \uC138\uD2B8"
+  recipeIcon: {fileID: 21300000, guid: 164d8bbdaf27c53419e96305b06b6d5c, type: 3}
+  recipeName: "녹즙"
   ingredients:
-  - ingredientType: {fileID: 11400000, guid: 91d838b6fb503d846b866c973322cca3, type: 2}
-    requiredCookingMethod: 0
-    amount: 2
   - ingredientType: {fileID: 11400000, guid: 72c256c749fe8324380ba72041b889a1, type: 2}
-    requiredCookingMethod: 2
-    amount: 2
-  - ingredientType: {fileID: 11400000, guid: 1c73a5e4601b2ee44b887561f685d510, type: 2}
-    requiredCookingMethod: 1
+    requiredCookingMethod: 3
     amount: 1
-  moneyReward: 35
-  scoreReward: 350
+  moneyReward: 10
+  scoreReward: 100

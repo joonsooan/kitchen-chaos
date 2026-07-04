@@ -46,20 +46,22 @@ public class PlayerHighlightController : MonoBehaviour
 
     private void UpdateObjectHighlight(Vector2 facing)
     {
-        if (!interaction.TryPeekInteractable(facing, out Transform hitTransform))
+        if (!interaction.TryPeekTarget(facing, out Transform hitTransform))
         {
             objectHighlight.Hide();
             return;
         }
 
-        IInteractable interactable = hitTransform.GetComponentInParent<IInteractable>();
-        if (interactable == null)
+        // 상호작용 대상(IInteractable) 또는 타격 대상(IAttackable) 어느 쪽이든 루트를 잡아 외곽선 표시.
+        Component target = hitTransform.GetComponentInParent<IInteractable>() as Component
+                           ?? hitTransform.GetComponentInParent<IAttackable>() as Component;
+        if (target == null)
         {
             objectHighlight.Hide();
             return;
         }
 
-        SpriteRenderer sourceRenderer = ((Component)interactable).GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer sourceRenderer = target.GetComponentInChildren<SpriteRenderer>();
         if (sourceRenderer == null || sourceRenderer.sprite == null)
         {
             objectHighlight.Hide();

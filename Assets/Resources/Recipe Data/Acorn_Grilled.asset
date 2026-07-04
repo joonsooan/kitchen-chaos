@@ -17,6 +17,6 @@ MonoBehaviour:
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 1c73a5e4601b2ee44b887561f685d510, type: 2}
     requiredCookingMethod: 1
-    amount: 1
+    amount: 2
   moneyReward: 10
   scoreReward: 100

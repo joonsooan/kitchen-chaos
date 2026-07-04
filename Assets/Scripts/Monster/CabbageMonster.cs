@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CabbageMonster : MonoBehaviour, IInteractable
+public class CabbageMonster : MonoBehaviour, IAttackable
 {
     [SerializeField] private int maxHealth = 3;
 
@@ -19,14 +19,14 @@ public class CabbageMonster : MonoBehaviour, IInteractable
         if (duration > 0f) Invoke(nameof(Despawn), duration);
     }
 
-    public void Interact(PlayerController player)
+    public void Hit(PlayerController player)
     {
         TakeDamage(1);
     }
 
     private void TakeDamage(int amount)
     {
-        SoundManager.Instance?.PlaySFX(SFXType.Hit);
+        // 타격 소리(SFXType.Hit)는 PlayerInteraction.TryAttack에서 통합 재생.
         // TODO: 양상추 말소리 시스템 생기면 여기서 SoundManager.Instance?.PlaySFX(SFXType.LettuceVoice);
         currentHealth -= amount;
         if (currentHealth > 0) return;
