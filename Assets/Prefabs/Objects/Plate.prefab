@@ -144,8 +144,7 @@ MonoBehaviour:
   containerType: 2
   availableRecipes:
   - {fileID: 11400000, guid: f71a6151ac457f94a94337f21ac0d12c, type: 2}
-  - {fileID: 11400000, guid: b21056e85c89e8845be85e7498d42a7c, type: 2}
-  - {fileID: 11400000, guid: aa6aaf00a090b7c40ac3eee21df7a370, type: 2}
+  - {fileID: 11400000, guid: 8ff4115d22676eb46ac5302afba8c186, type: 2}
   - {fileID: 11400000, guid: 2e4f28db438ac8545a3fb7be54a640b9, type: 2}
   ingredientVisualAnchor: {fileID: 0}
   sortingLayerName: Object

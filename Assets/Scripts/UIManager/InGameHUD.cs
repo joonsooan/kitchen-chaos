@@ -29,7 +29,11 @@ public class InGameHUD : UIHUD
     private DG.Tweening.Tween coinRollTween;
     private DG.Tweening.Tween scoreRollTween;
     private readonly HashSet<BuffData> activeBuffs = new();   // 동시·재획득 버프 추적
+    private readonly Dictionary<Customer, UISlot> activeSlots = new();   // 손님당 카드 1개
     private BuffData lastBuff;    // 남은시간 표시 대상 (가장 최근 버프)
+
+    // 날아가는 동전 목표 지점 (ServeResultView가 사용)
+    public RectTransform CoinAnchor => coinText != null ? coinText.rectTransform : null;
 
     private TextMeshProUGUI timeText;
     private TextMeshProUGUI coinText;
@@ -37,6 +41,8 @@ public class InGameHUD : UIHUD
     private TextMeshProUGUI buffTimeText;
     private Transform orderLayout;
     private GameObject buffIcon;
+    private Transform randomBoxIcon;
+    private Tween boxBounceTween;
     private UnityEngine.UI.Image buffIconImage;
     private bool initialized;
 
@@ -57,6 +63,8 @@ public class InGameHUD : UIHUD
         buffIcon     = Get<GameObject>((int)GameObjects.BuffIcon);
         if (buffIcon != null) buffIconImage = buffIcon.GetComponent<UnityEngine.UI.Image>();
 
+        randomBoxIcon = Get<GameObject>((int)GameObjects.RandomBoxIcon).transform;
+
         // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
         BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
         {
@@ -69,6 +77,34 @@ public class InGameHUD : UIHUD
         {
             UIManager.Instance.ShowPopupUI<OptionPopup>();
         });
+
+        PlayIntroFx();
+    }
+
+    // J. HUD 요소 스태거 입장 — 순차적으로 뿅뿅 자리 잡음
+    private void PlayIntroFx()
+    {
+        Transform[] targets =
+        {
+            timeText  != null ? timeText.transform.parent : null,
+            coinText  != null ? coinText.transform.parent : null,
+            scoreText != null ? scoreText.transform.parent : null,
+            randomBoxIcon,
+            Get<GameObject>((int)GameObjects.SettingIcon)?.transform,
+        };
+
+        float delay = 0f;
+        foreach (var t in targets)
+        {
+            if (t == null) continue;
+
+            t.localScale = Vector3.zero;
+            t.DOScale(1f, 0.28f)
+             .SetDelay(delay)
+             .SetEase(Ease.OutBack)
+             .SetLink(t.gameObject);
+            delay += 0.08f;
+        }
     }
 
     // 씬에 직접 배치된 경우 대비
@@ -104,6 +140,11 @@ public class InGameHUD : UIHUD
 
         buffIcon.SetActive(true);
 
+        // L. 획득 순간 뿅 등장
+        buffIcon.transform.DOKill();
+        buffIcon.transform.localScale = Vector3.zero;
+        buffIcon.transform.DOScale(1f, 0.35f).SetEase(Ease.OutBack).SetLink(buffIcon);
+
         // 버프 아이콘 스프라이트 지정돼 있으면 교체 (없으면 기존 이미지 유지)
         if (buff.icon != null && buffIcon.TryGetComponent(out UnityEngine.UI.Image image))
             image.sprite = buff.icon;
@@ -119,6 +160,8 @@ public class InGameHUD : UIHUD
     // 남은시간 폴링 — BuffIcon 밑 BuffTimeText 갱신 + 만료 5초 전 깜빡
     private void Update()
     {
+        UpdateBoxBounce();
+
         if (buffTimeText == null || lastBuff == null || !buffIcon.activeSelf) return;
         if (BuffManager.Instance == null) return;
 
@@ -133,6 +176,30 @@ public class InGameHUD : UIHUD
                 : 1f;
             var c = buffIconImage.color; c.a = alpha; buffIconImage.color = c;
             var tc = buffTimeText.color; tc.a = alpha; buffTimeText.color = tc;
+        }
+    }
+
+    // 살 수 있을 때 럭키박스 아이콘 살랑살랑 (어포던스)
+    private void UpdateBoxBounce()
+    {
+        if (randomBoxIcon == null || GameManager.Instance == null || RandomBoxManager.Instance == null) return;
+
+        bool affordable = GameManager.Instance.Money >= RandomBoxManager.Instance.Cost;
+        bool bouncing   = boxBounceTween != null && boxBounceTween.IsActive();
+
+        if (affordable && !bouncing)
+        {
+            boxBounceTween = randomBoxIcon
+                .DOScale(1.12f, 0.45f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetLink(randomBoxIcon.gameObject);
+        }
+        else if (!affordable && bouncing)
+        {
+            boxBounceTween.Kill();
+            boxBounceTween = null;
+            randomBoxIcon.localScale = Vector3.one;
         }
     }
 
@@ -216,6 +283,10 @@ public class InGameHUD : UIHUD
     // 카드 게이지·제거는 UISlot이 손님 이벤트로 처리.
     public UISlot AddOrder(Customer customer)
     {
+        // 같은 손님 카드가 이미 살아있으면 중복 생성 방지
+        if (activeSlots.TryGetValue(customer, out var existing) && existing != null)
+            return existing;
+
         var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
         var slot = go.GetComponent<UISlot>();
         if (slot == null)
@@ -224,6 +295,7 @@ public class InGameHUD : UIHUD
         }
         slot.Init();
         slot.Setup(customer);
+        activeSlots[customer] = slot;
         return slot;
     }
 }

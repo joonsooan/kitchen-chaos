@@ -21,6 +21,9 @@ public class UISlot : UIBase
 
     private Customer _customer;   // 게이지·카드 수명 단일 소스
     private bool _closing;        // 퇴장 연출 중
+    private bool _urgent;         // 긴급 흔들림 시작됨
+    private int  _lastCountShown = -1;
+    private TMPro.TextMeshProUGUI _countText;   // 3·2·1 카운트다운 (프리팹 optional)
 
     public override void Init()
     {
@@ -34,6 +37,9 @@ public class UISlot : UIBase
 
         if (_gauge != null && _gauge.fillRect != null)
             _gaugeFill = _gauge.fillRect.GetComponent<Image>();
+
+        var count = transform.Find("CountText");
+        if (count != null) _countText = count.GetComponent<TMPro.TextMeshProUGUI>();
     }
 
     // 손님으로 카드 채우기 — 레시피 표시 + 성공/실패 이벤트 구독
@@ -148,7 +154,26 @@ public class UISlot : UIBase
     // ── 게이지 (RemainingPatience 폴링 + 잔량 색: 초록→노랑→빨강) ───
     private void Update()
     {
-        if (_closing || _customer == null || _gauge == null) return;
+        if (_closing) return;
+
+        // 안전망 — 이벤트를 놓쳤어도 손님이 떠났으면(파괴/풀복귀/퇴장) 카드 정리
+        if (_customer == null || !_customer.gameObject.activeInHierarchy)
+        {
+            HandleOrderFailed(_customer, null);
+            return;
+        }
+        if (_customer.CurrentState == CustomerState.LeavingSuccess)
+        {
+            HandleOrderSucceeded(_customer, null);
+            return;
+        }
+        if (_customer.CurrentState == CustomerState.LeavingFailure)
+        {
+            HandleOrderFailed(_customer, null);
+            return;
+        }
+
+        if (_gauge == null) return;
         if (_customer.CurrentState != CustomerState.Waiting) return;
 
         float tolerance = _customer.CustomerData != null
@@ -161,6 +186,38 @@ public class UISlot : UIBase
 
         if (_gaugeFill != null)
             _gaugeFill.color = GaugeColor(t);
+
+        // 긴급 — 잔여 20% 이하부터 카드 부르르
+        if (!_urgent && t <= 0.2f)
+        {
+            _urgent = true;
+            transform.DOShakePosition(1f, new Vector3(4f, 4f, 0f), 12)
+                     .SetLoops(-1)
+                     .SetLink(gameObject);
+        }
+
+        // 막판 3·2·1 카운트다운 (CountText 있을 때만)
+        if (_countText != null)
+        {
+            float remain = _customer.RemainingPatience;
+            if (remain <= 3f && remain > 0f)
+            {
+                int sec = Mathf.CeilToInt(remain);
+                if (sec != _lastCountShown)
+                {
+                    _lastCountShown = sec;
+                    _countText.gameObject.SetActive(true);
+                    _countText.text = sec.ToString();
+                    _countText.transform.DOKill();
+                    _countText.transform.localScale = Vector3.one * 1.6f;
+                    _countText.transform.DOScale(1f, 0.25f).SetLink(_countText.gameObject);
+                }
+            }
+            else if (_countText.gameObject.activeSelf)
+            {
+                _countText.gameObject.SetActive(false);
+            }
+        }
     }
 
     // 잔량 비율 → 색 (>0.5 초록~노랑, <0.5 노랑~빨강)

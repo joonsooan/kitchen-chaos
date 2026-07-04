@@ -67,13 +67,24 @@ public class RandomBoxPopup : UIPopup
         if (buff != null && BuffManager.Instance != null)
             BuffManager.Instance.Activate(buff);
 
-        // 결과 표시 — 선물 숨기고 결과 텍스트로 전환
+        // 결과 표시 — 선물 숨기고 결과 텍스트 뿅 + 등급색 (꽝 회색 / 버프 금색)
         if (giftRow != null) giftRow.SetActive(false);
         if (descText != null)
         {
+            bool isEmpty = buff == null || buff.duration <= 0f;
+
             descText.text = buff != null
                 ? $"{buff.buffName}\n\n{buff.description}"
                 : "꽝! 아무것도 들어있지 않았다...";
+            descText.color = isEmpty
+                ? new Color(0.45f, 0.45f, 0.45f)
+                : new Color(0.85f, 0.65f, 0.1f);
+
+            descText.transform.DOKill();
+            descText.transform.localScale = Vector3.zero;
+            descText.transform.DOScale(1f, 0.3f)
+                    .SetEase(Ease.OutBack)
+                    .SetLink(descText.gameObject);
         }
     }
 
