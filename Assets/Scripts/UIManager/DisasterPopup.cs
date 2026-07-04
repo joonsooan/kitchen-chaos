@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// 재앙 발생 팝업 — 제목/설명 표시, X로 닫기. 재앙 시스템이 Setup 호출.
+// 장난 발생 팝업 — 제목/설명 표시, X로 닫기. 장난 시스템이 Setup 호출.
 public class DisasterPopup : UIPopup
 {
     enum Texts
@@ -32,13 +32,13 @@ public class DisasterPopup : UIPopup
 
         BindEvent(Get<GameObject>((int)GameObjects.CloseButton), OnCloseClicked);
 
-        // 재앙 팝업이 실제로 표시(ShowPopupUI<DisasterPopup>)되면 자동 발화. 표시 트리거 미구현이라 지금은 휴면.
+        // 장난 팝업이 실제로 표시(ShowPopupUI<DisasterPopup>)되면 자동 발화. 표시 트리거 미구현이라 지금은 휴면.
         SoundManager.Instance?.PlaySFX(SFXType.DisasterOpen);
 
         PlayDisasterFx();
     }
 
-    // 재앙 임팩트 — 카메라 흔들림 + 딤 붉은 플래시
+    // 장난 임팩트 — 카메라 흔들림 + 딤 붉은 플래시
     private void PlayDisasterFx()
     {
         var cam = Camera.main;
@@ -60,7 +60,7 @@ public class DisasterPopup : UIPopup
         }
     }
 
-    // 재앙 정보 주입 — 예: Setup("어패류 재앙 발생", "1분간 재료 조달이 막힙니다.")
+    // 장난 정보 주입 — 예: Setup("어패류 장난 발생", "1분간 재료 조달이 막힙니다.")
     public void Setup(string title, string description)
     {
         if (titleText != null) titleText.text = title;

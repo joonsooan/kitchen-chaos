@@ -97,7 +97,7 @@ MonoBehaviour:
     desc: "1. 손님의 주문서 확인\n2. 필요한 재료 꺼내기\n3. 요리\n4. 플레이팅\n5. 서빙"
     image: {fileID: 0}
   - title: 3. 시스템 소개
-    desc: "1. 재앙 시스템 설명\n2. 랜덤박스 시스템 설명"
+    desc: "1. 장난 시스템 설명\n2. 랜덤박스 시스템 설명"
     image: {fileID: 0}
   - title: 4. ( 제목 )
     desc: "( 설명 )"

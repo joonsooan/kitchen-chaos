@@ -19,11 +19,20 @@ public class OrderUIBridge : MonoBehaviour
             Time.timeScale = 0f;
             UIManager.Instance.ShowHUDUI<HomeHUD>();
         }
+
+        // 퇴식구마다 남은 그릇 수 표시 부착
+        var stockPrefab = Resources.Load<GameObject>("UI/World/StockCount");
+        if (stockPrefab != null)
+        {
+            foreach (var station in FindObjectsByType<ReturnStation>(FindObjectsSortMode.None))
+                Instantiate(stockPrefab).GetComponent<StockCountView>().Bind(station);
+        }
     }
 
     private void OnEnable()
     {
         Customer.OnAnyCustomerSeated       += HandleSeated;
+        ReturnStation.OnDispenseFailedEmpty += HandleStationEmpty;
         HomeHUD.OnStartRequested           += HandleHomeStart;
         TutorialPopup.OnTutorialCompleted  += HandleTutorialCompleted;
         NameInputPopup.OnNameConfirmed     += HandleNameConfirmed;
@@ -32,6 +41,7 @@ public class OrderUIBridge : MonoBehaviour
     private void OnDisable()
     {
         Customer.OnAnyCustomerSeated       -= HandleSeated;
+        ReturnStation.OnDispenseFailedEmpty -= HandleStationEmpty;
         HomeHUD.OnStartRequested           -= HandleHomeStart;
         TutorialPopup.OnTutorialCompleted  -= HandleTutorialCompleted;
         NameInputPopup.OnNameConfirmed     -= HandleNameConfirmed;
@@ -58,6 +68,20 @@ public class OrderUIBridge : MonoBehaviour
         Time.timeScale = 1f;
         if (GameManager.Instance != null)
             GameManager.Instance.StartGame();
+    }
+
+    // 컵/접시 재고 소진 상태에서 꺼내기 시도 → 건물 위 경고 플로팅
+    public void HandleStationEmpty(ReturnStation station)
+    {
+        var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
+        if (prefab == null || station == null) return;
+
+        string message = station.ContainerType == CarryingItemType.Cup
+            ? "컵이 모두 나가 있어요!"
+            : "접시가 모두 나가 있어요!";
+        var popup = Instantiate(prefab).GetComponent<ServeResultPopup>();
+        popup.Show(station.transform.position + new Vector3(0f, 1.0f, 0f),
+                   message, new Color(0.95f, 0.4f, 0.2f));
     }
 
     private void HandleSeated(Customer customer)
