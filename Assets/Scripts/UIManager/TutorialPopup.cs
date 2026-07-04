@@ -1,66 +1,93 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-// 튜토리얼 팝업 — 페이지 3장(전체 로직/레시피/조작법) 넘기고 마지막 '다음'에 닫힘
+// 튜토리얼 팝업 — 좌 텍스트/우 이미지, ◀▶로 페이지 이동. 마지막 ▶에 닫힘.
 public class TutorialPopup : UIPopup
 {
+    [Serializable]
+    public class Page
+    {
+        public string title;
+        [TextArea] public string desc;
+        public Sprite image;
+    }
+
     enum Texts
     {
+        TitleText,
         DescText,
-        NextText,
+    }
+
+    enum Images
+    {
+        TutorialImage,
     }
 
     enum GameObjects
     {
+        PrevButton,
         NextButton,
     }
 
-    [SerializeField] private string[] pages =
-    {
-        "1. 전체 로직 설명",
-        "2. 레시피 설명",
-        "3. 조작법 설명",
-    };
+    [SerializeField] private Page[] pages;
 
+    private TextMeshProUGUI titleText;
     private TextMeshProUGUI descText;
-    private TextMeshProUGUI nextText;
+    private Image tutorialImage;
+    private GameObject prevButton;
     private int pageIndex;
 
     public override void Init()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));
+        Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));
 
-        descText = Get<TextMeshProUGUI>((int)Texts.DescText);
-        nextText = Get<TextMeshProUGUI>((int)Texts.NextText);
+        titleText     = Get<TextMeshProUGUI>((int)Texts.TitleText);
+        descText      = Get<TextMeshProUGUI>((int)Texts.DescText);
+        tutorialImage = Get<Image>((int)Images.TutorialImage);
+        prevButton    = Get<GameObject>((int)GameObjects.PrevButton);
 
+        BindEvent(prevButton, OnPrevClicked);
         BindEvent(Get<GameObject>((int)GameObjects.NextButton), OnNextClicked);
 
         pageIndex = 0;
         Refresh();
     }
 
+    private void OnPrevClicked(PointerEventData evt)
+    {
+        if (pageIndex == 0) return;
+        pageIndex--;
+        Refresh();
+    }
+
     private void OnNextClicked(PointerEventData evt)
     {
-        pageIndex++;
-
-        if (pageIndex >= pages.Length)
+        if (pageIndex >= pages.Length - 1)
         {
             UIManager.Instance.ClosePopupUI(this);
             return;
         }
-
+        pageIndex++;
         Refresh();
     }
 
     private void Refresh()
     {
-        if (descText != null && pageIndex < pages.Length)
-            descText.text = pages[pageIndex];
+        if (pages == null || pages.Length == 0) return;
+        var page = pages[Mathf.Clamp(pageIndex, 0, pages.Length - 1)];
 
-        // 마지막 장이면 버튼 라벨 교체
-        if (nextText != null)
-            nextText.text = pageIndex == pages.Length - 1 ? "시작" : "다음";
+        if (titleText != null) titleText.text = page.title;
+        if (descText != null)  descText.text  = page.desc;
+
+        if (tutorialImage != null && page.image != null)
+            tutorialImage.sprite = page.image;
+
+        // 첫 장에선 ◀ 숨김
+        if (prevButton != null) prevButton.SetActive(pageIndex > 0);
     }
 }
