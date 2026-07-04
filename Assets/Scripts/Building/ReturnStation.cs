@@ -21,6 +21,7 @@ public class ReturnStation : MonoBehaviour, IInteractable
     private int currentStock;
 
     public CarryingItemType ContainerType => containerPrefab.GetComponent<ContainerKitchenObject>().ContainerType;
+    public int CurrentStock => currentStock;   // UI 표시용 (읽기 전용)
 
     private void Awake()
     {
