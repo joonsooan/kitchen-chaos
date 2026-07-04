@@ -21,14 +21,6 @@ public class CustomerGaugeTest : MonoBehaviour
             ? UIManager.Instance.ShowHUDUI<InGameHUD>()
             : null;
 
-        // 튜토리얼 팝업 테스트
-        if (UIManager.Instance != null)
-            UIManager.Instance.ShowPopupUI<TutorialPopup>();
-
-        // 재앙 팝업 테스트 — 5초 뒤, 랜덤박스 — 10초 뒤
-        Invoke(nameof(ShowDisasterDemo), 5f);
-        Invoke(nameof(ShowRandomBoxDemo), 10f);
-
         // 전역 HUD 이벤트 소스 보장 (시간/돈/점수)
         if (GameManager.Instance == null)
             new GameObject("GameManager").AddComponent<GameManager>();
@@ -39,8 +31,6 @@ public class CustomerGaugeTest : MonoBehaviour
             new GameObject("RandomBoxManager").AddComponent<RandomBoxManager>();
         if (BuffManager.Instance == null)
             new GameObject("BuffManager").AddComponent<BuffManager>();
-        GameManager.Instance.AddMoney(50);    // 표시 확인용 데모
-        GameManager.Instance.AddScore(100);
 
         var pool = DataTable.Customers;   // 손님 데이터 풀 (레시피 배분)
 
@@ -65,20 +55,5 @@ public class CustomerGaugeTest : MonoBehaviour
             // 주문 카드 (게이지·제거는 UISlot이 손님 이벤트로 처리)
             if (hud != null) hud.AddOrder(customer);
         }
-    }
-
-    private void ShowDisasterDemo()
-    {
-        if (UIManager.Instance == null) return;
-
-        UIManager.Instance.ShowPopupUI<DisasterPopup>()
-            .Setup("어패류 재앙 발생", "1분간 재료 조달이 막힙니다.");
-    }
-
-    private void ShowRandomBoxDemo()
-    {
-        if (UIManager.Instance == null) return;
-
-        UIManager.Instance.ShowPopupUI<RandomBoxPopup>();
     }
 }

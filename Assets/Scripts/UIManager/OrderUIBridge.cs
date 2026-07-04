@@ -15,10 +15,7 @@ public class OrderUIBridge : MonoBehaviour
 
         // 시간/보상 흐름 시작 (게임 시작 로직 생기면 그쪽으로 이동)
         if (GameManager.Instance != null)
-        {
             GameManager.Instance.StartGame();
-            GameManager.Instance.AddMoney(100);   // TEST: 랜덤박스 테스트용 — 확인 후 제거
-        }
     }
 
     private void OnEnable()  => Customer.OnAnyCustomerSeated += HandleSeated;
