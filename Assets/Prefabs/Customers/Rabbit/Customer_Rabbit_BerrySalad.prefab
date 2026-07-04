@@ -106,7 +106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17dd0cc1d36feb4d80d26c50147b9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Customer
-  customerData: {fileID: 11400000, guid: 3ccbb9f787fd35c49a556416161230ee, type: 2}
+  customerData: {fileID: 11400000, guid: 2865bcb854f825543a1afa74d2463b00, type: 2}
 --- !u!114 &3124925169295739312
 MonoBehaviour:
   m_ObjectHideFlags: 0
