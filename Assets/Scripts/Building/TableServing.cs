@@ -1,19 +1,25 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Table serving point. F with a dish (any non-empty container) delivers it instantly
 /// to the waiting customer seated at this table. Serving judges the dish here (matching
-/// the customer's order) and pays the reward at once on success, then hands the container
-/// to CustomerDishReturn so the customer eats and later returns it - the dish is NOT
-/// destroyed. (This bypasses Customer.ReceiveRecipe, which would send the customer
-/// straight out and skip the eat-and-return sequence.)
+/// the customer's order), pays the reward at once on success, fires OnDishServed for the
+/// UI, then hands the container to CustomerDishReturn so the customer eats and later
+/// returns it - the dish is NOT destroyed. (Judging directly instead of via
+/// Customer.ReceiveRecipe, which would send the customer straight out and skip the
+/// eat-and-return sequence.)
 /// </summary>
 [RequireComponent(typeof(Table))]
 [DisallowMultipleComponent]
 public class TableServing : MonoBehaviour, IInteractable
 {
     private const float SeatMatchEpsilon = 0.05f;
+
+    // Raised after a delivery is judged (success flag included) so UI (order slots etc.)
+    // can react. Fires whether or not the order was correct.
+    public static event Action<Table, Customer, RecipeData, bool> OnDishServed;
 
     private Table table;
 
@@ -54,10 +60,13 @@ public class TableServing : MonoBehaviour, IInteractable
             Debug.Log($"[TableServing] {name}: no waiting customer at this table");
             return;
         }
+
         // Same judgment as Customer.ReceiveRecipe, done here so we can pay the reward
         // up front and still route the dish into the eat-and-return sequence.
         bool succeeded = recipe != null && customer.CustomerData.requiredRecipe == recipe;
         if (succeeded) GameManager.Instance.AddReward(recipe);
+
+        OnDishServed?.Invoke(table, customer, recipe, succeeded);
 
         string dishName = recipe != null ? recipe.recipeName : "unfinished dish";
         Debug.Log($"[TableServing] Delivered {dishName} - {(succeeded ? "correct order!" : "wrong order...")}");

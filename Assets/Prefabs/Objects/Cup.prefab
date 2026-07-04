@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.282353, g: 0.8196079, b: 0.8000001, a: 1}
+  m_Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -144,3 +144,7 @@ MonoBehaviour:
   containerType: 3
   availableRecipes:
   - {fileID: 11400000, guid: 9a56b327c40d39c4d9d90862aef3fc43, type: 2}
+  ingredientVisualAnchor: {fileID: 0}
+  sortingLayerName: Object
+  sortingOrder: 10
+  visualScale: 0.9
