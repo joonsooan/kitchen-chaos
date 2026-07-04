@@ -14,11 +14,12 @@ public static class AStarPathfinder
 
     private static readonly Vector2Int[] neighborBuffer = new Vector2Int[4];
 
-    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal)
+    public static List<Vector2Int> FindPath(Vector2Int start, Vector2Int goal, bool avoidOccupants = false)
     {
         GridSystem grid = GridSystem.Instance;
         if (grid == null) return null;
         if (grid.GetTileType(goal) == TileType.Blocked) return null;
+        if (avoidOccupants && grid.TryGetOccupant(goal, out _)) return null;
         if (start == goal) return new List<Vector2Int> { start };
 
         Dictionary<Vector2Int, Node> openMap = new();
@@ -37,7 +38,7 @@ public static class AStarPathfinder
             openMap.Remove(current.Cell);
             closed.Add(current.Cell);
 
-            int neighborCount = grid.GetWalkableNeighborsNonAlloc(current.Cell, neighborBuffer);
+            int neighborCount = grid.GetWalkableNeighborsNonAlloc(current.Cell, neighborBuffer, avoidOccupants);
             for (int i = 0; i < neighborCount; i++)
             {
                 Vector2Int neighborCell = neighborBuffer[i];

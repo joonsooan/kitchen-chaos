@@ -194,16 +194,18 @@ public class GridSystem : MonoBehaviour
 
     /// <summary>
     /// Fills buffer with the passable 4-way (up/down/left/right) neighbors of cell. No allocations.
-    /// Passability is tile-type only (Blocked tiles, e.g. walls) — occupants (furniture like
-    /// tables/chairs) reserve a cell but don't block foot traffic through/around it.
+    /// By default passability is tile-type only (Blocked tiles, e.g. walls) — occupants (furniture
+    /// like tables/chairs) reserve a cell but don't block foot traffic through/around it. Pass
+    /// avoidOccupants=true (e.g. for monster pathing) to also treat occupied cells as impassable.
     /// </summary>
-    public int GetWalkableNeighborsNonAlloc(Vector2Int cell, Vector2Int[] buffer)
+    public int GetWalkableNeighborsNonAlloc(Vector2Int cell, Vector2Int[] buffer, bool avoidOccupants = false)
     {
         int count = 0;
         for (int i = 0; i < NeighborOffsets.Length; i++)
         {
             Vector2Int neighbor = cell + NeighborOffsets[i];
             if (GetTileType(neighbor) == TileType.Blocked) continue;
+            if (avoidOccupants && TryGetOccupant(neighbor, out _)) continue;
 
             if (count < buffer.Length) buffer[count] = neighbor;
             count++;
@@ -217,32 +219,47 @@ public class GridSystem : MonoBehaviour
         return CellToWorld(cell);
     }
 
-    /// <summary>
-    /// Picks a random walkable cell (in bounds, not Blocked, no occupant). Falls back to a linear
-    /// scan if random sampling misses, then to (0,0) if the grid has no walkable cell at all.
-    /// </summary>
+    /// <summary>Picks a random walkable cell anywhere on the grid. See the ranged overload for details.</summary>
     public Vector2Int GetRandomWalkableCell()
     {
+        return GetRandomWalkableCell(Vector2Int.zero, new Vector2Int(Width - 1, Height - 1));
+    }
+
+    /// <summary>
+    /// Picks a random walkable cell (not Blocked, no occupant) within [min, max] inclusive, clamped
+    /// to grid bounds. Falls back to a linear scan of the range if random sampling misses, then to
+    /// the range's min corner if the range has no walkable cell at all.
+    /// </summary>
+    public Vector2Int GetRandomWalkableCell(Vector2Int min, Vector2Int max)
+    {
         EnsureRuntimeState();
-        int cellCount = Width * Height;
+
+        int minX = Mathf.Clamp(Mathf.Min(min.x, max.x), 0, Width - 1);
+        int maxX = Mathf.Clamp(Mathf.Max(min.x, max.x), 0, Width - 1);
+        int minY = Mathf.Clamp(Mathf.Min(min.y, max.y), 0, Height - 1);
+        int maxY = Mathf.Clamp(Mathf.Max(min.y, max.y), 0, Height - 1);
+
+        int rangeWidth = maxX - minX + 1;
+        int rangeHeight = maxY - minY + 1;
+        int cellCount = rangeWidth * rangeHeight;
 
         for (int attempt = 0; attempt < 50; attempt++)
         {
             int index = Random.Range(0, cellCount);
-            Vector2Int cell = new Vector2Int(index % Width, index / Width);
+            Vector2Int cell = new Vector2Int(minX + index % rangeWidth, minY + index / rangeWidth);
             if (IsWalkable(cell)) return cell;
         }
 
-        for (int y = 0; y < Height; y++)
+        for (int y = minY; y <= maxY; y++)
         {
-            for (int x = 0; x < Width; x++)
+            for (int x = minX; x <= maxX; x++)
             {
                 Vector2Int cell = new Vector2Int(x, y);
                 if (IsWalkable(cell)) return cell;
             }
         }
 
-        return Vector2Int.zero;
+        return new Vector2Int(minX, minY);
     }
 
     public int MonsterSpawnCount => mapData != null ? mapData.MonsterSpawnCount : 0;

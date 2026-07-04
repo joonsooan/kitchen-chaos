@@ -6,6 +6,8 @@ public class CabbageMonsterMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1.5f;
     [SerializeField] private float waitDurationAtTarget = 2f;
+    [SerializeField] private Vector2Int searchMinCell = Vector2Int.zero;
+    [SerializeField] private Vector2Int searchMaxCell = new Vector2Int(int.MaxValue, int.MaxValue);
 
     private const float ArriveEpsilon = 0.01f;
 
@@ -48,9 +50,9 @@ public class CabbageMonsterMovement : MonoBehaviour
     {
         GridSystem grid = GridSystem.Instance;
         Vector2Int startCell = grid.WorldToCell(transform.position);
-        Vector2Int targetCell = grid.GetRandomWalkableCell();
+        Vector2Int targetCell = grid.GetRandomWalkableCell(searchMinCell, searchMaxCell);
 
-        List<Vector2Int> path = AStarPathfinder.FindPath(startCell, targetCell);
+        List<Vector2Int> path = AStarPathfinder.FindPath(startCell, targetCell, avoidOccupants: true);
         if (path == null || path.Count == 0)
         {
             waitTimer = waitDurationAtTarget;
