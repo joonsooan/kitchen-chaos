@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5fd2eb77b297f8b489a5bbebd97cc849, type: 3}
-  m_Name: Table
+  m_Name: Desk
   m_EditorClassIdentifier: Assembly-CSharp::BuildingData
-  buildingName: "\uD14C\uC774\uBE14"
+  buildingName: "\uCC45\uC0C1"
   footprintCells:
   - {x: 0, y: 0}
-  - {x: 1, y: 0}
-  - {x: -1, y: 0}
   cookingMethod: 0
-  isDesk: 0
+  isDesk: 1

@@ -17,6 +17,8 @@ public class Building : MonoBehaviour
     public Vector2Int[] FootprintCells =>
         buildingData != null ? buildingData.footprintCells : DefaultFootprint;
 
+    public bool IsDesk => buildingData != null && buildingData.isDesk;
+
     private void Start()
     {
         RegisterOccupancy();

@@ -22,6 +22,11 @@ public class GridSystem : MonoBehaviour
     // or the mapData reference itself changes (size alone can't detect an asset swap).
     private TileType[] baseTiles;
     private GameObject[] occupants;
+    // Separate from occupants: occupants reserve a cell for furniture (blocks nothing on its own,
+    // see GetWalkableNeighborsNonAlloc note), placedItems is what's sitting on top of a cell
+    // (floor or desk) — an ingredient or a plate/cup. A desk (occupant) and an item placed on it
+    // (placedItem) can coexist on the same cell since they're tracked independently.
+    private GameObject[] placedItems;
     private MapData builtFromMap;
 
     private static GridSystem instance;
@@ -143,6 +148,72 @@ public class GridSystem : MonoBehaviour
         if (occupants[index] == go) occupants[index] = null;
     }
 
+    public bool TryGetPlacedItem(Vector2Int cell, out GameObject placedItem)
+    {
+        if (!IsInBounds(cell))
+        {
+            placedItem = null;
+            return false;
+        }
+
+        EnsureRuntimeState();
+        placedItem = placedItems[CellIndex(cell)];
+        return placedItem != null;
+    }
+
+    /// <summary>Claims a cell's item slot (ingredient/plate/cup sitting on floor or desk). Independent of occupants.</summary>
+    public bool SetPlacedItem(Vector2Int cell, GameObject go)
+    {
+        if (!IsInBounds(cell)) return false;
+
+        EnsureRuntimeState();
+        int index = CellIndex(cell);
+        if (placedItems[index] != null && placedItems[index] != go) return false;
+
+        placedItems[index] = go;
+        return true;
+    }
+
+    /// <summary>Clears a cell's placed item only if it still matches the given object.</summary>
+    public void ClearPlacedItem(Vector2Int cell, GameObject go)
+    {
+        if (!IsInBounds(cell)) return;
+
+        EnsureRuntimeState();
+        int index = CellIndex(cell);
+        if (placedItems[index] == go) placedItems[index] = null;
+    }
+
+    /// <summary>Cell directly in front of a world position, snapping facing to the nearest 4-way direction.</summary>
+    public Vector2Int GetFacingCell(Vector3 worldPosition, Vector2 facing)
+    {
+        Vector2Int offset = Mathf.Abs(facing.x) > Mathf.Abs(facing.y)
+            ? new Vector2Int(facing.x > 0f ? 1 : -1, 0)
+            : new Vector2Int(0, facing.y > 0f ? 1 : -1);
+
+        return WorldToCell(worldPosition) + offset;
+    }
+
+    /// <summary>
+    /// True if an ingredient/plate/cup can be placed on this cell: open floor, or a desk building's
+    /// cell (Building.IsDesk) — and no placed item already sitting there. Non-desk buildings (walls,
+    /// decorations) occupy their cell but refuse placement on top.
+    /// </summary>
+    public bool CanPlaceOnCell(Vector2Int cell)
+    {
+        if (!IsInBounds(cell)) return false;
+        if (GetTileType(cell) == TileType.Blocked) return false;
+        if (TryGetPlacedItem(cell, out _)) return false;
+
+        if (TryGetOccupant(cell, out GameObject occupant))
+        {
+            Building building = occupant.GetComponent<Building>();
+            return building != null && building.IsDesk;
+        }
+
+        return true;
+    }
+
     /// <summary>
     /// Fills buffer with the passable 4-way (up/down/left/right) neighbors of cell. No allocations.
     /// Passability is tile-type only (Blocked tiles, e.g. walls) — occupants (furniture like
@@ -193,13 +264,14 @@ public class GridSystem : MonoBehaviour
     {
         int cellCount = Width * Height;
         if (baseTiles != null && baseTiles.Length == cellCount && occupants != null && occupants.Length == cellCount
-            && builtFromMap == mapData)
+            && placedItems != null && placedItems.Length == cellCount && builtFromMap == mapData)
         {
             return;
         }
 
         baseTiles = new TileType[cellCount];
         occupants = new GameObject[cellCount];
+        placedItems = new GameObject[cellCount];
         builtFromMap = mapData;
 
         for (int y = 0; y < Height; y++)

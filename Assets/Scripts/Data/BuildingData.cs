@@ -6,4 +6,5 @@ public class BuildingData : ScriptableObject
     public string buildingName;
     public Vector2Int[] footprintCells = { Vector2Int.zero };
     public CookingMethod cookingMethod = CookingMethod.None;
+    public bool isDesk;
 }
