@@ -12,17 +12,16 @@ public class IngredientState : MonoBehaviour
 {
     [SerializeField] private string ingredientName;
     [SerializeField] private CookingMethod currentState;
-    [SerializeField, Range(0f, 1f)] private float cookedDarken = 0.6f;
 
     private IngredientPickup pickup;
     private SpriteRenderer spriteRenderer;
-    private Color rawColor;
+    private Sprite rawSprite;
 
     private void Awake()
     {
         pickup = GetComponent<IngredientPickup>();
         spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null) rawColor = spriteRenderer.color;
+        if (spriteRenderer != null) rawSprite = spriteRenderer.sprite;
     }
 
     private void Update()
@@ -37,23 +36,20 @@ public class IngredientState : MonoBehaviour
 
         if (currentState == instance.CurrentState) return;
         currentState = instance.CurrentState;
-        ApplyStateColor();
+        ApplyState(instance.Data);
     }
 
-    private void ApplyStateColor()
+    private void ApplyState(Ingredient data)
     {
         if (spriteRenderer == null) return;
 
         if (currentState == CookingMethod.None)
         {
-            spriteRenderer.color = rawColor;
+            spriteRenderer.sprite = rawSprite;
             return;
         }
 
-        spriteRenderer.color = new Color(
-            rawColor.r * cookedDarken,
-            rawColor.g * cookedDarken,
-            rawColor.b * cookedDarken,
-            rawColor.a);
+        Sprite cookedIcon = data != null ? data.GetCookingMethodIcon(currentState) : null;
+        spriteRenderer.sprite = cookedIcon != null ? cookedIcon : rawSprite;
     }
 }

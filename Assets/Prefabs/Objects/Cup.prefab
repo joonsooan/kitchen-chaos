@@ -149,6 +149,6 @@ MonoBehaviour:
   sortingLayerName: Object
   sortingOrder: 10
   visualScale: 0.9
-  stackYOffset: 0.1
-  stackXOffset: 0.1
+  stackYOffset: 0.2
+  stackXOffset: 0.2
   stackRotationRange: 10

@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 7bd87ff16194b704880f2a38a14aa632, type: 3}
+  m_Sprite: {fileID: 21300000, guid: bff427ea03a922c41a16a19a047a8b10, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -158,4 +158,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::IngredientState
   ingredientName: 
   currentState: 0
-  cookedDarken: 0.6

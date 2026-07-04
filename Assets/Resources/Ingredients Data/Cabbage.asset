@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89010c02d9d6bb4d8395a0a52cd5435, type: 3}
   m_Name: Cabbage
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
-  ingredientIcon: {fileID: 21300000, guid: 27c7523f9560a1b4ab87a8199f10a44e, type: 3}
+  ingredientIcon: {fileID: 21300000, guid: 863e560a2000d3949a1eb9abca2423c4, type: 3}
   ingredientName: "\uC591\uBC30\uCD94"
   cookingMethodIcons:
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 21300000, guid: 27c7523f9560a1b4ab87a8199f10a44e, type: 3}
+  - {fileID: 21300000, guid: 74f0a9959f530b44892c1e8410f1015d, type: 3}
   - {fileID: 0}
   - {fileID: 0}
