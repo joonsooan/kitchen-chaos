@@ -4136,16 +4136,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9300000002}
   - component: {fileID: 9300000003}
-<<<<<<< HEAD
-<<<<<<< HEAD
   - component: {fileID: 9300000004}
   - component: {fileID: 9300000005}
-=======
->>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
-=======
-  - component: {fileID: 9300000004}
-  - component: {fileID: 9300000005}
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_Layer: 0
   m_Name: TestBridge
   m_TagString: Untagged
@@ -4182,10 +4174,6 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   gaugePrefab: {fileID: 1000000003, guid: ed378cae0ddb7534b909b515448e0abb, type: 3}
   scanInterval: 0.5
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
 --- !u!114 &9300000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4292,11 +4280,6 @@ MonoBehaviour:
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0
   m_ScrollDeltaPerTick: 6
-<<<<<<< HEAD
-=======
->>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -4312,11 +4295,4 @@ SceneRoots:
   - {fileID: 9100000002}
   - {fileID: 9200000002}
   - {fileID: 9300000002}
-<<<<<<< HEAD
-<<<<<<< HEAD
   - {fileID: 415926897}
-=======
->>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
-=======
-  - {fileID: 415926897}
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)

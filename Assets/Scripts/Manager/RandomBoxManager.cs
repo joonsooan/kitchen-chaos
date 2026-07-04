@@ -17,21 +17,9 @@ public class RandomBoxManager : KSingleton<RandomBoxManager>
         return true;
     }
 
-<<<<<<< HEAD
     // weight 가중치 롤 — 결과 버프 반환 (팝업이 호출)
     public BuffData Roll()
     {
-<<<<<<< HEAD
-=======
-        UIManager.Instance.ShowPopupUI<RandomBoxPopup>();
-    }
-
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
-    // weight 가중치 롤 — 결과 버프 반환 (팝업이 호출)
-    public BuffData Roll()
-    {
->>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
         var buffs = DataTable.Buffs;
         if (buffs == null || buffs.Length == 0) return null;
 
@@ -39,15 +27,7 @@ public class RandomBoxManager : KSingleton<RandomBoxManager>
         foreach (var b in buffs) total += b.weight;
         if (total <= 0) return null;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
         int roll = UnityEngine.Random.Range(0, total);
-=======
-        int roll = Random.Range(0, total);
->>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
-=======
-        int roll = UnityEngine.Random.Range(0, total);
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
         foreach (var b in buffs)
         {
             roll -= b.weight;

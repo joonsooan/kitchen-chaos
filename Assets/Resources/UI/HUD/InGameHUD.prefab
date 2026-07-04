@@ -1,14 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!1 &3398174277984682621
-=======
---- !u!1 &3567908732570004858
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!1 &3398174277984682621
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -16,10 +8,6 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   - component: {fileID: 8087139231004811015}
   - component: {fileID: 1406434935798691704}
   - component: {fileID: 8158727322397357186}
@@ -175,14 +163,6 @@ GameObject:
   - component: {fileID: 4632816046914782936}
   - component: {fileID: 7737909667914702795}
   - component: {fileID: 2072545123319422601}
-<<<<<<< HEAD
-=======
-  - component: {fileID: 6982556141015519570}
-  - component: {fileID: 490651673677871622}
-  - component: {fileID: 2743934153356137794}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Layer: 5
   m_Name: DisasterIcon
   m_TagString: Untagged
@@ -190,32 +170,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!224 &4632816046914782936
-=======
---- !u!224 &6982556141015519570
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!224 &4632816046914782936
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 6161917895000043838}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-=======
-  m_GameObject: {fileID: 3567908732570004858}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 6161917895000043838}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -224,57 +186,24 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_AnchoredPosition: {x: -100, y: -75}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7737909667914702795
-<<<<<<< HEAD
-=======
-  m_AnchoredPosition: {x: -248, y: -163}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &490651673677871622
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 6161917895000043838}
   m_CullTransparentMesh: 1
 --- !u!114 &2072545123319422601
-=======
-  m_GameObject: {fileID: 3567908732570004858}
-  m_CullTransparentMesh: 1
---- !u!114 &2743934153356137794
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 6161917895000043838}
-  m_CullTransparentMesh: 1
---- !u!114 &2072545123319422601
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 6161917895000043838}
-=======
-  m_GameObject: {fileID: 3567908732570004858}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 6161917895000043838}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -298,15 +227,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!1 &6945548773996845794
-=======
---- !u!1 &5639075053864070538
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!1 &6945548773996845794
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,21 +235,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-<<<<<<< HEAD
   - component: {fileID: 60674254924295016}
   - component: {fileID: 3388957810701458532}
   - component: {fileID: 6753489036377512907}
-=======
-  - component: {fileID: 5681666591818779765}
-  - component: {fileID: 5164343104422588979}
-  - component: {fileID: 696046027362442440}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  - component: {fileID: 60674254924295016}
-  - component: {fileID: 3388957810701458532}
-  - component: {fileID: 6753489036377512907}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Layer: 5
   m_Name: TimeText
   m_TagString: Untagged
@@ -336,36 +245,18 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!224 &60674254924295016
-=======
---- !u!224 &5681666591818779765
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!224 &60674254924295016
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 6945548773996845794}
-=======
-  m_GameObject: {fileID: 5639075053864070538}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 6945548773996845794}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_Father: {fileID: 2604020393894280395}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -374,57 +265,20 @@ RectTransform:
   m_SizeDelta: {x: 345.52, y: 93.5}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3388957810701458532
-=======
-  m_Father: {fileID: 832944873422667531}
-=======
-  m_Father: {fileID: 2604020393894280395}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.0009498596, y: 0}
-  m_SizeDelta: {x: 345.52, y: 93.5}
-  m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
---- !u!222 &5164343104422588979
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!222 &3388957810701458532
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 6945548773996845794}
   m_CullTransparentMesh: 1
 --- !u!114 &6753489036377512907
-=======
-  m_GameObject: {fileID: 5639075053864070538}
-  m_CullTransparentMesh: 1
---- !u!114 &696046027362442440
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 6945548773996845794}
-  m_CullTransparentMesh: 1
---- !u!114 &6753489036377512907
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 6945548773996845794}
-=======
-  m_GameObject: {fileID: 5639075053864070538}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 6945548773996845794}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
@@ -510,15 +364,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!1 &7511496291674970460
-=======
---- !u!1 &5940895058730949588
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!1 &7511496291674970460
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -526,137 +372,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-<<<<<<< HEAD
   - component: {fileID: 6416821536842772023}
   - component: {fileID: 4260905401901797730}
   - component: {fileID: 8490125665392149396}
-  m_Layer: 5
-  m_Name: RandomBoxIcon
-=======
-  - component: {fileID: 832944873422667531}
-  - component: {fileID: 4684242008631422982}
-  - component: {fileID: 1493711378428325998}
-  m_Layer: 5
-  m_Name: Time
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
-<<<<<<< HEAD
---- !u!224 &6416821536842772023
-=======
---- !u!224 &832944873422667531
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 7511496291674970460}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-=======
-  m_GameObject: {fileID: 5940895058730949588}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 5681666591818779765}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-  m_Father: {fileID: 3871734606755582531}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-<<<<<<< HEAD
-  m_AnchoredPosition: {x: -100, y: -220}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4260905401901797730
-=======
-  m_AnchoredPosition: {x: -400, y: -59}
-  m_SizeDelta: {x: 200, y: 55}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4684242008631422982
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 7511496291674970460}
-  m_CullTransparentMesh: 1
---- !u!114 &8490125665392149396
-=======
-  m_GameObject: {fileID: 5940895058730949588}
-  m_CullTransparentMesh: 1
---- !u!114 &1493711378428325998
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 7511496291674970460}
-=======
-  m_GameObject: {fileID: 5940895058730949588}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
-<<<<<<< HEAD
---- !u!1 &8029833539877259950
-=======
---- !u!1 &6107717768668625125
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 64756344788271438}
-  - component: {fileID: 7092029817917007570}
-=======
-  - component: {fileID: 7810607574178876127}
-  - component: {fileID: 1237985298626164033}
-  - component: {fileID: 2574765100906147629}
-=======
-  - component: {fileID: 6416821536842772023}
-  - component: {fileID: 4260905401901797730}
-  - component: {fileID: 8490125665392149396}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Layer: 5
   m_Name: RandomBoxIcon
   m_TagString: Untagged
@@ -729,89 +447,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 2026888507250542680}
-  - component: {fileID: 4280449490454170927}
-  - component: {fileID: 7393922025369012011}
-  m_Layer: 5
-  m_Name: CoinNum
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &2026888507250542680
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6653160806053644474}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 3871734606755582531}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -150, y: -59}
-  m_SizeDelta: {x: 200, y: 55}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &4280449490454170927
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6653160806053644474}
-  m_CullTransparentMesh: 1
---- !u!114 &7393922025369012011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6653160806053644474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!1 &6794054639174352778
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 7479499051705210470}
-  - component: {fileID: 1359714997101969333}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
   - component: {fileID: 64756344788271438}
   - component: {fileID: 7092029817917007570}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Layer: 5
   m_Name: OrderLayout
   m_TagString: Untagged
@@ -819,32 +456,14 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!224 &64756344788271438
-=======
---- !u!224 &7479499051705210470
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!224 &64756344788271438
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 8029833539877259950}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-=======
-  m_GameObject: {fileID: 6794054639174352778}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 8029833539877259950}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -856,29 +475,13 @@ RectTransform:
   m_AnchoredPosition: {x: 150, y: -150}
   m_SizeDelta: {x: 100, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
-<<<<<<< HEAD
 --- !u!114 &7092029817917007570
-=======
---- !u!114 &1359714997101969333
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
---- !u!114 &7092029817917007570
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-<<<<<<< HEAD
   m_GameObject: {fileID: 8029833539877259950}
-=======
-  m_GameObject: {fileID: 6794054639174352778}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-  m_GameObject: {fileID: 8029833539877259950}
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
@@ -898,13 +501,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
 --- !u!1 &8100000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1118,14 +714,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
 --- !u!1 &8200000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1292,32 +880,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   - {fileID: 2604020393894280395}
   - {fileID: 8087139231004811015}
   - {fileID: 8999424645603042660}
   - {fileID: 6416821536842772023}
   - {fileID: 4632816046914782936}
   - {fileID: 64756344788271438}
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  - {fileID: 832944873422667531}
-  - {fileID: 2026888507250542680}
-  - {fileID: 7810607574178876127}
-  - {fileID: 6982556141015519570}
-  - {fileID: 7479499051705210470}
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1337,13 +905,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1f50d8060ac59a42b60ea1d14cc951e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  _orders: []
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-=======
->>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)

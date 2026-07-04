@@ -17,55 +17,26 @@ public class InGameHUD : UIHUD
         RandomBoxIcon,
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private const string OrderPrefabPath = "UI/Slot/OrderSlot";
-=======
     private const string OrderPrefabPath     = "UI/Slot/OrderSlot";
     private const string CoinFloatPrefabPath = "UI/HUD/HudFloatText";
 
     private int lastMoney = -1;   // 코인 증가분 감지용 (-1 = 초기화 전)
->>>>>>> bdb596a (feat(ui): coin delta float, jump arc, event-driven box popup)
 
     private TextMeshProUGUI timeText;
     private TextMeshProUGUI coinText;
     private TextMeshProUGUI scoreText;
     private Transform orderLayout;
-    private float elapsed;
-=======
-    private const string OrderPrefabPath = "UI/Slot/Order";
     private bool initialized;
 
-    private TextMeshProUGUI TimeText;
-    private Transform _orderLayout;
-    private float _elapsed;
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-    private const string OrderPrefabPath = "UI/Slot/OrderSlot";
     // ShowHUDUI가 호출 — AddOrder 전에 바인딩 보장 (Start는 한 프레임 늦어 순서버그)
     public override void Init()
     {
         if (initialized) return;
         initialized = true;
 
-    private TextMeshProUGUI timeText;
-    private Transform orderLayout;
-    private float elapsed;
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        base.Init();
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-        timeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
         timeText    = Get<TextMeshProUGUI>((int)Texts.TimeText);
         coinText    = Get<TextMeshProUGUI>((int)Texts.CoinText);
         scoreText   = Get<TextMeshProUGUI>((int)Texts.ScoreText);
@@ -79,9 +50,6 @@ public class InGameHUD : UIHUD
         });
     }
 
-        AddOrder();
-        AddOrder();
-<<<<<<< HEAD
     // 씬에 직접 배치된 경우 대비
     void Start() => Init();
 
@@ -160,86 +128,13 @@ public class InGameHUD : UIHUD
     public UISlot AddOrder(Customer customer)
     {
         var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
-=======
-        TimeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
-        _orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
-=======
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
-    }
-
-    // 주문 1개 추가 — 게임 로직에서 호출
-    public UISlot AddOrder(CustomerData customer)
-    {
-<<<<<<< HEAD
-        var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), _orderLayout);
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-        var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
         var slot = go.GetComponent<UISlot>();
         if (slot == null)
         {
             slot = go.AddComponent<UISlot>();
         }
         slot.Init();
-<<<<<<< HEAD
-<<<<<<< HEAD
         slot.Setup(customer);
-=======
-        slot.Setup(recipe);
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-        slot.Setup(customer);
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
         return slot;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //시간따라 mm:ss
-<<<<<<< HEAD
-<<<<<<< HEAD
-        elapsed += Time.deltaTime;
-
-        int minutes = (int)(elapsed / 60f);
-        int seconds = (int)(elapsed % 60f);
-        timeText.text = $"{minutes:00}:{seconds:00}";
-    }
-
-    // 풀에서 랜덤 손님 1명으로 주문 추가 (test용도)
-    public void AddOrder()
-    {
-        var customers = DataTable.Customers;
-        if (customers == null || customers.Length == 0) return;
-
-        var customer = customers[Random.Range(0, customers.Length)];
-        AddOrder(customer);
-=======
-        _elapsed += Time.deltaTime;
-
-        int minutes = (int)(_elapsed / 60f);
-        int seconds = (int)(_elapsed % 60f);
-        TimeText.text = $"{minutes:00}:{seconds:00}";
-        
-        
->>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
-=======
-        elapsed += Time.deltaTime;
-
-        int minutes = (int)(elapsed / 60f);
-        int seconds = (int)(elapsed % 60f);
-        timeText.text = $"{minutes:00}:{seconds:00}";
-    }
-
-    // 풀에서 랜덤 손님 1명으로 주문 추가 (test용도)
-    public void AddOrder()
-    {
-        var customers = DataTable.Customers;
-        if (customers == null || customers.Length == 0) return;
-
-        var customer = customers[Random.Range(0, customers.Length)];
-        AddOrder(customer);
->>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
     }
 }
