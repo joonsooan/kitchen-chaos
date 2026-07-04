@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
   customerName: "토끼"
   requiredRecipe: {fileID: 11400000, guid: 6ed440dcc1f14259a462c38f17af0c00, type: 2}
-  toleranceSeconds: 40
+  toleranceSeconds: 80
