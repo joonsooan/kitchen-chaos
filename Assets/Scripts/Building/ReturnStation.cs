@@ -2,16 +2,33 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Cup/plate dispenser (CupReturn/PlateReturn). With empty hands, F spawns this
-/// station's container and hands it straight to the player; full hands or Busy
+/// Cup/plate dispenser (CupReturn/PlateReturn) with a finite stock: dispensing takes
+/// one out, a customer dropping off their finished dish (AcceptReturn) puts one back,
+/// so the total in circulation never exceeds initialStock. With empty hands, F spawns
+/// this station's container and hands it straight to the player; full hands or Busy
 /// dispense nothing.
 /// </summary>
 [DisallowMultipleComponent]
 public class ReturnStation : MonoBehaviour, IInteractable
 {
     [SerializeField] private GameObject containerPrefab;
+    [SerializeField] private int initialStock = 2;
 
     private bool pendingPickup;
+    private int currentStock;
+
+    public CarryingItemType ContainerType => containerPrefab.GetComponent<ContainerKitchenObject>().ContainerType;
+
+    private void Awake()
+    {
+        currentStock = initialStock;
+    }
+
+    // Restock: a customer finished eating and dropped their dish back off here.
+    public void AcceptReturn()
+    {
+        currentStock++;
+    }
 
     public void Interact(PlayerController player)
     {
@@ -29,6 +46,12 @@ public class ReturnStation : MonoBehaviour, IInteractable
             return;
         }
 
+        if (currentStock <= 0)
+        {
+            Debug.Log($"[ReturnStation] {name}: out of stock - wait for a customer to return one");
+            return;
+        }
+
         StartCoroutine(SpawnAndPickUp(player));
     }
 
@@ -38,6 +61,7 @@ public class ReturnStation : MonoBehaviour, IInteractable
     private IEnumerator SpawnAndPickUp(PlayerController player)
     {
         pendingPickup = true;
+        currentStock--;
         GameObject spawned = Instantiate(containerPrefab, transform.position, Quaternion.identity);
         yield return null;
         pendingPickup = false;
