@@ -7,6 +7,7 @@ public class RecipeSlotView : MonoBehaviour
 {
     [SerializeField] private Image icon;
     [SerializeField] private Image methodIcon;
+    [SerializeField] private TMPro.TextMeshProUGUI countLabel;   // 필요 개수 (x2)
     [SerializeField] private Sprite[] methodIcons;   // None, Fry, Chop, Mix, Boil
 
     public void Setup(IngredientEntry entry)
@@ -17,6 +18,13 @@ public class RecipeSlotView : MonoBehaviour
         {
             var combined = entry.ingredientType.GetCookingMethodIcon(entry.requiredCookingMethod);
             icon.sprite = combined != null ? combined : entry.ingredientType.ingredientIcon;
+        }
+
+        // 2개 이상 필요할 때만 개수 표시
+        if (countLabel != null)
+        {
+            countLabel.text = $"x{entry.amount}";
+            countLabel.gameObject.SetActive(entry.amount > 1);
         }
 
         if (methodIcon == null) return;
