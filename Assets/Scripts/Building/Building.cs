@@ -3,12 +3,19 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
+    // buildingData 미지정 시 기본 1칸 점유 (구 GridOccupant 동작 흡수).
+    // 명시적으로 빈 footprint 배열을 가진 데이터는 "점유 없음"(장식물)으로 해석한다.
+    private static readonly Vector2Int[] DefaultFootprint = { Vector2Int.zero };
+
     [SerializeField] private BuildingData buildingData;
 
     private GridSystem grid;
     private readonly List<Vector2Int> occupiedCells = new();
 
     public BuildingData BuildingData => buildingData;
+
+    public Vector2Int[] FootprintCells =>
+        buildingData != null ? buildingData.footprintCells : DefaultFootprint;
 
     private void Start()
     {
@@ -23,12 +30,12 @@ public class Building : MonoBehaviour
     private void RegisterOccupancy()
     {
         grid = GridSystem.Instance;
-        if (grid == null || buildingData == null) return;
+        if (grid == null) return;
 
         Vector2Int anchorCell = grid.WorldToCell(transform.position);
         occupiedCells.Clear();
 
-        foreach (Vector2Int offset in buildingData.footprintCells)
+        foreach (Vector2Int offset in FootprintCells)
         {
             Vector2Int cell = anchorCell + offset;
             if (grid.SetOccupant(cell, gameObject))
@@ -51,14 +58,12 @@ public class Building : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        if (buildingData == null) return;
-
         GridSystem gridSystem = GridSystem.Instance;
         float cellSize = gridSystem != null ? gridSystem.CellSize : 1f;
         Vector2Int anchorCell = gridSystem != null ? gridSystem.WorldToCell(transform.position) : Vector2Int.zero;
 
         Gizmos.color = new Color(0.2f, 0.6f, 1f, 0.4f);
-        foreach (Vector2Int offset in buildingData.footprintCells)
+        foreach (Vector2Int offset in FootprintCells)
         {
             Vector3 center = gridSystem != null
                 ? gridSystem.CellToWorld(anchorCell + offset)

@@ -2,6 +2,7 @@ using UnityEngine;
 
 [ExecuteAlways]
 [DisallowMultipleComponent]
+[SelectionBase] // clicking a child sprite (e.g. "Visual") in the Scene view selects THIS root, so dragging moves the snapped pivot
 public class GridSnap : MonoBehaviour
 {
     private void Start()
