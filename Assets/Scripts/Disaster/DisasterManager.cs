@@ -11,11 +11,12 @@ public class DisasterManager : KSingleton<DisasterManager>
         public DisasterEvent disasterEvent;
     }
 
-    [SerializeField] private float timeTriggerSeconds = 60f;
+    [SerializeField] private float firstTriggerSeconds = 60f;
+    [SerializeField] private float triggerIntervalSeconds = 60f;
     [SerializeField] private DisasterEvent[] timeTriggerPool;
     [SerializeField] private BuildingTrigger[] buildingTriggers;
 
-    private bool timeTriggerFired;
+    private float nextTimeTrigger;
     private readonly List<(IngredientSource source, Action<IngredientSource, PlayerController> handler)> buildingSubscriptions = new();
 
     private void OnEnable()
@@ -32,10 +33,10 @@ public class DisasterManager : KSingleton<DisasterManager>
 
     private void HandleTimeTick(float elapsedTime)
     {
-        if (timeTriggerFired) return;
-        if (elapsedTime < timeTriggerSeconds) return;
+        if (nextTimeTrigger <= 0f) nextTimeTrigger = firstTriggerSeconds;
+        if (elapsedTime < nextTimeTrigger) return;
 
-        timeTriggerFired = true;
+        nextTimeTrigger += triggerIntervalSeconds;
         TriggerRandomEvent(timeTriggerPool);
     }
 
