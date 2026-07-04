@@ -17,6 +17,7 @@ public class InGameHUD : UIHUD
         OrderLayout,
         RandomBoxIcon,
         BuffIcon,
+        SettingIcon,
     }
 
     private const string OrderPrefabPath     = "UI/Slot/OrderSlot";
@@ -55,6 +56,12 @@ public class InGameHUD : UIHUD
         {
             if (RandomBoxManager.Instance != null)
                 RandomBoxManager.Instance.TryOpen();
+        });
+
+        // 설정 버튼 — 설정 팝업 (BGM/SFX)
+        BindEvent(Get<GameObject>((int)GameObjects.SettingIcon), evt =>
+        {
+            UIManager.Instance.ShowPopupUI<OptionPopup>();
         });
     }
 
