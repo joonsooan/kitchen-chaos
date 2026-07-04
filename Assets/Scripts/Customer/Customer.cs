@@ -102,6 +102,7 @@ public class Customer : MonoBehaviour
         }
         else
         {
+            GameManager.Instance?.ApplyOrderFailurePenalty();
             SoundManager.Instance?.PlaySFX(SFXType.OrderFailed);
             OnOrderFailed?.Invoke(this, customerData.requiredRecipe);
         }

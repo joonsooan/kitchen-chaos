@@ -86,7 +86,11 @@ public class CookingStation : MonoBehaviour, IInteractable
     {
         isCooking = true;
         cookStartTime = Time.time;
-        if (requiresPresence) player.ChangeState(PlayerState.Busy);
+        if (requiresPresence)
+        {
+            player.ChangeState(PlayerState.Busy);
+            player.SetColliderEnabled(false);
+        }
         OnCookingStarted?.Invoke(this);
 
         // 조리 시작 효과음 — 스테이션별(도마/후라이펜/믹서기)
@@ -102,7 +106,11 @@ public class CookingStation : MonoBehaviour, IInteractable
         loadedItem.Instance.ApplyCookingMethod(Method);
         OnCookingFinished?.Invoke(this, loadedItem.Instance);
         isCooking = false;
-        if (requiresPresence) player.ChangeState(PlayerState.Idle);
+        if (requiresPresence)
+        {
+            player.SetColliderEnabled(true);
+            player.ChangeState(PlayerState.Idle);
+        }
         Debug.Log($"[CookingStation] {name}: done - {loadedItem.Instance.Data.ingredientName} is now {Method}");
     }
 
