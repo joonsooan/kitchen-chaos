@@ -19,6 +19,7 @@ public class NameInputPopup : UIPopup
 
     public override void Init()
     {
+        CloseOnEsc = false;   // 필수 팝업 — ESC로 못 닫음
         Bind<GameObject>(typeof(GameObjects));
 
         var input = Get<GameObject>((int)GameObjects.NameInput);

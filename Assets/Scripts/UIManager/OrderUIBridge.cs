@@ -13,6 +13,7 @@ public class OrderUIBridge : MonoBehaviour
         if (UIManager.Instance != null)
         {
             hud = UIManager.Instance.ShowHUDUI<InGameHUD>();
+            UIManager.Instance.HideHUDUI<InGameHUD>();   // 게임 시작 전엔 HUD 숨김
 
             // 튜토리얼~이름 입력 동안 게임 전체 정지 (스포너·이동 포함)
             Time.timeScale = 0f;
@@ -43,6 +44,9 @@ public class OrderUIBridge : MonoBehaviour
     // 이름 확정 → 게임 재개 + 시간/보상 흐름 시작
     private void HandleNameConfirmed()
     {
+        UIManager.Instance.ShowHUDUI<InGameHUD>();   // HUD 등장 (스태거 인트로 재생)
+        if (hud != null) hud.PlayIntroFx();
+
         Time.timeScale = 1f;
         if (GameManager.Instance != null)
             GameManager.Instance.StartGame();

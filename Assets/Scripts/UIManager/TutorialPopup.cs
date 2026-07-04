@@ -46,6 +46,7 @@ public class TutorialPopup : UIPopup
 
     public override void Init()
     {
+        CloseOnEsc = false;   // 필수 팝업 — ESC로 못 닫음
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<Image>(typeof(Images));
         Bind<GameObject>(typeof(GameObjects));

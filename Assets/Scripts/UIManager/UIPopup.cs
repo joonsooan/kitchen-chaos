@@ -5,6 +5,9 @@ public class UIPopup : UIBase
 {
     [SerializeField] private float showDuration = 0.3f;
 
+    // ESC로 닫기 허용 — 필수 팝업(튜토리얼·이름입력)은 Init에서 false로
+    public bool CloseOnEsc { get; protected set; } = true;
+
     public override void Init()
     {
     }

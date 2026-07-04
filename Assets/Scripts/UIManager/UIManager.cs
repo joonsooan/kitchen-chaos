@@ -23,6 +23,18 @@ public class UIManager : KSingleton<UIManager>
         DontDestroyOnLoad(this.gameObject);
     }
 
+    // ESC → 최상단 팝업 닫기 (CloseOnEsc=false 팝업은 무시)
+    private void Update()
+    {
+        var kb = UnityEngine.InputSystem.Keyboard.current;
+        if (kb == null || !kb.escapeKey.wasPressedThisFrame) return;
+        if (_popupStack.Count == 0) return;
+
+        var top = _popupStack.Peek();
+        if (top != null && top.CloseOnEsc)
+            ClosePopupUI();
+    }
+
     GameObject GetOrCreateRoot(string name, UIType type)
     {
         // Unity fake-null 대응: ?? 대신 명시적 null 체크
