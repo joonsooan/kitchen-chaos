@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41383859ae1d2ef4194812a1a41152f5, type: 3}
   m_Name: GreenJuice
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
-  recipeIcon: {fileID: 21300000, guid: 164d8bbdaf27c53419e96305b06b6d5c, type: 3}
-  recipeName: "녹즙"
+  recipeIcon: {fileID: 21300000, guid: 8c5975088e8e6b046a5fbdb61ab4b47f, type: 3}
+  recipeName: "\uB179\uC999"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 72c256c749fe8324380ba72041b889a1, type: 2}
     requiredCookingMethod: 3

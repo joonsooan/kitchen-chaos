@@ -27,12 +27,21 @@ public class UIManager : KSingleton<UIManager>
         DontDestroyOnLoad(this.gameObject);
     }
 
-    // ESC → 최상단 팝업 닫기 (CloseOnEsc=false 팝업은 무시)
+    // ESC/F — 팝업 닫기 (CloseOnEsc=false 팝업은 무시). 팝업 없을 땐 ESC만 설정 열기 (F는 상호작용 키)
     private void Update()
     {
         var kb = UnityEngine.InputSystem.Keyboard.current;
-        if (kb == null || !kb.escapeKey.wasPressedThisFrame) return;
-        if (_popupStack.Count == 0) return;
+        if (kb == null) return;
+
+        bool esc = kb.escapeKey.wasPressedThisFrame;
+        bool f   = kb.fKey.wasPressedThisFrame;
+        if (!esc && !f) return;
+
+        if (_popupStack.Count == 0)
+        {
+            if (esc) ShowPopupUI<OptionPopup>();
+            return;
+        }
 
         var top = _popupStack.Peek();
         if (top != null && top.CloseOnEsc)

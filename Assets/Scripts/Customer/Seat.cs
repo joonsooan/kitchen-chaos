@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class Seat : MonoBehaviour
 {
+    // 좌석이 빌 때마다 알림 — CustomerSpawner가 대기 중인 손님을 바로 입장시키는 데 사용.
+    public static event System.Action OnSeatReleased;
+
     private Vector2Int cell;
     private Vector3 sitWorldPosition;
 
@@ -37,5 +40,6 @@ public class Seat : MonoBehaviour
     public void Release()
     {
         IsOccupied = false;
+        OnSeatReleased?.Invoke();
     }
 }

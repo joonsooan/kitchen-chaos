@@ -14,10 +14,14 @@ public class ReturnStation : MonoBehaviour, IInteractable
     [SerializeField] private GameObject containerPrefab;
     [SerializeField] private int initialStock = 2;
 
+    // 재고 소진 상태에서 꺼내기 시도 — UI가 구독해 경고 표시
+    public static event System.Action<ReturnStation> OnDispenseFailedEmpty;
+
     private bool pendingPickup;
     private int currentStock;
 
     public CarryingItemType ContainerType => containerPrefab.GetComponent<ContainerKitchenObject>().ContainerType;
+    public int CurrentStock => currentStock;   // UI 표시용 (읽기 전용)
 
     private void Awake()
     {
@@ -50,6 +54,7 @@ public class ReturnStation : MonoBehaviour, IInteractable
         if (currentStock <= 0)
         {
             Debug.Log($"[ReturnStation] {name}: out of stock - wait for a customer to return one");
+            OnDispenseFailedEmpty?.Invoke(this);
             return;
         }
 

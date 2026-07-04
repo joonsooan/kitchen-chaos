@@ -136,6 +136,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CookingStation
   cookDuration: 5
   requiresPresence: 0
+  visualSpriteRenderer: {fileID: 9111111111111111103}
+  mixingSprite: {fileID: 0}
+  shakeStrength: 0.12
+  shakeSpeed: 0.08
 --- !u!50 &7401508420060200489
 Rigidbody2D:
   serializedVersion: 5

@@ -1,23 +1,28 @@
 using System;
 using UnityEngine;
 
-// 임시 페이즈 시스템 — 3분 경과마다 현재 점수 >= 목표 점수 확인.
-//   미달: 즉시 게임오버(실패, 결과창). 충족: 다음 페이즈로 조용히 진행.
-//   4페이즈 종료 시점엔 성공/실패 판정으로 결과창.
+// 임시 페이즈 시스템 — 3분 페이즈 → 2분 쉬는 시간 반복, 4페이즈까지.
+// 각 페이즈 종료 시 점수 >= 목표 확인: 미달이면 게임오버(실패), 4페이즈까지 충족하면 성공.
+// HUD가 CurrentPhase/IsResting/SegmentRemaining을 폴링해 남은 시간 표시.
 // 팀에서 정식 페이즈 이벤트 만들면 이 파일 삭제하고 그쪽 구독으로 교체.
 [RequireComponent(typeof(GameOverTester))]
 public class PhaseManager : MonoBehaviour
 {
-    // (페이즈 번호 1~4, 목표 점수) — 전환 시 발행 (UI 표시는 현재 안 씀)
+    // (페이즈 번호 1~4, 목표 점수) — 페이즈 시작 시 발행
     public static event Action<int, int> OnPhaseChanged;
 
-    public static int CurrentPhase  { get; private set; }
-    public static int CurrentTarget { get; private set; }
+    public static int   CurrentPhase     { get; private set; }
+    public static int   CurrentTarget    { get; private set; }
+    public static bool  IsResting        { get; private set; }
+    public static float SegmentRemaining { get; private set; }   // 현재 구간(페이즈/휴식) 남은 초
 
     private static readonly int[] Targets = { 50, 100, 150, 200 };
+
     [SerializeField] private float phaseSeconds = 180f;   // 페이즈 길이 (테스트 시 인스펙터에서 줄이기)
+    [SerializeField] private float restSeconds  = 120f;   // 쉬는 시간 길이
 
     private GameOverTester gameOver;
+    private int  lastSegment = -1;   // 0=1페이즈, 1=휴식, 2=2페이즈, 3=휴식 ... 6=4페이즈
     private bool ended;
 
     private void Awake()
@@ -27,8 +32,11 @@ public class PhaseManager : MonoBehaviour
 
     private void OnEnable()
     {
-        CurrentPhase  = 0;   // 씬 리로드 시 리셋
+        CurrentPhase = 0;   // 씬 리로드 시 리셋
         CurrentTarget = 0;
+        IsResting = false;
+        SegmentRemaining = 0f;
+        lastSegment = -1;
         ended = false;
         GameManager.OnTimeTick += HandleTimeTick;
     }
@@ -42,28 +50,47 @@ public class PhaseManager : MonoBehaviour
     {
         if (ended) return;
 
-        int phase = Mathf.Min((int)(elapsedTime / phaseSeconds) + 1, Targets.Length + 1);
-        if (phase == CurrentPhase) return;
+        float cycle   = phaseSeconds + restSeconds;
+        int   k       = (int)(elapsedTime / cycle);          // 몇 번째 사이클
+        float inCycle = elapsedTime - k * cycle;
+        bool  inPhase = inCycle < phaseSeconds;
+        int   segment = k * 2 + (inPhase ? 0 : 1);
+
+        SegmentRemaining = inPhase ? phaseSeconds - inCycle : cycle - inCycle;
+
+        if (segment == lastSegment) return;
+        lastSegment = segment;
 
         int score = GameManager.Instance != null ? GameManager.Instance.Score : 0;
 
-        // 방금 끝난 페이즈의 목표 미달 → 실패 결과창
-        if (CurrentPhase >= 1 && score < Targets[CurrentPhase - 1])
+        // 4페이즈(segment 6) 종료 → 최종 판정
+        if (segment >= 7)
         {
-            EndGame(false);
+            EndGame(score >= Targets[Targets.Length - 1]);
             return;
         }
 
-        // 4페이즈까지 마쳤으면 최종 판정 (여기 왔으면 목표 충족 = 성공)
-        if (phase > Targets.Length)
+        if (segment % 2 == 0)
         {
-            EndGame(true);
-            return;
+            // 페이즈 시작
+            IsResting     = false;
+            CurrentPhase  = segment / 2 + 1;
+            CurrentTarget = Targets[CurrentPhase - 1];
+            OnPhaseChanged?.Invoke(CurrentPhase, CurrentTarget);
         }
-
-        CurrentPhase  = phase;
-        CurrentTarget = Targets[phase - 1];
-        OnPhaseChanged?.Invoke(phase, CurrentTarget);
+        else
+        {
+            // 페이즈 종료 → 목표 판정 후 휴식 진입
+            int endedPhase = (segment + 1) / 2;
+            if (score < Targets[endedPhase - 1])
+            {
+                EndGame(false);
+                return;
+            }
+            IsResting = true;
+            // 휴식 동안엔 다음 페이즈 목표를 미리 표시 (표시 전용 — 판정은 Targets 직접 참조)
+            if (endedPhase < Targets.Length) CurrentTarget = Targets[endedPhase];
+        }
     }
 
     private void EndGame(bool success)
