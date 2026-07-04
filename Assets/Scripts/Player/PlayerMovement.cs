@@ -22,6 +22,9 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
     public event Action InteractPressed;
 
+    // 재난 이벤트(키보드 반전)가 켜고 끄는 플래그. 상하좌우 입력을 벡터 negate로 동시 반전.
+    public bool InputInverted { get; set; }
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -55,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
+        if (InputInverted) moveInput = -moveInput;
         if (moveInput.sqrMagnitude > 0f) FacingDirection = moveInput.normalized;
 
         if (playerController.CurrentState == PlayerState.Busy) return;
