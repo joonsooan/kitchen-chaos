@@ -26,7 +26,10 @@ public class UIEventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler,
     public void OnPointerClick(PointerEventData eventData)
     {
         if (OnClickHandler != null)
+        {
+            SoundManager.Instance?.PlaySFX(SFXType.UIClick);
             OnClickHandler.Invoke(eventData);
+        }
     }
 
     public void OnDrag(PointerEventData eventData)

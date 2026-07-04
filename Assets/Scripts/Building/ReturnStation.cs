@@ -28,6 +28,7 @@ public class ReturnStation : MonoBehaviour, IInteractable
     public void AcceptReturn()
     {
         currentStock++;
+        SoundManager.Instance?.PlaySFX(SFXType.Serve);   // 손님이 다 먹고 접시 반납(퇴식구 제출)
     }
 
     public void Interact(PlayerController player)

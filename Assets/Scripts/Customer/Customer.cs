@@ -69,6 +69,7 @@ public class Customer : MonoBehaviour
     {
         CurrentState = CustomerState.Waiting;
         waitTimer = customerData.toleranceSeconds;
+        SoundManager.Instance?.PlaySFX(SFXType.OrderCreated);
         OnAnyCustomerSeated?.Invoke(this);
     }
 
@@ -101,6 +102,7 @@ public class Customer : MonoBehaviour
         }
         else
         {
+            SoundManager.Instance?.PlaySFX(SFXType.OrderFailed);
             OnOrderFailed?.Invoke(this, customerData.requiredRecipe);
         }
 

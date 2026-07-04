@@ -28,6 +28,9 @@ public class DisasterPopup : UIPopup
         descText  = Get<TextMeshProUGUI>((int)Texts.DescText);
 
         BindEvent(Get<GameObject>((int)GameObjects.CloseButton), OnCloseClicked);
+
+        // 재앙 팝업이 실제로 표시(ShowPopupUI<DisasterPopup>)되면 자동 발화. 표시 트리거 미구현이라 지금은 휴면.
+        SoundManager.Instance?.PlaySFX(SFXType.DisasterOpen);
     }
 
     // 재앙 정보 주입 — 예: Setup("어패류 재앙 발생", "1분간 재료 조달이 막힙니다.")

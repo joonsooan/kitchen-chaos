@@ -16,6 +16,7 @@ public class TrashCan : MonoBehaviour, IInteractable
             case CarryingItemType.Ingredient:
                 if (held.WorldObject != null) Destroy(held.WorldObject);
                 player.ClearHeldItem();
+                SoundManager.Instance?.PlaySFX(SFXType.Trash);
                 Debug.Log("[TrashCan] Discarded ingredient");
                 break;
 
@@ -26,6 +27,7 @@ public class TrashCan : MonoBehaviour, IInteractable
                     : null;
                 if (container == null) return;
                 container.Empty();
+                SoundManager.Instance?.PlaySFX(SFXType.Trash);
                 Debug.Log($"[TrashCan] Emptied {held.Type}");
                 break;
 

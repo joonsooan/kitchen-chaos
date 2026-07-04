@@ -33,6 +33,7 @@ public class IngredientSource : MonoBehaviour, IInteractable
             return;
         }
 
+        SoundManager.Instance?.PlaySFX(SFXType.IngredientPick);
         StartCoroutine(SpawnAndPickUp(player));
     }
 

@@ -139,6 +139,7 @@ public class InGameHUD : UIHUD
     // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
     private void HandleBoxOpened()
     {
+        SoundManager.Instance?.PlaySFX(SFXType.RandomBoxOpen);
         UIManager.Instance.ShowPopupUI<RandomBoxPopup>();
     }
 

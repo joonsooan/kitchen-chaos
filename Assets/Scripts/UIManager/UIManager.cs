@@ -88,6 +88,7 @@ public class UIManager : KSingleton<UIManager>
         go.transform.SetParent(PopupRoot.transform, false);
         go.transform.SetAsLastSibling();
         popup.Init();
+        SoundManager.Instance?.PlaySFX(SFXType.PopupOpen);
         return popup;
     }
 
