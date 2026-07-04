@@ -5,7 +5,7 @@ public class CabbageMonsterSpawnEvent : DisasterEvent
     [SerializeField] private GameObject monsterPrefab;
     [SerializeField] private Vector2Int[] spawnCells;
 
-    protected override void Execute()
+    public override void Trigger()
     {
         if (monsterPrefab == null || spawnCells == null || spawnCells.Length == 0) return;
 
