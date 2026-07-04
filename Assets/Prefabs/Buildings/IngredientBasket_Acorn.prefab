@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5829732305149307318}
   - component: {fileID: 8737697805563222443}
   - component: {fileID: 1783358577078770503}
+  - component: {fileID: 8300000000000000006}
   m_Layer: 0
   m_Name: IngredientBasket_Acorn
   m_TagString: Untagged
@@ -178,3 +179,16 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &8300000000000000006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9155161405286345372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce12ac7216cc03549b431491f28d3371, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::IngredientSource
+  ingredient: {fileID: 0}
