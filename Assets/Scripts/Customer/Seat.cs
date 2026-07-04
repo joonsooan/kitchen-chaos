@@ -18,12 +18,13 @@ public class Seat : MonoBehaviour
 
     private void OnEnable()
     {
-        SeatManager.Instance.Register(this);
+        if (SeatManager.Instance != null) SeatManager.Instance.Register(this);
     }
 
     private void OnDisable()
     {
-        SeatManager.Instance.Unregister(this);
+        // 씬 언로드 시 SeatManager가 먼저 파괴되면 Instance가 null일 수 있다
+        if (SeatManager.Instance != null) SeatManager.Instance.Unregister(this);
     }
 
     public bool TryReserve()

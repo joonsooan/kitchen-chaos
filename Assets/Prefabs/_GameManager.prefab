@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5383739955041838011}
   - component: {fileID: 2094780124921482671}
   - component: {fileID: 307550733878735973}
+  - component: {fileID: 6175439556594185598}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -132,3 +133,15 @@ MonoBehaviour:
   plateSpawnCells:
   - {x: 2, y: 6}
   - {x: 3, y: 6}
+--- !u!114 &6175439556594185598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9037563834889129279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adbd8bd27184bfe40b93eb197e07f818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DebugKeyBindings
