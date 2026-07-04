@@ -16,5 +16,5 @@ MonoBehaviour:
   description: 산들바람의 축복을 받아 발걸음이 가벼워진다.
   icon: {fileID: 0}
   duration: 30
-  weight: 25
+  weight: 20
   multiplier: 1.5

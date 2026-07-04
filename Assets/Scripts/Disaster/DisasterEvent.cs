@@ -11,6 +11,7 @@ public abstract class DisasterEvent : MonoBehaviour
     public string DisasterName => disasterName;
     public string DisasterDescription => disasterDescription;
     public virtual float Duration => 0f;
+    public virtual bool ShowsPopup => true;
 
     public bool Trigger()
     {

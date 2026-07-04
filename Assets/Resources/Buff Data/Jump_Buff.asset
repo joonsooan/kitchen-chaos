@@ -16,4 +16,4 @@ MonoBehaviour:
   description: 통통 튀는 장화로 장애물을 뛰어넘을 수 있다.
   icon: {fileID: 0}
   duration: 30
-  weight: 25
+  weight: 20

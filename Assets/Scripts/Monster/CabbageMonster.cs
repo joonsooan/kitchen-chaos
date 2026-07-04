@@ -21,7 +21,7 @@ public class CabbageMonster : MonoBehaviour, IAttackable
 
     public void Hit(PlayerController player)
     {
-        TakeDamage(1);
+        TakeDamage(PowerBuff.OneShotActive ? currentHealth : 1);   // 파워 업 버프: 한 방
     }
 
     private void TakeDamage(int amount)
