@@ -4561,6 +4561,7 @@ GameObject:
   - component: {fileID: 9300000003}
   - component: {fileID: 9300000004}
   - component: {fileID: 9300000005}
+  - component: {fileID: 9300000006}
   m_Layer: 0
   m_Name: TestBridge
   m_TagString: Untagged
@@ -4621,6 +4622,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2b3c4d5e6f708192a3b4c5d6e7f8091a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+--- !u!114 &9300000006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9300000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f708192a3b4c5d6e7f8091a2b3c4d5e6, type: 3}
   m_Name:
   m_EditorClassIdentifier:
 --- !u!1660057539 &9223372036854775807

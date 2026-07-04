@@ -57,8 +57,19 @@ public class ServeResultView : MonoBehaviour
             var coin = Instantiate(coinPrefab, hud.CoinAnchor.root);
             coin.transform.position = start + (Vector3)(Random.insideUnitCircle * 40f);
 
+            // 핑글핑글 — X스케일 플립(동전 뒤집힘) + 시계방향 회전, 나는 내내 지속
+            coin.transform.DOScaleX(-1f, 0.16f)
+                .SetLoops(-1, DG.Tweening.LoopType.Yoyo)
+                .SetEase(DG.Tweening.Ease.InOutSine)
+                .SetLink(coin);
+            coin.transform.DORotate(new Vector3(0f, 0f, -360f), 0.5f, DG.Tweening.RotateMode.FastBeyond360)
+                .SetLoops(-1, DG.Tweening.LoopType.Incremental)
+                .SetEase(DG.Tweening.Ease.Linear)
+                .SetLink(coin);
+
+            // 잠깐 제자리에서 돌다가(0.25초) 카운터로 날아감
             coin.transform.DOMove(target, 0.55f)
-                .SetDelay(i * 0.07f)
+                .SetDelay(0.25f + i * 0.07f)
                 .SetEase(DG.Tweening.Ease.InCubic)
                 .SetLink(coin)
                 .OnComplete(() =>
