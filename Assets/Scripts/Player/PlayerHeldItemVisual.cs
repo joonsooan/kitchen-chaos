@@ -13,8 +13,6 @@ public class PlayerHeldItemVisual : MonoBehaviour
     private PlayerMovement movement;
     private SpriteRenderer playerSpriteRenderer;
     private SortingGroup heldItemSortingGroup;
-    private ContainerKitchenObject heldContainer;
-    private SpriteRenderer heldContainerSpriteRenderer;
 
     private void Awake()
     {
@@ -40,12 +38,6 @@ public class PlayerHeldItemVisual : MonoBehaviour
         if (heldItemAnchor == null) return;
         heldItemAnchor.localPosition = movement.FacingDirection.normalized * anchorDistance;
 
-        // 들고 있는 동안 조리대에서 완성될 수도 있으므로 매 프레임 상태를 동기화한다.
-        if (heldContainerSpriteRenderer != null)
-        {
-            heldContainerSpriteRenderer.enabled = !heldContainer.HasCompletedDish;
-        }
-
         if (heldItemSortingGroup == null) return;
 
         // 위쪽/좌우 스프라이트일 때는 뒤쪽(플레이어보다 낮은 order), 아래쪽일 때만 앞쪽으로 렌더링
@@ -70,26 +62,10 @@ public class PlayerHeldItemVisual : MonoBehaviour
 
         heldItemSortingGroup = worldObject.GetComponent<SortingGroup>();
         if (heldItemSortingGroup == null) heldItemSortingGroup = worldObject.AddComponent<SortingGroup>();
-
-        // 완성된 요리는 레시피 아이콘이 그릇 스프라이트를 대체하므로 원래 그릇 스프라이트는 숨긴다.
-        // 픽업 후 조리대에서 완성될 수도 있어 LateUpdate에서 매 프레임 재확인한다.
-        heldContainer = worldObject.GetComponent<ContainerKitchenObject>();
-        heldContainerSpriteRenderer = heldContainer != null ? worldObject.GetComponent<SpriteRenderer>() : null;
-        if (heldContainerSpriteRenderer != null)
-        {
-            heldContainerSpriteRenderer.enabled = !heldContainer.HasCompletedDish;
-        }
     }
 
     private void HandleItemDropped(CarryingItemType type)
     {
         heldItemSortingGroup = null;
-
-        if (heldContainerSpriteRenderer != null)
-        {
-            heldContainerSpriteRenderer.enabled = true;
-        }
-        heldContainer = null;
-        heldContainerSpriteRenderer = null;
     }
 }
