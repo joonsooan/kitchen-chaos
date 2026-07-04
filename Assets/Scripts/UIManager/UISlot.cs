@@ -61,18 +61,13 @@ public class UISlot : UIBase
         PlayEnterFx();
     }
 
-    // 등장 연출 — 레이아웃 확정 후 위에서 슥 내려옴
+    // 등장 연출 — 스케일 팝 (위치는 절대 안 건드림: HLG 재배치와 충돌 방지)
     private void PlayEnterFx()
     {
-        Canvas.ForceUpdateCanvases();   // HLG 배치 확정 (이후 트윈이 안 덮임)
-
-        var rt = (RectTransform)transform;
-        Vector2 target = rt.anchoredPosition;
-        rt.anchoredPosition = target + new Vector2(0f, 140f);
-
-        rt.DOAnchorPos(target, 0.22f)
-          .SetEase(Ease.OutCubic)
-          .SetLink(gameObject);
+        transform.localScale = Vector3.zero;
+        transform.DOScale(1f, 0.22f)
+                 .SetEase(Ease.OutBack)
+                 .SetLink(gameObject);
     }
 
     // ── 이벤트 구독 (인스턴스 이벤트 — OnEnable/OnDisable 짝 규칙) ────
@@ -122,10 +117,10 @@ public class UISlot : UIBase
         if (_closing) return;
         _closing = true;
 
-        var rt  = (RectTransform)transform;
+        transform.DOKill();
         var seq = DOTween.Sequence().SetLink(gameObject);
-        seq.Append(rt.DOAnchorPosY(rt.anchoredPosition.y + 160f, 0.3f).SetEase(Ease.InCubic));
-        seq.Join(rt.DOScale(0.6f, 0.3f));
+        seq.Append(transform.DOScale(1.15f, 0.1f).SetEase(Ease.OutQuad));
+        seq.Append(transform.DOScale(0f, 0.22f).SetEase(Ease.InBack));
         seq.OnComplete(() => Destroy(gameObject));
     }
 
@@ -135,10 +130,10 @@ public class UISlot : UIBase
         if (_closing) return;
         _closing = true;
 
-        var rt  = (RectTransform)transform;
+        transform.DOKill();
         var seq = DOTween.Sequence().SetLink(gameObject);
-        seq.Append(rt.DOShakeRotation(0.2f, new Vector3(0f, 0f, 8f)));
-        seq.Append(rt.DOAnchorPosY(rt.anchoredPosition.y - 200f, 0.35f).SetEase(Ease.InBack));
+        seq.Append(transform.DOShakeRotation(0.2f, new Vector3(0f, 0f, 8f)));
+        seq.Append(transform.DOScale(0f, 0.25f).SetEase(Ease.InBack));
         seq.OnComplete(() => Destroy(gameObject));
 
         // 회색 틴트

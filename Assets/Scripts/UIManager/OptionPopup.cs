@@ -22,6 +22,9 @@ public class OptionPopup : UIPopup
     private Slider bgmSlider;
     private Slider sfxSlider;
 
+    // 설정 열려 있는 동안 게임 정지 (UIManager가 open/close 시 timeScale 관리)
+    public override bool PauseGameWhileOpen => true;
+
     public override void Init()
     {
         Bind<Slider>(typeof(Sliders));

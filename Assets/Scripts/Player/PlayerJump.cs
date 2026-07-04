@@ -11,11 +11,12 @@ public class PlayerJump : MonoBehaviour
 {
     [SerializeField] private float jumpDistance = 2f;      // 최소 점프 거리
     [SerializeField] private float maxJumpDistance = 4f;   // 이 너머까지 막혀있으면 점프 취소
-    [SerializeField] private float landingRadius = 0.3f;   // 착지 지점 여유 반경
+    [SerializeField] private float landingPadding = 0.05f; // 착지 판정 여유 (콜라이더 크기에 더함)
     [SerializeField] private float jumpDuration = 0.35f;
     [SerializeField] private float jumpHeight = 0.8f;      // 스프라이트 아크 높이
 
     private Rigidbody2D rb;
+    private Collider2D col;
     private PlayerMovement movement;
     private PlayerController controller;
     private Transform visual;        // 스프라이트 (아크 연출 대상)
@@ -26,6 +27,7 @@ public class PlayerJump : MonoBehaviour
     private void Awake()
     {
         rb         = GetComponent<Rigidbody2D>();
+        col        = GetComponent<Collider2D>();
         movement   = GetComponent<PlayerMovement>();
         controller = GetComponent<PlayerController>();
 
@@ -99,10 +101,18 @@ public class PlayerJump : MonoBehaviour
         });
     }
 
-    // 트리거(좌석·상호작용 존)와 자기 자신은 무시, 실물 충돌만 차단
+    // 트리거(좌석·상호작용 존)와 자기 자신은 무시, 실물 충돌만 차단.
+    // 실제 콜라이더 크기로 검사 — 작은 원으로 재면 대각선 착지 시 가구에 몸이 끼어 갇힘
     private bool IsBlocked(Vector2 point)
     {
-        foreach (var hit in Physics2D.OverlapCircleAll(point, landingRadius))
+        Vector2 size   = col != null
+            ? (Vector2)col.bounds.size + Vector2.one * landingPadding
+            : Vector2.one * 0.6f;
+        Vector2 offset = col != null
+            ? (Vector2)col.bounds.center - rb.position
+            : Vector2.zero;
+
+        foreach (var hit in Physics2D.OverlapBoxAll(point + offset, size, 0f))
         {
             if (hit.isTrigger) continue;
             if (hit.attachedRigidbody == rb) continue;
