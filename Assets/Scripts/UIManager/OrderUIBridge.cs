@@ -11,15 +11,42 @@ public class OrderUIBridge : MonoBehaviour
     private void Start()
     {
         if (UIManager.Instance != null)
+        {
             hud = UIManager.Instance.ShowHUDUI<InGameHUD>();
 
-        // 시간/보상 흐름 시작 (게임 시작 로직 생기면 그쪽으로 이동)
+            // 튜토리얼~이름 입력 동안 게임 전체 정지 (스포너·이동 포함)
+            Time.timeScale = 0f;
+            UIManager.Instance.ShowPopupUI<TutorialPopup>();
+        }
+    }
+
+    private void OnEnable()
+    {
+        Customer.OnAnyCustomerSeated       += HandleSeated;
+        TutorialPopup.OnTutorialCompleted  += HandleTutorialCompleted;
+        NameInputPopup.OnNameConfirmed     += HandleNameConfirmed;
+    }
+
+    private void OnDisable()
+    {
+        Customer.OnAnyCustomerSeated       -= HandleSeated;
+        TutorialPopup.OnTutorialCompleted  -= HandleTutorialCompleted;
+        NameInputPopup.OnNameConfirmed     -= HandleNameConfirmed;
+    }
+
+    // 튜토리얼 완료 → 이름 입력 팝업
+    private void HandleTutorialCompleted()
+    {
+        UIManager.Instance.ShowPopupUI<NameInputPopup>();
+    }
+
+    // 이름 확정 → 게임 재개 + 시간/보상 흐름 시작
+    private void HandleNameConfirmed()
+    {
+        Time.timeScale = 1f;
         if (GameManager.Instance != null)
             GameManager.Instance.StartGame();
     }
-
-    private void OnEnable()  => Customer.OnAnyCustomerSeated += HandleSeated;
-    private void OnDisable() => Customer.OnAnyCustomerSeated -= HandleSeated;
 
     private void HandleSeated(Customer customer)
     {
