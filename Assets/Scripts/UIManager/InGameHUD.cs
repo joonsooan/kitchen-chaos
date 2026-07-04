@@ -14,11 +14,11 @@ public class InGameHUD : UIHUD
         OrderLayout,
     }
 
-    private const string OrderPrefabPath = "UI/Slot/Order";
+    private const string OrderPrefabPath = "UI/Slot/OrderSlot";
 
-    private TextMeshProUGUI TimeText;
-    private Transform _orderLayout;
-    private float _elapsed;
+    private TextMeshProUGUI timeText;
+    private Transform orderLayout;
+    private float elapsed;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -27,21 +27,24 @@ public class InGameHUD : UIHUD
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        TimeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
-        _orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+        timeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
+        orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+
+        AddOrder();
+        AddOrder();
     }
 
     // 주문 1개 추가 — 게임 로직에서 호출
-    public UISlot AddOrder(RecipeData recipe)
+    public UISlot AddOrder(CustomerData customer)
     {
-        var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), _orderLayout);
+        var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
         var slot = go.GetComponent<UISlot>();
         if (slot == null)
         {
             slot = go.AddComponent<UISlot>();
         }
         slot.Init();
-        slot.Setup(recipe);
+        slot.Setup(customer);
         return slot;
     }
 
@@ -49,12 +52,20 @@ public class InGameHUD : UIHUD
     void Update()
     {
         //시간따라 mm:ss
-        _elapsed += Time.deltaTime;
+        elapsed += Time.deltaTime;
 
-        int minutes = (int)(_elapsed / 60f);
-        int seconds = (int)(_elapsed % 60f);
-        TimeText.text = $"{minutes:00}:{seconds:00}";
-        
-        
+        int minutes = (int)(elapsed / 60f);
+        int seconds = (int)(elapsed % 60f);
+        timeText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    // 풀에서 랜덤 손님 1명으로 주문 추가 (test용도)
+    public void AddOrder()
+    {
+        var customers = DataTable.Customers;
+        if (customers == null || customers.Length == 0) return;
+
+        var customer = customers[Random.Range(0, customers.Length)];
+        AddOrder(customer);
     }
 }

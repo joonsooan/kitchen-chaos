@@ -37,6 +37,8 @@ public class UIManager : KSingleton<UIManager>
 
         if (root.GetComponent<Canvas>() == null)
             root.AddComponent<Canvas>();
+        if (root.GetComponent<CanvasScaler>() == null)
+            root.AddComponent<CanvasScaler>();
         if (root.GetComponent<GraphicRaycaster>() == null)
             root.AddComponent<GraphicRaycaster>();
 
@@ -45,6 +47,13 @@ public class UIManager : KSingleton<UIManager>
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.overrideSorting = true;
         canvas.sortingOrder = UITypes.GetSortingOrder(type);
+
+        // 모니터/해상도 무관하게 동일 비율 유지 — Scale With Screen Size
+        var scaler = root.GetComponent<CanvasScaler>();
+        scaler.uiScaleMode         = CanvasScaler.ScaleMode.ScaleWithScreenSize;
+        scaler.referenceResolution = new Vector2(1920f, 1080f);
+        scaler.screenMatchMode     = CanvasScaler.ScreenMatchMode.MatchWidthOrHeight;
+        scaler.matchWidthOrHeight  = 1f;
         return root;
     }
 
