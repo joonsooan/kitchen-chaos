@@ -14,3 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
   ingredientIcon: {fileID: 21300000, guid: 27c7523f9560a1b4ab87a8199f10a44e, type: 3}
   ingredientName: "\uC591\uBC30\uCD94"
+  cookingMethodIcons:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 27c7523f9560a1b4ab87a8199f10a44e, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}

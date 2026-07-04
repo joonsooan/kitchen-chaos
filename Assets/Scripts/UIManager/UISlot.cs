@@ -137,7 +137,11 @@ public class UISlot : UIBase
 
             var go   = Instantiate(prefab, _ingredientRow);
             var icon = go.transform.Find("Icon")?.GetComponent<Image>();
-            if (icon != null) icon.sprite = entry.ingredientType.ingredientIcon;
+            if (icon != null)
+            {
+                var combinedIcon = entry.ingredientType.GetCookingMethodIcon(entry.requiredCookingMethod);
+                icon.sprite = combinedIcon != null ? combinedIcon : entry.ingredientType.ingredientIcon;
+            }
         }
     }
 
