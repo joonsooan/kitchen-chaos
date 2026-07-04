@@ -90,6 +90,7 @@ public class InGameHUD : UIHUD
         RandomBoxManager.OnBoxOpened   += HandleBoxOpened;
         BuffManager.OnBuffStarted      += HandleBuffStarted;
         BuffManager.OnBuffEnded        += HandleBuffEnded;
+        DisasterEvent.OnDisasterTriggered += HandleDisaster;
     }
 
     private void OnDisable()
@@ -100,6 +101,7 @@ public class InGameHUD : UIHUD
         RandomBoxManager.OnBoxOpened   -= HandleBoxOpened;
         BuffManager.OnBuffStarted      -= HandleBuffStarted;
         BuffManager.OnBuffEnded        -= HandleBuffEnded;
+        DisasterEvent.OnDisasterTriggered -= HandleDisaster;
     }
 
     // 버프 시작/종료 → BuffIcon 표시 토글 (재획득·동시 버프는 HashSet으로 정확 추적)
@@ -167,6 +169,13 @@ public class InGameHUD : UIHUD
             boxBounceTween = null;
             randomBoxIcon.localScale = Vector3.one;
         }
+    }
+
+    // 재앙 발동 → 재앙 팝업 (UI는 구독자)
+    private void HandleDisaster(DisasterEvent disaster)
+    {
+        UIManager.Instance.ShowPopupUI<DisasterPopup>()
+            .Setup(disaster.Title, disaster.Description);
     }
 
     // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
