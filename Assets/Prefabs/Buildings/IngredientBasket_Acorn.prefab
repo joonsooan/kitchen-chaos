@@ -189,6 +189,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce12ac7216cc03549b431491f28d3371, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IngredientSource
-  ingredient: {fileID: 0}
+  ingredient: {fileID: 11400000, guid: 1c73a5e4601b2ee44b887561f685d510, type: 2}
