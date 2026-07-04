@@ -49,7 +49,7 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: b787d953db2069845885d0ac4541e92c, type: 3}
   - type: 9
-    volume: 1
+    volume: 0.8
     clips:
     - {fileID: 8300000, guid: ffd401031469e594e806fe5bec56da30, type: 3}
   - type: 10
@@ -74,8 +74,8 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 18bde8c8c6b15864bba0348688965839, type: 3}
   bgmEntries:
   - phase: 0
-    volume: 0.85
-    clip: {fileID: 8300000, guid: 5ca4f6fa150b56e42817ac39d9d998cb, type: 3}
-  - phase: 1
     volume: 1
-    clip: {fileID: 8300000, guid: 68364b0916674fb4aaea3a7e4d54f64f, type: 3}
+    clip: {fileID: 8300000, guid: 4c62b5f66e796f546950d28557927cf6, type: 3}
+  - phase: 1
+    volume: 0.8
+    clip: {fileID: 8300000, guid: 41b74e10850e0854c90d0836c8aeca8f, type: 3}

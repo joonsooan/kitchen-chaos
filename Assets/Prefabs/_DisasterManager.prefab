@@ -213,8 +213,8 @@ MonoBehaviour:
   disasterDescription: "양상추들이 도망가기 시작합니다!"
   monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
   spawnCells:
-  - {x: 2, y: 5}
-  - {x: 4, y: 5}
+  - {x: 2, y: 4}
+  - {x: 4, y: 4}
   spawnChance: 0.7
   duration: 180
 --- !u!1 &6100000000000000001
