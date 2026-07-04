@@ -45,6 +45,9 @@ public class InGameHUD : UIHUD
     private Tween boxBounceTween;
     private UnityEngine.UI.Image buffIconImage;
     private bool initialized;
+    private TextMeshProUGUI phaseLabelText;   // 페이즈/쉬는시간 탭 (프리팹 optional)
+    private TextMeshProUGUI prankText;        // 장난 남은시간 (프리팹 optional)
+    private float prankEndTime = -1f;         // Time.time 기준
 
     // ShowHUDUI가 호출 — AddOrder 전에 바인딩 보장 (Start는 한 프레임 늦어 순서버그)
     public override void Init()
@@ -64,6 +67,13 @@ public class InGameHUD : UIHUD
         if (buffIcon != null) buffIconImage = buffIcon.GetComponent<UnityEngine.UI.Image>();
 
         randomBoxIcon = Get<GameObject>((int)GameObjects.RandomBoxIcon).transform;
+
+        if (timeText != null)
+        {
+            var box = timeText.transform.parent;
+            phaseLabelText = box.Find("PhaseTab/PhaseLabelText")?.GetComponent<TextMeshProUGUI>();
+            prankText      = box.Find("PrankText")?.GetComponent<TextMeshProUGUI>();
+        }
 
         // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
         BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
@@ -120,6 +130,7 @@ public class InGameHUD : UIHUD
         BuffManager.OnBuffStarted      += HandleBuffStarted;
         BuffManager.OnBuffEnded        += HandleBuffEnded;
         TableServing.OnDishServed      += HandleDishServed;
+        DisasterEvent.OnAnyDisasterTriggered += HandlePrankStarted;
     }
 
     private void OnDisable()
@@ -131,6 +142,7 @@ public class InGameHUD : UIHUD
         BuffManager.OnBuffStarted      -= HandleBuffStarted;
         BuffManager.OnBuffEnded        -= HandleBuffEnded;
         TableServing.OnDishServed      -= HandleDishServed;
+        DisasterEvent.OnAnyDisasterTriggered -= HandlePrankStarted;
     }
 
     // 버프 시작/종료 → BuffIcon 표시 토글 (재획득·동시 버프는 HashSet으로 정확 추적)
@@ -280,13 +292,39 @@ public class InGameHUD : UIHUD
             });
     }
 
+    // 장난(재앙) 발동 → 남은시간 추적 시작
+    private void HandlePrankStarted(DisasterEvent prank)
+    {
+        if (prank != null && prank.Duration > 0f)
+            prankEndTime = Time.time + prank.Duration;
+    }
+
     private void HandleTimeTick(float elapsedTime)
     {
         if (timeText == null) return;
 
-        int minutes = (int)(elapsedTime / 60f);
-        int seconds = (int)(elapsedTime % 60f);
+        // 페이즈 시스템 있으면 "구간 남은 시간", 없으면 기존 누적 시간
+        float shown = PhaseManager.CurrentPhase > 0 ? PhaseManager.SegmentRemaining : elapsedTime;
+        int minutes = (int)(shown / 60f);
+        int seconds = (int)(shown % 60f);
         timeText.text = $"{minutes:00}:{seconds:00}";
+
+        if (phaseLabelText != null && PhaseManager.CurrentPhase > 0)
+            phaseLabelText.text = PhaseManager.IsResting ? "쉬는 시간" : $"{PhaseManager.CurrentPhase}페이즈";
+
+        // 장난 남은시간 — 끝나면(사라지면) 같이 사라짐
+        if (prankText != null)
+        {
+            float remain = prankEndTime - Time.time;
+            bool show = remain > 0f;
+            if (prankText.gameObject.activeSelf != show) prankText.gameObject.SetActive(show);
+            if (show)
+            {
+                int pm = (int)(remain / 60f);
+                int ps = (int)(remain % 60f);
+                prankText.text = $"장난 {pm:00}:{ps:00} 남음";
+            }
+        }
     }
 
     // 주문 카드 추가 — 손님 착석 시 게임 로직에서 호출.
