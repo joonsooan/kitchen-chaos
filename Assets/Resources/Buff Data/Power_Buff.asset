@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f2a3b4c5d6e7f8091a2b3c4d5e6f708, type: 3}
-  m_Name: Speed_Buff
-  m_EditorClassIdentifier: Assembly-CSharp::SpeedBuff
-  buffName: 바람의 가호
-  description: 산들바람의 축복을 받아 발걸음이 가벼워진다.
+  m_Script: {fileID: 11500000, guid: 4d7e2b9a5c1f4083b6a8d0c3e5f79216, type: 3}
+  m_Name: Power_Buff
+  m_EditorClassIdentifier: Assembly-CSharp::PowerBuff
+  buffName: 파워 업
+  description: 내 안에 잠들어 있던 힘이 깨어납니다.
   icon: {fileID: 0}
   duration: 30
   weight: 20
-  multiplier: 1.5
