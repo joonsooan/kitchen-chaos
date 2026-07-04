@@ -711,7 +711,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300006, guid: 358b5d9f23bc9413e87c9948acc67ee1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -900,8 +900,11 @@ MonoBehaviour:
   m_ReverseArrangement: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
+=======
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
 --- !u!1 &8100000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,10 +1119,13 @@ MonoBehaviour:
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
 =======
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
+=======
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
 --- !u!1 &8200000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1288,14 +1294,18 @@ RectTransform:
   m_Children:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
+=======
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   - {fileID: 2604020393894280395}
   - {fileID: 8087139231004811015}
   - {fileID: 8999424645603042660}
   - {fileID: 6416821536842772023}
   - {fileID: 4632816046914782936}
   - {fileID: 64756344788271438}
+<<<<<<< HEAD
 <<<<<<< HEAD
 =======
   - {fileID: 832944873422667531}
@@ -1306,6 +1316,8 @@ RectTransform:
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
 =======
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
+=======
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1327,8 +1339,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   _orders: []
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
 =======
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
+=======
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)

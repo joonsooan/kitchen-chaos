@@ -236,12 +236,17 @@ MonoBehaviour:
   m_text: "\uD558\uB098\uB97C \uC120\uD0DD\uD558\uC138\uC694"
   m_isRightToLeft: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_fontAsset: {fileID: 11400000, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
   m_sharedMaterial: {fileID: 3073914269623410632, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
 =======
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
 >>>>>>> 50f2a70 (fix(repo): stop ignoring Assets/Resources, track missing assets)
+=======
+  m_fontAsset: {fileID: 11400000, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
+  m_sharedMaterial: {fileID: 3073914269623410632, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -454,12 +459,17 @@ MonoBehaviour:
   m_text: X
   m_isRightToLeft: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_fontAsset: {fileID: 11400000, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
   m_sharedMaterial: {fileID: 3073914269623410632, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
 =======
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
 >>>>>>> 50f2a70 (fix(repo): stop ignoring Assets/Resources, track missing assets)
+=======
+  m_fontAsset: {fileID: 11400000, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
+  m_sharedMaterial: {fileID: 3073914269623410632, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -596,12 +606,17 @@ MonoBehaviour:
   m_text: "\uB79C\uB364 \uBC15\uC2A4"
   m_isRightToLeft: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_fontAsset: {fileID: 11400000, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
   m_sharedMaterial: {fileID: 3073914269623410632, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
 =======
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
 >>>>>>> 50f2a70 (fix(repo): stop ignoring Assets/Resources, track missing assets)
+=======
+  m_fontAsset: {fileID: 11400000, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
+  m_sharedMaterial: {fileID: 3073914269623410632, guid: 853533c8242b4f4468f9ab3204bf3b12, type: 2}
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

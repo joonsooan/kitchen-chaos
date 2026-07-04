@@ -60,12 +60,17 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_SortingLayerID: -397469345
   m_SortingOrder: 100
 =======
   m_SortingLayerID: 0
   m_SortingOrder: 0
 >>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
+=======
+  m_SortingLayerID: -397469345
+  m_SortingOrder: 100
+>>>>>>> 05c4587 (add: Scene_YujinTest에 ui배선 완료)
   m_TargetDisplay: 0
 --- !u!114 &1000000003
 MonoBehaviour:
