@@ -369,63 +369,9 @@ MonoBehaviour:
     type: 1
   - cell: {x: 9, y: 11}
     type: 1
-  - cell: {x: 11, y: 11}
-    type: 1
-  - cell: {x: 12, y: 11}
-    type: 1
-  - cell: {x: 13, y: 11}
-    type: 1
-  - cell: {x: 14, y: 11}
-    type: 1
-  - cell: {x: 15, y: 11}
-    type: 1
   - cell: {x: 5, y: 11}
     type: 1
-  - cell: {x: 10, y: 11}
-    type: 1
   - cell: {x: 8, y: 11}
-    type: 1
-  - cell: {x: 1, y: 6}
-    type: 1
-  - cell: {x: 3, y: 6}
-    type: 1
-  - cell: {x: 2, y: 6}
-    type: 1
-  - cell: {x: 7, y: 6}
-    type: 1
-  - cell: {x: 8, y: 6}
-    type: 1
-  - cell: {x: 9, y: 6}
-    type: 1
-  - cell: {x: 10, y: 6}
-    type: 1
-  - cell: {x: 2, y: 10}
-    type: 1
-  - cell: {x: 3, y: 10}
-    type: 1
-  - cell: {x: 4, y: 10}
-    type: 1
-  - cell: {x: 5, y: 10}
-    type: 1
-  - cell: {x: 9, y: 10}
-    type: 1
-  - cell: {x: 10, y: 10}
-    type: 1
-  - cell: {x: 11, y: 10}
-    type: 1
-  - cell: {x: 12, y: 10}
-    type: 1
-  - cell: {x: 13, y: 10}
-    type: 1
-  - cell: {x: 14, y: 10}
-    type: 1
-  - cell: {x: 15, y: 10}
-    type: 1
-  - cell: {x: 13, y: 6}
-    type: 1
-  - cell: {x: 14, y: 6}
-    type: 1
-  - cell: {x: 15, y: 6}
     type: 1
   - cell: {x: 16, y: 13}
     type: 1
@@ -442,6 +388,18 @@ MonoBehaviour:
   - cell: {x: 22, y: 13}
     type: 1
   - cell: {x: 23, y: 13}
+    type: 1
+  - cell: {x: 10, y: 11}
+    type: 1
+  - cell: {x: 11, y: 11}
+    type: 1
+  - cell: {x: 12, y: 11}
+    type: 1
+  - cell: {x: 13, y: 11}
+    type: 1
+  - cell: {x: 15, y: 11}
+    type: 1
+  - cell: {x: 14, y: 11}
     type: 1
   playerSpawn: {x: 1, y: 0}
   monsterSpawns: []
