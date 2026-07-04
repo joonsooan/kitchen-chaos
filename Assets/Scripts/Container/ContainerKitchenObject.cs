@@ -11,6 +11,9 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     [SerializeField] private string sortingLayerName = "Default";
     [SerializeField] private int sortingOrder;
     [SerializeField] private float visualScale = 0.5f;
+    [SerializeField] private float stackYOffset = 0.1f;
+    [SerializeField] private float stackXOffset = 0.05f;
+    [SerializeField] private float stackRotationRange = 10f;
 
     private readonly List<IngredientInstance> contents = new List<IngredientInstance>();
     private readonly List<GameObject> ingredientVisuals = new List<GameObject>();
@@ -80,16 +83,19 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     {
         if (sprite == null) return;
 
+        int stackIndex = ingredientVisuals.Count;
+
         Transform anchor = ingredientVisualAnchor != null ? ingredientVisualAnchor : transform;
         GameObject visual = new GameObject(sprite.name);
         visual.transform.SetParent(anchor, false);
-        visual.transform.localPosition = Vector3.zero;
+        visual.transform.localPosition = new Vector3(Random.Range(-stackXOffset, stackXOffset), stackYOffset * stackIndex, 0f);
+        visual.transform.localRotation = Quaternion.Euler(0f, 0f, Random.Range(-stackRotationRange, stackRotationRange));
         visual.transform.localScale = Vector3.one * visualScale;
 
         SpriteRenderer spriteRenderer = visual.AddComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprite;
         spriteRenderer.sortingLayerName = sortingLayerName;
-        spriteRenderer.sortingOrder = sortingOrder;
+        spriteRenderer.sortingOrder = sortingOrder + stackIndex;
 
         ingredientVisuals.Add(visual);
     }

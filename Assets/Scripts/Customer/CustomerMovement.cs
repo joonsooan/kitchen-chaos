@@ -47,7 +47,7 @@ public class CustomerMovement : MonoBehaviour
 
     private bool TryBuildPath(Vector2Int fromCell, Vector2Int toCell)
     {
-        List<Vector2Int> path = AStarPathfinder.FindPath(fromCell, toCell);
+        List<Vector2Int> path = AStarPathfinder.FindPath(fromCell, toCell, avoidOccupants: true);
         if (path == null) return false;
 
         waypoints = new List<Vector3>(path.Count);

@@ -19,7 +19,6 @@ public static class AStarPathfinder
         GridSystem grid = GridSystem.Instance;
         if (grid == null) return null;
         if (grid.GetTileType(goal) == TileType.Blocked) return null;
-        if (avoidOccupants && grid.TryGetOccupant(goal, out _)) return null;
         if (start == goal) return new List<Vector2Int> { start };
 
         Dictionary<Vector2Int, Node> openMap = new();
@@ -38,7 +37,7 @@ public static class AStarPathfinder
             openMap.Remove(current.Cell);
             closed.Add(current.Cell);
 
-            int neighborCount = grid.GetWalkableNeighborsNonAlloc(current.Cell, neighborBuffer, avoidOccupants);
+            int neighborCount = grid.GetWalkableNeighborsNonAlloc(current.Cell, neighborBuffer, avoidOccupants, goal);
             for (int i = 0; i < neighborCount; i++)
             {
                 Vector2Int neighborCell = neighborBuffer[i];

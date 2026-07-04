@@ -48,6 +48,7 @@ GameObject:
   - component: {fileID: 4692121884267813112}
   - component: {fileID: 5637756230177022980}
   - component: {fileID: 7378454705982130389}
+  - component: {fileID: 8419270461310022716}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -120,7 +121,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: 0b9510d2790829140953392aae2b6679, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4957e02f8cf30224d8be4f2f5deab608, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -195,7 +196,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.28, y: 1.28}
+    oldSize: {x: 3.3333333, y: 3.3333333}
     newSize: {x: 2.5, y: 2.5}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -271,3 +272,19 @@ MonoBehaviour:
   outlineScale: 1.1
   sortingLayerName: Object
   highlightSortingOrder: 500
+--- !u!114 &8419270461310022716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9097755190057185231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0494c4640b0a6ba4fbba5bb23a4a1161, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSpriteAnimator
+  upSprite: {fileID: 21300000, guid: d94fd56926b86dc42b547a37b8daca57, type: 3}
+  downSprite: {fileID: 21300000, guid: 4957e02f8cf30224d8be4f2f5deab608, type: 3}
+  leftSprite: {fileID: 21300000, guid: ac691db708dd6d442ad1c8f86aba61b6, type: 3}
+  rightSprite: {fileID: 21300000, guid: 0dfb8b0b89cd575458e0050710be268a, type: 3}

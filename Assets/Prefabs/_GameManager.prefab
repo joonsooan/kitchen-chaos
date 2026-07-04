@@ -50,6 +50,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1d8c24e46d638e42bfb55918d3cbf7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  bonusToleranceRatioThreshold: 0.5
+  bonusRewardMultiplier: 1.5
+  orderFailurePenaltyScore: 10
 --- !u!114 &7678309352335527165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -75,7 +78,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c817f5d9e7d8c5e449289e362aac9eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerSpawner
-  spawnInterval: 20
+  initialDelay: 5
+  spawnInterval: 12
   spawnCell: {x: 18, y: 4}
   customerPrefabs:
   - {fileID: 7808573775356351771, guid: 4a4ab08c1bd34440b6b9425ca88a5f87, type: 3}
@@ -132,10 +136,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DeskItemSpawner
   cupPrefab: {fileID: 8889469565768764011, guid: c03fa3176cebc5f4bb8a23f45c9c2ea5, type: 3}
   platePrefab: {fileID: 4312298083396238070, guid: 42ef4238a2dd609408cf8d78b869f97c, type: 3}
-  cupSpawnCells:
-  - {x: 1, y: 3}
-  plateSpawnCells:
-  - {x: 5, y: 3}
+  cupSpawnCells: []
+  plateSpawnCells: []
 --- !u!114 &6175439556594185598
 MonoBehaviour:
   m_ObjectHideFlags: 0

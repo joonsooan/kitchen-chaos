@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 6186c381f11e432488cc3adbba2c2dae
+guid: 4957e02f8cf30224d8be4f2f5deab608
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8770526307213043579
-    second: "\uB2E4\uC6B4\uB85C\uB4DC (18)_0"
+      213: 8188431196637489139
+    second: Fox_Down_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: "\uB2E4\uC6B4\uB85C\uB4DC (18)_0"
+      name: Fox_Down_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1000
-        height: 1000
+        x: 293
+        y: 164
+        width: 438
+        height: 726
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5881955bac4d84680800000000000000
-      internalID: -8770526307213043579
+      spriteID: 3f7ed470ac623a170800000000000000
+      internalID: 8188431196637489139
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      "\uB2E4\uC6B4\uB85C\uB4DC (18)_0": -8770526307213043579
+      Fox_Down_0: 8188431196637489139
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

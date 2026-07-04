@@ -197,15 +197,18 @@ public class GridSystem : MonoBehaviour
     /// By default passability is tile-type only (Blocked tiles, e.g. walls) — occupants (furniture
     /// like tables/chairs) reserve a cell but don't block foot traffic through/around it. Pass
     /// avoidOccupants=true (e.g. for monster pathing) to also treat occupied cells as impassable.
+    /// goal, if given, is always considered passable even if occupied — lets pathing avoid cutting
+    /// through furniture while still allowing arrival at a destination that sits on one (e.g. a
+    /// customer seat inside a table's footprint).
     /// </summary>
-    public int GetWalkableNeighborsNonAlloc(Vector2Int cell, Vector2Int[] buffer, bool avoidOccupants = false)
+    public int GetWalkableNeighborsNonAlloc(Vector2Int cell, Vector2Int[] buffer, bool avoidOccupants = false, Vector2Int? goal = null)
     {
         int count = 0;
         for (int i = 0; i < NeighborOffsets.Length; i++)
         {
             Vector2Int neighbor = cell + NeighborOffsets[i];
             if (GetTileType(neighbor) == TileType.Blocked) continue;
-            if (avoidOccupants && TryGetOccupant(neighbor, out _)) continue;
+            if (avoidOccupants && neighbor != goal && TryGetOccupant(neighbor, out _)) continue;
 
             if (count < buffer.Length) buffer[count] = neighbor;
             count++;

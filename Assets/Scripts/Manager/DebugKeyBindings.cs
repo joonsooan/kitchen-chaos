@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -66,3 +67,4 @@ public class DebugKeyBindings : MonoBehaviour
         Time.timeScale = scale;
     }
 }
+#endif

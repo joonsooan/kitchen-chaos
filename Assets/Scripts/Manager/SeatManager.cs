@@ -16,6 +16,15 @@ public class SeatManager : KSingleton<SeatManager>
         seats.Remove(seat);
     }
 
+    public bool HasFreeSeat()
+    {
+        foreach (Seat seat in seats)
+        {
+            if (!seat.IsOccupied) return true;
+        }
+        return false;
+    }
+
     public bool TryReserveNearestSeat(Vector3 fromWorldPosition, out Seat seat)
     {
         Seat nearest = null;

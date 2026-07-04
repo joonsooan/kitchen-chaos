@@ -4,6 +4,7 @@ using UnityEngine.Pool;
 
 public class CustomerSpawner : KSingleton<CustomerSpawner>
 {
+    [SerializeField] private float initialDelay = 5f;
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private Vector2Int spawnCell;
     [SerializeField] private GameObject[] customerPrefabs;
@@ -11,16 +12,53 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
     [SerializeField] private Transform poolParent;
 
     private float timer;
+    private bool hasSpawnedFirst;
+    private int waitingCount;   // 좌석이 없어 입장을 미룬 손님 수 — 좌석이 나면 즉시 입장.
     private readonly Dictionary<GameObject, IObjectPool<GameObject>> pools = new();
 
     public Vector2Int SpawnCell => spawnCell;
 
+    private void OnEnable()
+    {
+        Seat.OnSeatReleased += HandleSeatReleased;
+    }
+
+    private void OnDisable()
+    {
+        Seat.OnSeatReleased -= HandleSeatReleased;
+    }
+
     private void Update()
     {
         timer += Time.deltaTime;
-        if (timer < spawnInterval) return;
+        float threshold = hasSpawnedFirst ? spawnInterval : initialDelay;
+        if (timer < threshold) return;
 
-        timer -= spawnInterval;
+        timer -= threshold;
+        hasSpawnedFirst = true;
+        TryAdmitCustomer();
+    }
+
+    // 좌석이 있으면 바로 스폰, 없으면 스폰하지 않고 대기 인원만 늘린다.
+    private void TryAdmitCustomer()
+    {
+        if (SeatManager.Instance != null && SeatManager.Instance.HasFreeSeat())
+        {
+            SpawnCustomer();
+        }
+        else
+        {
+            waitingCount++;
+        }
+    }
+
+    // 좌석이 하나 비면, 대기 중인 손님이 있을 때만 그 자리로 한 명 입장시킨다.
+    private void HandleSeatReleased()
+    {
+        if (waitingCount <= 0) return;
+        if (SeatManager.Instance == null || !SeatManager.Instance.HasFreeSeat()) return;
+
+        waitingCount--;
         SpawnCustomer();
     }
 

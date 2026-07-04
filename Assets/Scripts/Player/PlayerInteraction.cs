@@ -25,24 +25,19 @@ public class PlayerInteraction : MonoBehaviour
     private void OnEnable()
     {
         movement.InteractPressed += HandleInteractPressed;
-        movement.AttackPressed += HandleAttackPressed;
     }
 
     private void OnDisable()
     {
         movement.InteractPressed -= HandleInteractPressed;
-        movement.AttackPressed -= HandleAttackPressed;
     }
 
+    // F 한 키로 통합: 상호작용 대상 우선 → 타격 대상 → 들고 있는 아이템 내려놓기 순으로 시도.
     private void HandleInteractPressed()
     {
         if (TryInteract(movement.FacingDirection)) return;
+        if (TryAttack(movement.FacingDirection)) return;
         TryPlaceHeldItem();
-    }
-
-    private void HandleAttackPressed()
-    {
-        TryAttack(movement.FacingDirection);
     }
 
     /// <summary>
