@@ -48,4 +48,10 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
             contents.Clear();
         }
     }
+
+    public void Empty()
+    {
+        contents.Clear();
+        CompletedRecipe = null;
+    }
 }

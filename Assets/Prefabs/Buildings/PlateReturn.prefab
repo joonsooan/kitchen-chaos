@@ -191,3 +191,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 768f6b78c3cdfc146a5280649844d568, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ReturnStation
+  containerPrefab: {fileID: 4312298083396238070, guid: 42ef4238a2dd609408cf8d78b869f97c, type: 3}
