@@ -22,12 +22,7 @@ public class UIManager : KSingleton<UIManager>
         base.Awake();
         DontDestroyOnLoad(this.gameObject);
     }
-
-    //for test
-    private void Start()
-    {
-        ShowHUDUI<InGameHUD>();
-    }
+    
 
     GameObject GetOrCreateRoot(string name, UIType type)
     {
