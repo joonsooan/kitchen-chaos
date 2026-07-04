@@ -10,6 +10,8 @@ public class GameOverTester : MonoBehaviour
     private const string BoardKey = "Leaderboard";   // "id,score|id,score|..."
     private const int MaxRows = 5;
 
+    private bool triggered;   // 페이즈 판정·재앙 판정 둘 다 쏴도 결과창 1번만
+
     private void OnEnable()
     {
         DisasterManager.OnDisasterGameOver += TriggerGameOver;
@@ -29,6 +31,9 @@ public class GameOverTester : MonoBehaviour
     // 재앙 시스템의 최소 점수 판정(DisasterManager.OnDisasterGameOver) 또는 F9 테스트 키로 호출
     public void TriggerGameOver(bool success)
     {
+        if (triggered) return;
+        triggered = true;
+
         string id  = PlayerPrefs.GetString(NameInputPopup.PlayerIdKey, "Player");
         int score  = GameManager.Instance != null ? GameManager.Instance.Score : 0;
 

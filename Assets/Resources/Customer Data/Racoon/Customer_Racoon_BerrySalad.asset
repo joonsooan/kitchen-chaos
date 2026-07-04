@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
   customerName: "\uB108\uAD6C\uB9AC"
   requiredRecipe: {fileID: 11400000, guid: f71a6151ac457f94a94337f21ac0d12c, type: 2}
-  toleranceSeconds: 30
+  toleranceSeconds: 60

@@ -15,15 +15,16 @@ public class OrderUIBridge : MonoBehaviour
             hud = UIManager.Instance.ShowHUDUI<InGameHUD>();
             UIManager.Instance.HideHUDUI<InGameHUD>();   // 게임 시작 전엔 HUD 숨김
 
-            // 튜토리얼~이름 입력 동안 게임 전체 정지 (스포너·이동 포함)
+            // 타이틀(홈)~이름 입력 동안 게임 전체 정지 (스포너·이동 포함)
             Time.timeScale = 0f;
-            UIManager.Instance.ShowPopupUI<TutorialPopup>();
+            UIManager.Instance.ShowHUDUI<HomeHUD>();
         }
     }
 
     private void OnEnable()
     {
         Customer.OnAnyCustomerSeated       += HandleSeated;
+        HomeHUD.OnStartRequested           += HandleHomeStart;
         TutorialPopup.OnTutorialCompleted  += HandleTutorialCompleted;
         NameInputPopup.OnNameConfirmed     += HandleNameConfirmed;
     }
@@ -31,8 +32,15 @@ public class OrderUIBridge : MonoBehaviour
     private void OnDisable()
     {
         Customer.OnAnyCustomerSeated       -= HandleSeated;
+        HomeHUD.OnStartRequested           -= HandleHomeStart;
         TutorialPopup.OnTutorialCompleted  -= HandleTutorialCompleted;
         NameInputPopup.OnNameConfirmed     -= HandleNameConfirmed;
+    }
+
+    // 타이틀 시작 버튼 → 튜토리얼
+    private void HandleHomeStart()
+    {
+        UIManager.Instance.ShowPopupUI<TutorialPopup>();
     }
 
     // 튜토리얼 완료 → 이름 입력 팝업
@@ -56,6 +64,11 @@ public class OrderUIBridge : MonoBehaviour
     {
         if (hud != null) hud.AddOrder(customer);
         if (gaugePrefab != null) Instantiate(gaugePrefab).Bind(customer);
+
+        // 머리 위 주문 말풍선 (음식 조달/떠날 때까지 유지 — OrderBubbleView가 수명 관리)
+        var bubblePrefab = Resources.Load<GameObject>("UI/World/OrderBubble");
+        if (bubblePrefab != null)
+            Instantiate(bubblePrefab).GetComponent<OrderBubbleView>().Bind(customer);
 
         // 착석 신호 — 머리 위 "!" 팝
         var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
