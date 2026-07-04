@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c817f5d9e7d8c5e449289e362aac9eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerSpawner
-  spawnInterval: 10
+  spawnInterval: 20
   spawnCell: {x: 18, y: 4}
   customerPrefabs:
   - {fileID: 7808573775356351771, guid: 4a4ab08c1bd34440b6b9425ca88a5f87, type: 3}
