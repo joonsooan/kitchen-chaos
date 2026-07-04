@@ -4,13 +4,28 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UIEventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler, IBeginDragHandler, IEndDragHandler, IDropHandler,
-    IPointerDownHandler, IPointerUpHandler
+    IPointerDownHandler, IPointerUpHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Action<PointerEventData> OnClickHandler = null;
     public Action<PointerEventData> OnDragHandler = null;
     public Action<PointerEventData> OnBeginDragHandler = null;
     public Action<PointerEventData> OnEndDragHandler = null;
     public Action<PointerEventData> OnDropHandler = null;
+
+    private bool hovering;
+
+    // 공통 호버 — 살짝 커짐
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        hovering = true;
+        transform.DOScale(1.05f, 0.08f).SetUpdate(true).SetLink(gameObject);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        hovering = false;
+        transform.DOScale(1f, 0.08f).SetUpdate(true).SetLink(gameObject);
+    }
 
     // 공통 눌림감 — BindEvent 붙은 모든 버튼이 눌릴 때 살짝 쪼그라듦
     public void OnPointerDown(PointerEventData eventData)
@@ -20,7 +35,7 @@ public class UIEventHandler : MonoBehaviour, IPointerClickHandler, IDragHandler,
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        transform.DOScale(1f, 0.08f).SetUpdate(true).SetLink(gameObject);
+        transform.DOScale(hovering ? 1.05f : 1f, 0.08f).SetUpdate(true).SetLink(gameObject);
     }
 
     public void OnPointerClick(PointerEventData eventData)
