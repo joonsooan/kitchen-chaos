@@ -22,10 +22,32 @@ public class GameOverTester : MonoBehaviour
         DisasterManager.OnDisasterGameOver -= TriggerGameOver;
     }
 
+    private int nextBuffIndex;   // F8 순환용
+
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.f9Key.wasPressedThisFrame)
+        if (Keyboard.current == null) return;
+
+        if (Keyboard.current.f9Key.wasPressedThisFrame)
             TriggerGameOver(GameManager.Instance != null && GameManager.Instance.Score > 0);
+
+        // F8 — 버프 강제 발동 (누를 때마다 다음 버프로 순환, 꽝 제외)
+        if (Keyboard.current.f8Key.wasPressedThisFrame)
+            ForceNextBuff();
+    }
+
+    private void ForceNextBuff()
+    {
+        if (BuffManager.Instance == null) return;
+
+        var buffs = System.Array.FindAll(DataTable.Buffs, b => b.duration > 0f);
+        if (buffs.Length == 0) return;
+
+        var buff = buffs[nextBuffIndex % buffs.Length];
+        nextBuffIndex++;
+
+        BuffManager.Instance.Activate(buff);
+        Debug.Log($"[BuffTest] F8 강제 발동: {buff.buffName} ({buff.duration}초)");
     }
 
     // 재앙 시스템의 최소 점수 판정(DisasterManager.OnDisasterGameOver) 또는 F9 테스트 키로 호출

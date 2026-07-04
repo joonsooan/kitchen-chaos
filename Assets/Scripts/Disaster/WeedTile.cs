@@ -26,7 +26,7 @@ public class WeedTile : MonoBehaviour, IAttackable
 
     public void Hit(PlayerController player)
     {
-        hitsRemaining--;
+        hitsRemaining -= PowerBuff.OneShotActive ? hitsRemaining : 1;   // 파워 업 버프: 한 방
         if (hitsRemaining <= 0) Despawn();
     }
 
