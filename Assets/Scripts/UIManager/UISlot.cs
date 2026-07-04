@@ -204,8 +204,8 @@ public class UISlot : UIBase
         if (_gaugeFill != null)
             _gaugeFill.color = GaugeColor(t);
 
-        // 긴급 — 잔여 20% 이하부터 카드 부르르
-        if (!_urgent && t <= 0.2f)
+        // 긴급 — 카운트다운(잔여 3초)과 같은 순간부터 카드 부르르
+        if (!_urgent && _customer.RemainingPatience <= 3f)
         {
             _urgent = true;
             // 위치 셰이크 금지 — HLG 재배치와 싸워 카드가 옛 자리에 고정됨. 회전만.

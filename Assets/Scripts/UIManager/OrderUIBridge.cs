@@ -65,6 +65,11 @@ public class OrderUIBridge : MonoBehaviour
         if (hud != null) hud.AddOrder(customer);
         if (gaugePrefab != null) Instantiate(gaugePrefab).Bind(customer);
 
+        // 머리 위 주문 말풍선 (음식 조달/떠날 때까지 유지 — OrderBubbleView가 수명 관리)
+        var bubblePrefab = Resources.Load<GameObject>("UI/World/OrderBubble");
+        if (bubblePrefab != null)
+            Instantiate(bubblePrefab).GetComponent<OrderBubbleView>().Bind(customer);
+
         // 착석 신호 — 머리 위 "!" 팝
         var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
         if (prefab != null)
