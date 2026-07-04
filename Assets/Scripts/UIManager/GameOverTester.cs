@@ -10,14 +10,24 @@ public class GameOverTester : MonoBehaviour
     private const string BoardKey = "Leaderboard";   // "id,score|id,score|..."
     private const int MaxRows = 5;
 
+    private void OnEnable()
+    {
+        DisasterManager.OnDisasterGameOver += TriggerGameOver;
+    }
+
+    private void OnDisable()
+    {
+        DisasterManager.OnDisasterGameOver -= TriggerGameOver;
+    }
+
     private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.f9Key.wasPressedThisFrame)
-            TriggerGameOver();
+            TriggerGameOver(GameManager.Instance != null && GameManager.Instance.Score > 0);
     }
 
-    // 실제 게임오버 로직이 생기면 그쪽에서 이 메서드 호출
-    public void TriggerGameOver()
+    // 재앙 시스템의 최소 점수 판정(DisasterManager.OnDisasterGameOver) 또는 F9 테스트 키로 호출
+    public void TriggerGameOver(bool success)
     {
         string id  = PlayerPrefs.GetString(NameInputPopup.PlayerIdKey, "Player");
         int score  = GameManager.Instance != null ? GameManager.Instance.Score : 0;
@@ -28,7 +38,6 @@ public class GameOverTester : MonoBehaviour
 
         if (GameManager.Instance != null) GameManager.Instance.StopGame();
 
-        bool success = score > 0;   // 성공 기준 미정 — 임시로 점수>0
         var popup = UIManager.Instance.ShowPopupUI<LeaderboardPopup>();
         popup.Setup(success);
         popup.SetRows(FormatRows(records, id, score));

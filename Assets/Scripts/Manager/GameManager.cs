@@ -26,6 +26,7 @@ public class GameManager : KSingleton<GameManager>
         Score = 0;
         ElapsedTime = 0f;
         IsRunning = true;
+        SoundManager.Instance?.SetPhase(GamePhase.Stage);
     }
 
     public void StopGame()
@@ -50,6 +51,7 @@ public class GameManager : KSingleton<GameManager>
     {
         AddMoney(recipe.moneyReward * RewardMultiplier);
         AddScore(recipe.scoreReward * RewardMultiplier);
+        SoundManager.Instance?.PlaySFX(SFXType.RewardGain);
     }
 
     public void AddMoney(int amount)

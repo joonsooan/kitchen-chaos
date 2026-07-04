@@ -10,16 +10,18 @@ using UnityEngine.Audio;
 public class SoundLibrarySO : ScriptableObject
 {
     [System.Serializable]
-    public struct SFXEntry
+    public class SFXEntry
     {
         public SFXType     type;
+        [Range(0f, 1f)] public float volume = 1f;   // 소리별 개별 볼륨 (라이브러리에서 조정)
         public AudioClip[] clips;   // 여러 개면 재생 시 랜덤 선택
     }
 
     [System.Serializable]
-    public struct BGMEntry
+    public class BGMEntry
     {
         public GamePhase  phase;
+        [Range(0f, 1f)] public float volume = 1f;   // 페이즈별 개별 볼륨
         public AudioClip  clip;     // 페이즈당 1개
     }
 

@@ -7,6 +7,8 @@ public class UIPopup : UIBase
 
     // ESC로 닫기 허용 — 필수 팝업(튜토리얼·이름입력)은 Init에서 false로
     public bool CloseOnEsc { get; protected set; } = true;
+    // 이 팝업이 떠 있는 동안 Time.timeScale을 0으로 고정할지 — UIManager가 open/close 시 관리
+    public virtual bool PauseGameWhileOpen => false;
 
     public override void Init()
     {

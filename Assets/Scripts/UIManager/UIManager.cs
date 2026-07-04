@@ -12,6 +12,10 @@ public class UIManager : KSingleton<UIManager>
     Stack<UIPopup>         _systemStack = new Stack<UIPopup>();
     Dictionary<Type,UIHUD> _hudCache    = new Dictionary<Type,UIHUD>();
 
+    // PauseGameWhileOpen 팝업 개수 — 중첩 시에도 마지막 하나가 닫힐 때만 재개
+    int   _pauseRequestCount;
+    float _cachedTimeScale = 1f;
+
     // ── Roots ─────────────────────────────────────────────────────────
     public GameObject HUDRoot    => GetOrCreateRoot("@UI_HUDRoot",    UIType.HUD);
     public GameObject PopupRoot  => GetOrCreateRoot("@UI_PopupRoot",  UIType.Popup);
@@ -100,6 +104,8 @@ public class UIManager : KSingleton<UIManager>
         go.transform.SetParent(PopupRoot.transform, false);
         go.transform.SetAsLastSibling();
         popup.Init();
+        if (popup.PauseGameWhileOpen) RequestPause();
+        SoundManager.Instance?.PlaySFX(SFXType.PopupOpen);
         return popup;
     }
 
@@ -114,8 +120,25 @@ public class UIManager : KSingleton<UIManager>
         if (_popupStack.Count == 0) return;
 
         var popup = _popupStack.Pop();
+        if (popup.PauseGameWhileOpen) ReleasePause();
+
         // 닫힘 연출 후 파괴 (연출 중 스택엔 이미 없음)
         popup.PlayHideFx(() => { if (popup != null) Destroy(popup.gameObject); });
+    }
+
+    void RequestPause()
+    {
+        if (_pauseRequestCount == 0) _cachedTimeScale = Time.timeScale;
+        _pauseRequestCount++;
+        Time.timeScale = 0f;
+    }
+
+    void ReleasePause()
+    {
+        if (_pauseRequestCount == 0) return;
+
+        _pauseRequestCount--;
+        if (_pauseRequestCount == 0) Time.timeScale = _cachedTimeScale;
     }
 
     public void CloseAllPopupUI()

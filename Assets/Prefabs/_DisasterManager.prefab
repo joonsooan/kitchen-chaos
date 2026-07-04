@@ -105,6 +105,7 @@ MonoBehaviour:
   buildingTriggers:
   - source: {fileID: 0}
     disasterEvent: {fileID: 7723300903781883990}
+  disasterCountToEnd: 3
 --- !u!1 &4956198993572794468
 GameObject:
   m_ObjectHideFlags: 0
