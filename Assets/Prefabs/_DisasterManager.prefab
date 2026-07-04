@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1105988735990100075
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3789568235141474826}
+  - component: {fileID: 34184425458625168}
+  m_Layer: 0
+  m_Name: WeedSpawnEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3789568235141474826
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105988735990100075}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8244220884098111768}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &34184425458625168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1105988735990100075}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9650293afce86f14094b2fd3b8429f17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeedSpawnEvent
+  weedPrefab: {fileID: 8891624871928063836, guid: b2c290d201d110a4f979c8f79bcc5752, type: 3}
+  weedCount: 20
+  duration: 30
 --- !u!1 &1764774685301756242
 GameObject:
   m_ObjectHideFlags: 0
@@ -31,6 +78,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1247952116175096993}
+  - {fileID: 3789568235141474826}
+  - {fileID: 2033667127976980096}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3127648254957125243
@@ -45,12 +94,60 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15a13483dd539848af15f40567f3163, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisasterManager
-  timeTriggerSeconds: 30
+  firstTriggerSeconds: 10
+  triggerIntervalSeconds: 40
   timeTriggerPool:
   - {fileID: 7723300903781883990}
+  - {fileID: 34184425458625168}
+  - {fileID: 8264524626042938441}
   buildingTriggers:
   - source: {fileID: 0}
     disasterEvent: {fileID: 7723300903781883990}
+--- !u!1 &4956198993572794468
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2033667127976980096}
+  - component: {fileID: 8264524626042938441}
+  m_Layer: 0
+  m_Name: InvertControlsEvent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2033667127976980096
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4956198993572794468}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8244220884098111768}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8264524626042938441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4956198993572794468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eb452b54d56980459b1a4093d933a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InvertControlsEvent
+  duration: 30
 --- !u!1 &7718800067837846822
 GameObject:
   m_ObjectHideFlags: 0

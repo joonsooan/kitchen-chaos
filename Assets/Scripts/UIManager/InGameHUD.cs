@@ -119,6 +119,7 @@ public class InGameHUD : UIHUD
         RandomBoxManager.OnBoxOpened   += HandleBoxOpened;
         BuffManager.OnBuffStarted      += HandleBuffStarted;
         BuffManager.OnBuffEnded        += HandleBuffEnded;
+        TableServing.OnDishServed      += HandleDishServed;
     }
 
     private void OnDisable()
@@ -129,6 +130,7 @@ public class InGameHUD : UIHUD
         RandomBoxManager.OnBoxOpened   -= HandleBoxOpened;
         BuffManager.OnBuffStarted      -= HandleBuffStarted;
         BuffManager.OnBuffEnded        -= HandleBuffEnded;
+        TableServing.OnDishServed      -= HandleDishServed;
     }
 
     // 버프 시작/종료 → BuffIcon 표시 토글 (재획득·동시 버프는 HashSet으로 정확 추적)
@@ -201,6 +203,13 @@ public class InGameHUD : UIHUD
             boxBounceTween = null;
             randomBoxIcon.localScale = Vector3.one;
         }
+    }
+
+    // 서빙 판정 즉시 — 해당 손님 카드에 도장 (제거 연출은 손님 이벤트가 이어서)
+    private void HandleDishServed(Table table, Customer customer, RecipeData recipe, bool succeeded)
+    {
+        if (customer != null && activeSlots.TryGetValue(customer, out var slot) && slot != null)
+            slot.ShowStamp(succeeded);
     }
 
     // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
