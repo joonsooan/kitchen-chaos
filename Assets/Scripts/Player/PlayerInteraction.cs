@@ -44,21 +44,37 @@ public class PlayerInteraction : MonoBehaviour
     /// </summary>
     public bool TryInteract(Vector2 direction)
     {
+        if (!TryFindInteractable(direction, out IInteractable interactable, out _)) return false;
+
+        interactable.Interact(controller);
+        return true;
+    }
+
+    public bool TryPeekInteractable(Vector2 direction, out Transform hitTransform)
+    {
+        return TryFindInteractable(direction, out _, out hitTransform);
+    }
+
+    private bool TryFindInteractable(Vector2 direction, out IInteractable interactable, out Transform hitTransform)
+    {
         int count = Physics2D.Raycast(transform.position, direction.normalized, contactFilter, hitBuffer, interactDistance);
 
         for (int i = 0; i < count; i++)
         {
-            Transform hitTransform = hitBuffer[i].collider.transform;
-            if (hitTransform == transform || hitTransform.IsChildOf(transform)) continue;
+            Transform candidateTransform = hitBuffer[i].collider.transform;
+            if (candidateTransform == transform || candidateTransform.IsChildOf(transform)) continue;
 
-            IInteractable interactable = hitBuffer[i].collider.GetComponentInParent<IInteractable>();
-            if (interactable != null)
+            IInteractable candidate = hitBuffer[i].collider.GetComponentInParent<IInteractable>();
+            if (candidate != null)
             {
-                interactable.Interact(controller);
+                interactable = candidate;
+                hitTransform = candidateTransform;
                 return true;
             }
         }
 
+        interactable = null;
+        hitTransform = null;
         return false;
     }
 
