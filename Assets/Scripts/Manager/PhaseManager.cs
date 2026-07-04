@@ -88,6 +88,8 @@ public class PhaseManager : MonoBehaviour
                 return;
             }
             IsResting = true;
+            // 휴식 동안엔 다음 페이즈 목표를 미리 표시 (표시 전용 — 판정은 Targets 직접 참조)
+            if (endedPhase < Targets.Length) CurrentTarget = Targets[endedPhase];
         }
     }
 

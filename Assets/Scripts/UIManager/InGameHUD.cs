@@ -47,6 +47,7 @@ public class InGameHUD : UIHUD
     private bool initialized;
     private TextMeshProUGUI phaseLabelText;   // 페이즈/쉬는시간 탭 (프리팹 optional)
     private TextMeshProUGUI prankText;        // 장난 남은시간 (프리팹 optional)
+    private TextMeshProUGUI targetText;       // 목표 점수/기한 (프리팹 optional)
     private float prankEndTime = -1f;         // Time.time 기준
 
     // ShowHUDUI가 호출 — AddOrder 전에 바인딩 보장 (Start는 한 프레임 늦어 순서버그)
@@ -74,6 +75,9 @@ public class InGameHUD : UIHUD
             phaseLabelText = box.Find("PhaseTab/PhaseLabelText")?.GetComponent<TextMeshProUGUI>();
             prankText      = box.Find("PrankText")?.GetComponent<TextMeshProUGUI>();
         }
+
+        if (scoreText != null)
+            targetText = scoreText.transform.parent.Find("TargetText")?.GetComponent<TextMeshProUGUI>();
 
         // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
         BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
@@ -311,6 +315,22 @@ public class InGameHUD : UIHUD
 
         if (phaseLabelText != null && PhaseManager.CurrentPhase > 0)
             phaseLabelText.text = PhaseManager.IsResting ? "쉬는 시간" : $"{PhaseManager.CurrentPhase}페이즈";
+
+        // 목표 시각화 — "mm:ss까지 N점" (페이즈 마감까지 남은 시간 기준)
+        if (targetText != null)
+        {
+            bool show = PhaseManager.CurrentPhase > 0;
+            if (targetText.gameObject.activeSelf != show) targetText.gameObject.SetActive(show);
+            if (show)
+            {
+                float deadline = PhaseManager.SegmentRemaining;
+                int tm = (int)(deadline / 60f);
+                int ts = (int)(deadline % 60f);
+                targetText.text = PhaseManager.IsResting
+                    ? $"다음 목표 {PhaseManager.CurrentTarget}점"
+                    : $"{tm:00}:{ts:00}까지 {PhaseManager.CurrentTarget}점";
+            }
+        }
 
         // 장난 남은시간 — 끝나면(사라지면) 같이 사라짐
         if (prankText != null)
