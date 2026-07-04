@@ -9,23 +9,29 @@ public class InGameHUD : UIHUD
         TimeText,
         CoinText,
         ScoreText,
+        BuffTimeText,
     }
 
     enum GameObjects
     {
         OrderLayout,
         RandomBoxIcon,
+        BuffIcon,
     }
 
     private const string OrderPrefabPath     = "UI/Slot/OrderSlot";
     private const string CoinFloatPrefabPath = "UI/HUD/HudFloatText";
 
     private int lastMoney = -1;   // 코인 증가분 감지용 (-1 = 초기화 전)
+    private readonly HashSet<BuffData> activeBuffs = new();   // 동시·재획득 버프 추적
+    private BuffData lastBuff;    // 남은시간 표시 대상 (가장 최근 버프)
 
     private TextMeshProUGUI timeText;
     private TextMeshProUGUI coinText;
     private TextMeshProUGUI scoreText;
+    private TextMeshProUGUI buffTimeText;
     private Transform orderLayout;
+    private GameObject buffIcon;
     private bool initialized;
 
     // ShowHUDUI가 호출 — AddOrder 전에 바인딩 보장 (Start는 한 프레임 늦어 순서버그)
@@ -37,10 +43,12 @@ public class InGameHUD : UIHUD
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        timeText    = Get<TextMeshProUGUI>((int)Texts.TimeText);
-        coinText    = Get<TextMeshProUGUI>((int)Texts.CoinText);
-        scoreText   = Get<TextMeshProUGUI>((int)Texts.ScoreText);
-        orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+        timeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
+        coinText     = Get<TextMeshProUGUI>((int)Texts.CoinText);
+        scoreText    = Get<TextMeshProUGUI>((int)Texts.ScoreText);
+        buffTimeText = Get<TextMeshProUGUI>((int)Texts.BuffTimeText);
+        orderLayout  = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+        buffIcon     = Get<GameObject>((int)GameObjects.BuffIcon);
 
         // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
         BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
@@ -60,6 +68,8 @@ public class InGameHUD : UIHUD
         GameManager.OnScoreChanged     += HandleScoreChanged;
         GameManager.OnTimeTick         += HandleTimeTick;
         RandomBoxManager.OnBoxOpened   += HandleBoxOpened;
+        BuffManager.OnBuffStarted      += HandleBuffStarted;
+        BuffManager.OnBuffEnded        += HandleBuffEnded;
     }
 
     private void OnDisable()
@@ -68,6 +78,39 @@ public class InGameHUD : UIHUD
         GameManager.OnScoreChanged     -= HandleScoreChanged;
         GameManager.OnTimeTick         -= HandleTimeTick;
         RandomBoxManager.OnBoxOpened   -= HandleBoxOpened;
+        BuffManager.OnBuffStarted      -= HandleBuffStarted;
+        BuffManager.OnBuffEnded        -= HandleBuffEnded;
+    }
+
+    // 버프 시작/종료 → BuffIcon 표시 토글 (재획득·동시 버프는 HashSet으로 정확 추적)
+    private void HandleBuffStarted(BuffData buff)
+    {
+        activeBuffs.Add(buff);
+        lastBuff = buff;
+        if (buffIcon == null) return;
+
+        buffIcon.SetActive(true);
+
+        // 버프 아이콘 스프라이트 지정돼 있으면 교체 (없으면 기존 이미지 유지)
+        if (buff.icon != null && buffIcon.TryGetComponent(out UnityEngine.UI.Image image))
+            image.sprite = buff.icon;
+    }
+
+    private void HandleBuffEnded(BuffData buff)
+    {
+        activeBuffs.Remove(buff);
+        if (activeBuffs.Count == 0 && buffIcon != null)
+            buffIcon.SetActive(false);
+    }
+
+    // 남은시간 폴링 — BuffIcon 밑 BuffTimeText 갱신
+    private void Update()
+    {
+        if (buffTimeText == null || lastBuff == null || !buffIcon.activeSelf) return;
+        if (BuffManager.Instance == null) return;
+
+        float remaining = BuffManager.Instance.GetRemaining(lastBuff);
+        buffTimeText.text = Mathf.CeilToInt(remaining).ToString();
     }
 
     // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
