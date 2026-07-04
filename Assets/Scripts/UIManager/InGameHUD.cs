@@ -19,7 +19,14 @@ public class InGameHUD : UIHUD
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     private const string OrderPrefabPath = "UI/Slot/OrderSlot";
+=======
+    private const string OrderPrefabPath     = "UI/Slot/OrderSlot";
+    private const string CoinFloatPrefabPath = "UI/HUD/HudFloatText";
+
+    private int lastMoney = -1;   // 코인 증가분 감지용 (-1 = 초기화 전)
+>>>>>>> bdb596a (feat(ui): coin delta float, jump arc, event-driven box popup)
 
     private TextMeshProUGUI timeText;
     private TextMeshProUGUI coinText;
@@ -103,7 +110,35 @@ public class InGameHUD : UIHUD
 
     private void HandleMoneyChanged(int money)
     {
+        // 변화량 플로팅 — 증가 초록 +N, 감소 빨강 -N (코인 카운터 위에서 떠오름)
+        if (lastMoney >= 0 && money != lastMoney)
+            SpawnCoinFloat(money - lastMoney);
+        lastMoney = money;
+
         if (coinText != null) coinText.text = money.ToString();
+    }
+
+    private void SpawnCoinFloat(int delta)
+    {
+        if (coinText == null) return;
+
+        var prefab = Resources.Load<GameObject>(CoinFloatPrefabPath);
+        if (prefab == null) return;
+
+        // 코인 카운터와 같은 부모에 스폰 → 같은 위치 기준으로 위로 떠오름
+        var coinRect = (RectTransform)coinText.transform.parent;
+        var go = Instantiate(prefab, coinRect.parent);
+        var rt = (RectTransform)go.transform;
+        rt.anchorMin = coinRect.anchorMin;
+        rt.anchorMax = coinRect.anchorMax;
+        rt.anchoredPosition = coinRect.anchoredPosition;
+
+        string text = delta > 0 ? $"+{delta}" : delta.ToString();   // 음수는 자체 '-' 포함
+        Color  color = delta > 0
+            ? new Color(0.35f, 0.9f, 0.35f)
+            : new Color(0.9f, 0.3f, 0.3f);
+
+        go.GetComponent<HudFloatText>().Show(text, color);
     }
 
     private void HandleScoreChanged(int score)

@@ -37,10 +37,11 @@ public class OrderUIBridge : MonoBehaviour
         if (GameManager.Instance != null)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         {
+=======
+>>>>>>> bdb596a (feat(ui): coin delta float, jump arc, event-driven box popup)
             GameManager.Instance.StartGame();
-            GameManager.Instance.AddMoney(100);   // TEST: 랜덤박스 테스트용 — 확인 후 제거
-        }
     }
 
     private void OnEnable()  => Customer.OnAnyCustomerSeated += HandleSeated;
