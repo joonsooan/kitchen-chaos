@@ -4,12 +4,9 @@ using UnityEngine;
 
 public enum PlayerState
 {
-    // 필요 시 State 추가 예정
     Idle,
     Moving,
-    Chopping,
-    Cooking,
-    Fetching,
+    Busy,
 }
 
 public enum CarryingItemType

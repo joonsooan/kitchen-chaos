@@ -53,6 +53,8 @@ public class PlayerMovement : MonoBehaviour
     {
         moveInput = moveAction.ReadValue<Vector2>();
         if (moveInput.sqrMagnitude > 0f) FacingDirection = moveInput.normalized;
+
+        if (playerController.CurrentState == PlayerState.Busy) return;
         playerController.ChangeState(moveInput.sqrMagnitude > 0f ? PlayerState.Moving : PlayerState.Idle);
     }
 
@@ -63,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnInteractPerformed(InputAction.CallbackContext context)
     {
-        playerController.ChangeState(PlayerState.Fetching);
         InteractPressed?.Invoke();
     }
 }

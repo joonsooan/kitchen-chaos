@@ -112,76 +112,54 @@ public class GridSystem : MonoBehaviour
         return baseTiles[index] != TileType.Blocked && occupants[index] == null;
     }
 
-    public bool TryGetOccupant(Vector2Int cell, out GameObject occupant)
-    {
-        if (!IsInBounds(cell))
-        {
-            occupant = null;
-            return false;
-        }
-
-        EnsureRuntimeState();
-        occupant = occupants[CellIndex(cell)];
-        return occupant != null;
-    }
+    public bool TryGetOccupant(Vector2Int cell, out GameObject occupant) => TryGetSlot(occupants, cell, out occupant);
 
     /// <summary>Claims a cell for an occupant. Fails if out of bounds or already held by a different object.</summary>
-    public bool SetOccupant(Vector2Int cell, GameObject go)
-    {
-        if (!IsInBounds(cell)) return false;
-
-        EnsureRuntimeState();
-        int index = CellIndex(cell);
-        if (occupants[index] != null && occupants[index] != go) return false;
-
-        occupants[index] = go;
-        return true;
-    }
+    public bool SetOccupant(Vector2Int cell, GameObject go) => SetSlot(occupants, cell, go);
 
     /// <summary>Clears a cell's occupant only if it still matches the given object.</summary>
-    public void ClearOccupant(Vector2Int cell, GameObject go)
-    {
-        if (!IsInBounds(cell)) return;
+    public void ClearOccupant(Vector2Int cell, GameObject go) => ClearSlot(occupants, cell, go);
 
-        EnsureRuntimeState();
-        int index = CellIndex(cell);
-        if (occupants[index] == go) occupants[index] = null;
-    }
+    public bool TryGetPlacedItem(Vector2Int cell, out GameObject placedItem) => TryGetSlot(placedItems, cell, out placedItem);
 
-    public bool TryGetPlacedItem(Vector2Int cell, out GameObject placedItem)
+    /// <summary>Claims a cell's item slot (ingredient/plate/cup sitting on floor or desk). Independent of occupants.</summary>
+    public bool SetPlacedItem(Vector2Int cell, GameObject go) => SetSlot(placedItems, cell, go);
+
+    /// <summary>Clears a cell's placed item only if it still matches the given object.</summary>
+    public void ClearPlacedItem(Vector2Int cell, GameObject go) => ClearSlot(placedItems, cell, go);
+
+    private bool TryGetSlot(GameObject[] slots, Vector2Int cell, out GameObject value)
     {
         if (!IsInBounds(cell))
         {
-            placedItem = null;
+            value = null;
             return false;
         }
 
         EnsureRuntimeState();
-        placedItem = placedItems[CellIndex(cell)];
-        return placedItem != null;
+        value = slots[CellIndex(cell)];
+        return value != null;
     }
 
-    /// <summary>Claims a cell's item slot (ingredient/plate/cup sitting on floor or desk). Independent of occupants.</summary>
-    public bool SetPlacedItem(Vector2Int cell, GameObject go)
+    private bool SetSlot(GameObject[] slots, Vector2Int cell, GameObject go)
     {
         if (!IsInBounds(cell)) return false;
 
         EnsureRuntimeState();
         int index = CellIndex(cell);
-        if (placedItems[index] != null && placedItems[index] != go) return false;
+        if (slots[index] != null && slots[index] != go) return false;
 
-        placedItems[index] = go;
+        slots[index] = go;
         return true;
     }
 
-    /// <summary>Clears a cell's placed item only if it still matches the given object.</summary>
-    public void ClearPlacedItem(Vector2Int cell, GameObject go)
+    private void ClearSlot(GameObject[] slots, Vector2Int cell, GameObject go)
     {
         if (!IsInBounds(cell)) return;
 
         EnsureRuntimeState();
         int index = CellIndex(cell);
-        if (placedItems[index] == go) placedItems[index] = null;
+        if (slots[index] == go) slots[index] = null;
     }
 
     /// <summary>Cell directly in front of a world position, snapping facing to the nearest 4-way direction.</summary>
