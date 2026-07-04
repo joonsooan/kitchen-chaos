@@ -6,11 +6,13 @@ public static class DataTable
     public static readonly Ingredient[]   Ingredients;
     public static readonly RecipeData[]   Recipes;
     public static readonly CustomerData[] Customers;
+    public static readonly BuffData[]     Buffs;
 
     static DataTable()
     {
         Ingredients = Resources.LoadAll<Ingredient>("Ingredients Data");
         Recipes     = Resources.LoadAll<RecipeData>("Recipe Data");
         Customers   = Resources.LoadAll<CustomerData>("Customer Data");
+        Buffs       = Resources.LoadAll<BuffData>("Buff Data");
     }
 }

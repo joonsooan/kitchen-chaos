@@ -5,6 +5,7 @@ using UnityEngine;
 public class CustomerGaugeTestEditor : Editor
 {
     private const string CustomerPrefabPath = "Assets/Prefabs/Customers/Customer_Rabbit.prefab";
+    private const string GaugePrefabPath    = "Assets/Prefabs/Customers/CustomerGauge.prefab";
 
     public override void OnInspectorGUI()
     {
@@ -38,8 +39,13 @@ public class CustomerGaugeTestEditor : Editor
             return;
         }
 
+        var gaugeGo = AssetDatabase.LoadAssetAtPath<GameObject>(GaugePrefabPath);
+        if (gaugeGo == null) Debug.LogWarning($"[GaugeTest] 못 찾음: {GaugePrefabPath}");
+
         var so = new SerializedObject(test);
         so.FindProperty("customerPrefab").objectReferenceValue = customerGo.GetComponent<Customer>();
+        so.FindProperty("gaugePrefab").objectReferenceValue =
+            gaugeGo != null ? gaugeGo.GetComponent<CustomerGaugeView>() : null;
         so.ApplyModifiedProperties();
 
         EditorUtility.SetDirty(test);

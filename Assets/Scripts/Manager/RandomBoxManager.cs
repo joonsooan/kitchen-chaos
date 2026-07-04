@@ -15,7 +15,25 @@ public class RandomBoxManager : KSingleton<RandomBoxManager>
 
     private void OnBoxOpened()
     {
-        // TODO: 랜덤박스 보상 로직
-        Debug.Log("RandomBox opened");
+        UIManager.Instance.ShowPopupUI<RandomBoxPopup>();
+    }
+
+    // weight 가중치 롤 — 결과 버프 반환 (팝업이 호출)
+    public BuffData Roll()
+    {
+        var buffs = DataTable.Buffs;
+        if (buffs == null || buffs.Length == 0) return null;
+
+        int total = 0;
+        foreach (var b in buffs) total += b.weight;
+        if (total <= 0) return null;
+
+        int roll = Random.Range(0, total);
+        foreach (var b in buffs)
+        {
+            roll -= b.weight;
+            if (roll < 0) return b;
+        }
+        return buffs[buffs.Length - 1];
     }
 }
