@@ -13,9 +13,7 @@ public class UISlot : UIBase
     private Slider    _gauge;
     private Transform _ingredientRow;
 
-    private float _tolerance;
-    private float _remaining;
-    private bool  _counting;
+    private Customer _customer;   // 게이지·카드 수명 단일 소스
 
     public override void Init()
     {
@@ -28,15 +26,49 @@ public class UISlot : UIBase
         _ingredientRow = Get<GameObject>((int)GameObjects.IngredientRow).transform;
     }
 
-    // CustomerData로 카드 채우기 — 레시피 표시 + 게이지(toleranceSeconds) 시작
-    public void Setup(CustomerData customer)
+    // 손님으로 카드 채우기 — 레시피 표시 + 성공/실패 이벤트 구독
+    public void Setup(Customer customer)
     {
         if (customer == null) return;
 
-        FillRecipe(customer.requiredRecipe);
-        StartGauge(customer.toleranceSeconds);
+        Unsubscribe();               // 재사용 대비
+        _customer = customer;
+        Subscribe();
+
+        if (customer.CustomerData != null)
+            FillRecipe(customer.CustomerData.requiredRecipe);
     }
 
+    // ── 이벤트 구독 (인스턴스 이벤트 — OnEnable/OnDisable 짝 규칙) ────
+    private void OnEnable()  => Subscribe();
+    private void OnDisable() => Unsubscribe();
+
+    private void Subscribe()
+    {
+        if (_customer == null) return;
+
+        // 중복 방지: -= 후 +=
+        _customer.OnOrderSucceeded -= HandleOrderClosed;
+        _customer.OnOrderFailed    -= HandleOrderClosed;
+        _customer.OnOrderSucceeded += HandleOrderClosed;
+        _customer.OnOrderFailed    += HandleOrderClosed;
+    }
+
+    private void Unsubscribe()
+    {
+        if (_customer == null) return;
+
+        _customer.OnOrderSucceeded -= HandleOrderClosed;
+        _customer.OnOrderFailed    -= HandleOrderClosed;
+    }
+
+    // 성공/실패 공통 — 주문 카드 제거
+    private void HandleOrderClosed(Customer customer, RecipeData recipe)
+    {
+        Destroy(gameObject);
+    }
+
+    // ── 레시피 표시 ───────────────────────────────────────────────
     private void FillRecipe(RecipeData recipe)
     {
         if (recipe == null) return;
@@ -47,7 +79,7 @@ public class UISlot : UIBase
         for (int i = _ingredientRow.childCount - 1; i >= 0; i--)
             Destroy(_ingredientRow.GetChild(i).gameObject);
 
-        // 레시피 재료마다 IngredientSlot 스폰
+        // 레시피 재료마다 IngredientSlot 프리팹 스폰
         var prefab = Resources.Load<GameObject>(IngredientPrefabPath);
         foreach (var entry in recipe.ingredients)
         {
@@ -59,27 +91,17 @@ public class UISlot : UIBase
         }
     }
 
-    private void StartGauge(float tolerance)
-    {
-        _tolerance = Mathf.Max(0.01f, tolerance);
-        _remaining = _tolerance;
-        _counting  = true;
-        SetGauge(1f);
-    }
-
-    // 게이지 직접 세팅 (0~1) — 외부에서 실제 손님 타이머 연결 시 사용
-    public void SetGauge(float value01)
-    {
-        if (_gauge != null) _gauge.value = Mathf.Clamp01(value01);
-    }
-
+    // ── 게이지 (RemainingPatience 폴링) ───────────────────────────
     private void Update()
     {
-        if (!_counting) return;
+        if (_customer == null || _gauge == null) return;
+        if (_customer.CurrentState != CustomerState.Waiting) return;
 
-        _remaining -= Time.deltaTime;
-        SetGauge(_remaining / _tolerance);
+        float tolerance = _customer.CustomerData != null
+            ? _customer.CustomerData.toleranceSeconds
+            : 0f;
+        if (tolerance <= 0f) return;
 
-        if (_remaining <= 0f) _counting = false;
+        _gauge.value = Mathf.Clamp01(_customer.RemainingPatience / tolerance);
     }
 }

@@ -12,6 +12,9 @@ public class GameManager : KSingleton<GameManager>
     public float ElapsedTime { get; private set; }
     public bool IsRunning { get; private set; }
 
+    // 버프용 보상 배율 (LuckBuff가 설정) — 주문 보상에만 적용
+    public int RewardMultiplier { get; set; } = 1;
+
     protected override void Awake()
     {
         base.Awake();
@@ -45,8 +48,8 @@ public class GameManager : KSingleton<GameManager>
 
     public void AddReward(RecipeData recipe)
     {
-        AddMoney(recipe.moneyReward);
-        AddScore(recipe.scoreReward);
+        AddMoney(recipe.moneyReward * RewardMultiplier);
+        AddScore(recipe.scoreReward * RewardMultiplier);
     }
 
     public void AddMoney(int amount)

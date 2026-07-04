@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 4f;
 
+    // 버프용 이동속도 배율 (SpeedBuff가 설정)
+    public float SpeedMultiplier { get; set; } = 1f;
+
     private Rigidbody2D rb;
     private PlayerController playerController;
 
@@ -61,7 +64,7 @@ public class PlayerMovement : MonoBehaviour
     private void FixedUpdate()
     {
         if (playerController.CurrentState == PlayerState.Busy) return;
-        rb.MovePosition(rb.position + moveInput.normalized * (moveSpeed * Time.fixedDeltaTime));
+        rb.MovePosition(rb.position + moveInput.normalized * (moveSpeed * SpeedMultiplier * Time.fixedDeltaTime));
     }
 
     private void OnInteractPerformed(InputAction.CallbackContext context)

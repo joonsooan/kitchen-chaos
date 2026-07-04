@@ -53,6 +53,12 @@ public class Customer : MonoBehaviour
         pool = ownerPool;
     }
 
+    // 주문 데이터 주입 (레시피·tolerance)
+    public void SetData(CustomerData data)
+    {
+        customerData = data;
+    }
+
     public void ReturnToPool()
     {
         if (pool != null) pool.Release(gameObject);

@@ -4,66 +4,97 @@ using UnityEngine;
 
 public class InGameHUD : UIHUD
 {
-
     enum Texts
     {
         TimeText,
+        CoinText,
+        ScoreText,
     }
 
     enum GameObjects
     {
         OrderLayout,
+        RandomBoxIcon,
     }
 
     private const string OrderPrefabPath = "UI/Slot/OrderSlot";
 
     private TextMeshProUGUI timeText;
+    private TextMeshProUGUI coinText;
+    private TextMeshProUGUI scoreText;
     private Transform orderLayout;
-    private float elapsed;
+    private bool initialized;
 
-    private readonly Dictionary<Customer, UISlot> activeSlots = new Dictionary<Customer, UISlot>();
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // ShowHUDUI가 호출 — AddOrder 전에 바인딩 보장 (Start는 한 프레임 늦어 순서버그)
+    public override void Init()
     {
-        base.Init();
+        if (initialized) return;
+        initialized = true;
+
         Bind<TextMeshProUGUI>(typeof(Texts));
         Bind<GameObject>(typeof(GameObjects));
 
-        timeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
+        timeText    = Get<TextMeshProUGUI>((int)Texts.TimeText);
+        coinText    = Get<TextMeshProUGUI>((int)Texts.CoinText);
+        scoreText   = Get<TextMeshProUGUI>((int)Texts.ScoreText);
         orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+
+        // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
+        BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
+        {
+            if (RandomBoxManager.Instance != null)
+                RandomBoxManager.Instance.TryOpen();
+        });
     }
 
+    // 씬에 직접 배치된 경우 대비
+    void Start() => Init();
+
+    // ── 전역 HUD 이벤트 (static — 노션 규칙: 매니저급 UI 한 번 구독) ──
     private void OnEnable()
     {
-        Customer.OnAnyCustomerSeated += HandleCustomerSeated;
-        Customer.OnAnyCustomerLeft += HandleCustomerLeft;
+        GameManager.OnMoneyChanged     += HandleMoneyChanged;
+        GameManager.OnScoreChanged     += HandleScoreChanged;
+        GameManager.OnTimeTick         += HandleTimeTick;
+        RandomBoxManager.OnBoxOpened   += HandleBoxOpened;
     }
 
     private void OnDisable()
     {
-        Customer.OnAnyCustomerSeated -= HandleCustomerSeated;
-        Customer.OnAnyCustomerLeft -= HandleCustomerLeft;
+        GameManager.OnMoneyChanged     -= HandleMoneyChanged;
+        GameManager.OnScoreChanged     -= HandleScoreChanged;
+        GameManager.OnTimeTick         -= HandleTimeTick;
+        RandomBoxManager.OnBoxOpened   -= HandleBoxOpened;
     }
 
-    // 손님이 착석해 주문을 넣는 시점 — 주문 슬롯 추가
-    private void HandleCustomerSeated(Customer customer)
+    // 랜덤박스 개봉 이벤트 → 팝업 표시 (UI는 구독자)
+    private void HandleBoxOpened()
     {
-        if (activeSlots.ContainsKey(customer)) return;
-        activeSlots[customer] = AddOrder(customer.CustomerData);
+        UIManager.Instance.ShowPopupUI<RandomBoxPopup>();
     }
 
-    // 손님이 퇴장하는 시점(성공/실패 모두) — 해당 주문 슬롯 제거
-    private void HandleCustomerLeft(Customer customer)
+    private void HandleMoneyChanged(int money)
     {
-        if (!activeSlots.TryGetValue(customer, out UISlot slot)) return;
-
-        activeSlots.Remove(customer);
-        if (slot != null) Destroy(slot.gameObject);
+        if (coinText != null) coinText.text = money.ToString();
     }
 
-    // 주문 1개 추가 — 게임 로직에서 호출
-    public UISlot AddOrder(CustomerData customer)
+    private void HandleScoreChanged(int score)
+    {
+        if (scoreText != null) scoreText.text = score.ToString();
+    }
+
+    private void HandleTimeTick(float elapsedTime)
+    {
+        if (timeText == null) return;
+
+        int minutes = (int)(elapsedTime / 60f);
+        int seconds = (int)(elapsedTime % 60f);
+        timeText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    // 주문 카드 추가 — 손님 착석 시 게임 로직에서 호출.
+    // 카드 게이지·제거는 UISlot이 손님 이벤트로 처리.
+    public UISlot AddOrder(Customer customer)
     {
         var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
         var slot = go.GetComponent<UISlot>();
@@ -74,16 +105,5 @@ public class InGameHUD : UIHUD
         slot.Init();
         slot.Setup(customer);
         return slot;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //시간따라 mm:ss
-        elapsed += Time.deltaTime;
-
-        int minutes = (int)(elapsed / 60f);
-        int seconds = (int)(elapsed % 60f);
-        timeText.text = $"{minutes:00}:{seconds:00}";
     }
 }

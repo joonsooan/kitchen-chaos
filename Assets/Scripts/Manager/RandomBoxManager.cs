@@ -1,21 +1,38 @@
+using System;
 using UnityEngine;
 
 public class RandomBoxManager : KSingleton<RandomBoxManager>
 {
-    [SerializeField] private int cost = 100;
+    // 개봉 성공 시 발행 — UI가 구독해서 팝업 표시 (로직은 UI를 모름)
+    public static event Action OnBoxOpened;
+
+    [SerializeField] private int cost = 20;
 
     public bool TryOpen()
     {
         if (GameManager.Instance.Money < cost) return false;
 
         GameManager.Instance.AddMoney(-cost);
-        OnBoxOpened();
+        OnBoxOpened?.Invoke();
         return true;
     }
 
-    private void OnBoxOpened()
+    // weight 가중치 롤 — 결과 버프 반환 (팝업이 호출)
+    public BuffData Roll()
     {
-        // TODO: 랜덤박스 보상 로직
-        Debug.Log("RandomBox opened");
+        var buffs = DataTable.Buffs;
+        if (buffs == null || buffs.Length == 0) return null;
+
+        int total = 0;
+        foreach (var b in buffs) total += b.weight;
+        if (total <= 0) return null;
+
+        int roll = UnityEngine.Random.Range(0, total);
+        foreach (var b in buffs)
+        {
+            roll -= b.weight;
+            if (roll < 0) return b;
+        }
+        return buffs[buffs.Length - 1];
     }
 }
