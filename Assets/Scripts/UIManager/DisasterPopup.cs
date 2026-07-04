@@ -55,7 +55,7 @@ public class DisasterPopup : UIPopup
             float baseAlpha = dim.color.a;
             var seq = DG.Tweening.DOTween.Sequence().SetUpdate(true).SetLink(gameObject);
             seq.Append(dim.DOColor(flashColor, 0.12f));
-            seq.Append(dim.DOColor(new Color(0f, 0f, 0f, baseAlpha), 0.4f));
+            seq.Append(dim.DOColor(new Color(0f, 0f, 0f, baseAlpha), 1.2f));   // 천천히 페이드아웃
         }
     }
 
