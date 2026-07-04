@@ -16,7 +16,7 @@ MonoBehaviour:
   recipeName: "\uBCA0\uB9AC \uC0D0\uB7EC\uB4DC"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 91d838b6fb503d846b866c973322cca3, type: 2}
-    requiredCookingMethod: 0
+    requiredCookingMethod: 3
     amount: 1
   - ingredientType: {fileID: 11400000, guid: 72c256c749fe8324380ba72041b889a1, type: 2}
     requiredCookingMethod: 2
