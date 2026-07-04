@@ -31,12 +31,17 @@ public class InGameHUD : UIHUD
     private readonly HashSet<BuffData> activeBuffs = new();   // 동시·재획득 버프 추적
     private BuffData lastBuff;    // 남은시간 표시 대상 (가장 최근 버프)
 
+    // 날아가는 동전 목표 지점 (ServeResultView가 사용)
+    public RectTransform CoinAnchor => coinText != null ? coinText.rectTransform : null;
+
     private TextMeshProUGUI timeText;
     private TextMeshProUGUI coinText;
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI buffTimeText;
     private Transform orderLayout;
     private GameObject buffIcon;
+    private Transform randomBoxIcon;
+    private Tween boxBounceTween;
     private UnityEngine.UI.Image buffIconImage;
     private bool initialized;
 
@@ -56,6 +61,8 @@ public class InGameHUD : UIHUD
         orderLayout  = Get<GameObject>((int)GameObjects.OrderLayout).transform;
         buffIcon     = Get<GameObject>((int)GameObjects.BuffIcon);
         if (buffIcon != null) buffIconImage = buffIcon.GetComponent<UnityEngine.UI.Image>();
+
+        randomBoxIcon = Get<GameObject>((int)GameObjects.RandomBoxIcon).transform;
 
         // 럭키박스 버튼 — 코인 차감 성공 시 팝업 (RandomBoxManager.OnBoxOpened 경유)
         BindEvent(Get<GameObject>((int)GameObjects.RandomBoxIcon), evt =>
@@ -119,6 +126,8 @@ public class InGameHUD : UIHUD
     // 남은시간 폴링 — BuffIcon 밑 BuffTimeText 갱신 + 만료 5초 전 깜빡
     private void Update()
     {
+        UpdateBoxBounce();
+
         if (buffTimeText == null || lastBuff == null || !buffIcon.activeSelf) return;
         if (BuffManager.Instance == null) return;
 
@@ -133,6 +142,30 @@ public class InGameHUD : UIHUD
                 : 1f;
             var c = buffIconImage.color; c.a = alpha; buffIconImage.color = c;
             var tc = buffTimeText.color; tc.a = alpha; buffTimeText.color = tc;
+        }
+    }
+
+    // 살 수 있을 때 럭키박스 아이콘 살랑살랑 (어포던스)
+    private void UpdateBoxBounce()
+    {
+        if (randomBoxIcon == null || GameManager.Instance == null || RandomBoxManager.Instance == null) return;
+
+        bool affordable = GameManager.Instance.Money >= RandomBoxManager.Instance.Cost;
+        bool bouncing   = boxBounceTween != null && boxBounceTween.IsActive();
+
+        if (affordable && !bouncing)
+        {
+            boxBounceTween = randomBoxIcon
+                .DOScale(1.12f, 0.45f)
+                .SetEase(Ease.InOutSine)
+                .SetLoops(-1, LoopType.Yoyo)
+                .SetLink(randomBoxIcon.gameObject);
+        }
+        else if (!affordable && bouncing)
+        {
+            boxBounceTween.Kill();
+            boxBounceTween = null;
+            randomBoxIcon.localScale = Vector3.one;
         }
     }
 

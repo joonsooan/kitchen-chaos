@@ -25,5 +25,14 @@ public class OrderUIBridge : MonoBehaviour
     {
         if (hud != null) hud.AddOrder(customer);
         if (gaugePrefab != null) Instantiate(gaugePrefab).Bind(customer);
+
+        // 착석 신호 — 머리 위 "!" 팝
+        var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
+        if (prefab != null)
+        {
+            var popup = Instantiate(prefab).GetComponent<ServeResultPopup>();
+            popup.Show(customer.transform.position + new Vector3(0f, 1.6f, 0f),
+                       "!", new Color(1f, 0.85f, 0.2f));
+        }
     }
 }

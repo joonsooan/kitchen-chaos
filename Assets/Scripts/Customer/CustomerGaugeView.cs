@@ -40,11 +40,26 @@ public class CustomerGaugeView : MonoBehaviour
             fill.color = UISlot.GaugeColor(t);   // 주문 카드 게이지와 동일 색 규칙
         }
 
-        // 대기 종료(성공/실패/퇴장) 시 게이지 제거
-        if (target.CurrentState == CustomerState.LeavingSuccess ||
-            target.CurrentState == CustomerState.LeavingFailure)
+        // 대기 종료 — 성공/실패 반응 플로팅 띄우고 게이지 제거
+        if (target.CurrentState == CustomerState.LeavingSuccess)
         {
+            SpawnReaction("Good!", new Color(0.3f, 0.9f, 0.3f));
             Destroy(gameObject);
         }
+        else if (target.CurrentState == CustomerState.LeavingFailure)
+        {
+            SpawnReaction("Bad..", new Color(0.9f, 0.3f, 0.3f));
+            Destroy(gameObject);
+        }
+    }
+
+    // 손님 머리 위 반응 플로팅 (ServeResultPopup 재활용)
+    private void SpawnReaction(string text, Color color)
+    {
+        var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
+        if (prefab == null || target == null) return;
+
+        var popup = Object.Instantiate(prefab).GetComponent<ServeResultPopup>();
+        popup.Show(target.transform.position + worldOffset + Vector3.up * 0.3f, text, color);
     }
 }

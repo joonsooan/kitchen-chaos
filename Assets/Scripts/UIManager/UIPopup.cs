@@ -9,7 +9,7 @@ public class UIPopup : UIBase
     {
     }
 
-    // 등장 연출 — Panel(있으면)만 뿅, 없으면 루트 전체. 딤은 그대로.
+    // 등장 연출 — Panel 뿅 + 딤 페이드인
     private void OnEnable()
     {
         var target = transform.Find("Panel") ?? transform;
@@ -19,6 +19,15 @@ public class UIPopup : UIBase
               .SetEase(Ease.OutBack)
               .SetUpdate(true)          // 일시정지 중에도 재생
               .SetLink(target.gameObject);
+
+        // 딤(루트 Image) 스르륵
+        var dim = GetComponent<UnityEngine.UI.Image>();
+        if (dim != null)
+        {
+            float targetAlpha = dim.color.a;
+            var c = dim.color; c.a = 0f; dim.color = c;
+            dim.DOFade(targetAlpha, 0.15f).SetUpdate(true).SetLink(gameObject);
+        }
     }
 
     // 닫힘 연출 — 역방향 축소 후 콜백에서 실제 파괴 (UIManager가 호출)

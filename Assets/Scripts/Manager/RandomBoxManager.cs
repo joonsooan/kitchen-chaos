@@ -8,6 +8,8 @@ public class RandomBoxManager : KSingleton<RandomBoxManager>
 
     [SerializeField] private int cost = 20;
 
+    public int Cost => cost;
+
     public bool TryOpen()
     {
         if (GameManager.Instance.Money < cost) return false;
