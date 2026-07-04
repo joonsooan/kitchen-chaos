@@ -5,8 +5,8 @@ public class CabbageMonster : MonoBehaviour, IAttackable, IHasHealth
     [SerializeField] private int maxHealth = 3;
 
     [Header("양상추 말소리")]
-    [SerializeField] private float voiceIntervalMin = 4f;
-    [SerializeField] private float voiceIntervalMax = 10f;
+    [SerializeField] private float voiceIntervalMin = 1f;
+    [SerializeField] private float voiceIntervalMax = 4f;
 
     private int currentHealth;
 
