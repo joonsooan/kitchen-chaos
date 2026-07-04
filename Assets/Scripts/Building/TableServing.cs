@@ -65,6 +65,7 @@ public class TableServing : MonoBehaviour, IInteractable
         // up front and still route the dish into the eat-and-return sequence.
         bool succeeded = recipe != null && customer.CustomerData.requiredRecipe == recipe;
         if (succeeded) GameManager.Instance.AddReward(recipe);
+        else SoundManager.Instance?.PlaySFX(SFXType.OrderFailed);   // 잘못된 접시 = 주문 실패
 
         OnDishServed?.Invoke(table, customer, recipe, succeeded);
 

@@ -26,6 +26,8 @@ public class CabbageMonster : MonoBehaviour, IInteractable
 
     private void TakeDamage(int amount)
     {
+        SoundManager.Instance?.PlaySFX(SFXType.Hit);
+        // TODO: 양상추 말소리 시스템 생기면 여기서 SoundManager.Instance?.PlaySFX(SFXType.LettuceVoice);
         currentHealth -= amount;
         if (currentHealth > 0) return;
 

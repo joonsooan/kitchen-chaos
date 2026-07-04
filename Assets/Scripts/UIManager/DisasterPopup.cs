@@ -30,6 +30,9 @@ public class DisasterPopup : UIPopup
 
         BindEvent(Get<GameObject>((int)GameObjects.CloseButton), OnCloseClicked);
 
+        // 재앙 팝업이 실제로 표시(ShowPopupUI<DisasterPopup>)되면 자동 발화. 표시 트리거 미구현이라 지금은 휴면.
+        SoundManager.Instance?.PlaySFX(SFXType.DisasterOpen);
+
         PlayDisasterFx();
     }
 

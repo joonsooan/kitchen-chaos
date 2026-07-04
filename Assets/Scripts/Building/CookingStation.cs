@@ -89,6 +89,14 @@ public class CookingStation : MonoBehaviour, IInteractable
         if (requiresPresence) player.ChangeState(PlayerState.Busy);
         OnCookingStarted?.Invoke(this);
 
+        // 조리 시작 효과음 — 스테이션별(도마/후라이펜/믹서기)
+        switch (Method)
+        {
+            case CookingMethod.Chop: SoundManager.Instance?.PlaySFX(SFXType.Chop); break;
+            case CookingMethod.Fry:  SoundManager.Instance?.PlaySFX(SFXType.Fry);  break;
+            case CookingMethod.Mix:  SoundManager.Instance?.PlaySFX(SFXType.Mix);  break;
+        }
+
         yield return new WaitForSeconds(cookDuration);
 
         loadedItem.Instance.ApplyCookingMethod(Method);
