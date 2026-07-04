@@ -6,12 +6,14 @@ public class WeedSpawnEvent : DisasterEvent
     [SerializeField] private int weedCount = 3;
     [SerializeField] private float duration = 15f;
 
-    public override void Trigger()
+    public override float Duration => duration;
+
+    protected override bool TryTrigger()
     {
-        if (weedPrefab == null || weedCount <= 0) return;
+        if (weedPrefab == null || weedCount <= 0) return false;
 
         GridSystem grid = GridSystem.Instance;
-        if (grid == null) return;
+        if (grid == null) return false;
 
         for (int i = 0; i < weedCount; i++)
         {
@@ -22,5 +24,7 @@ public class WeedSpawnEvent : DisasterEvent
             WeedTile weedTile = weed.GetComponent<WeedTile>();
             if (weedTile != null) weedTile.Init(cell, duration);
         }
+
+        return true;
     }
 }

@@ -44,9 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9650293afce86f14094b2fd3b8429f17, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeedSpawnEvent
+  disasterName: "\uC7A1\uCD08 \uBC88\uC2DD"
+  disasterDescription: "\uC7A1\uCD08\uAC00 \uBB34\uC131\uD558\uAC8C \uC790\uB77C\uB0A9\uB2C8\uB2E4!"
   weedPrefab: {fileID: 8891624871928063836, guid: b2c290d201d110a4f979c8f79bcc5752, type: 3}
-  weedCount: 20
-  duration: 30
+  weedCount: 30
+  duration: 180
 --- !u!1 &1764774685301756242
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,8 +96,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15a13483dd539848af15f40567f3163, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisasterManager
-  firstTriggerSeconds: 10
-  triggerIntervalSeconds: 40
+  firstTriggerSeconds: 30
+  triggerIntervalSeconds: 120
   timeTriggerPool:
   - {fileID: 7723300903781883990}
   - {fileID: 34184425458625168}
@@ -147,7 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eb452b54d56980459b1a4093d933a10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InvertControlsEvent
-  duration: 30
+  disasterName: "\uD658\uAC01 \uBC84\uC12F"
+  disasterDescription: "\uC774\uC0C1\uD55C \uBC84\uC12F\uC744 \uBA39\uC5C8\uC2B5\uB2C8\uB2E4!
+    \uB208\uC55E\uC774 \uBE59\uAE00\uBE59\uAE00 \uB3D5\uB2C8\uB2E4\u2026"
+  duration: 180
 --- !u!1 &7718800067837846822
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,7 +197,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d740e2bf1fc5ea24d9e78d046f0c2c15, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterSpawnEvent
+  disasterName: "\uC591\uC0C1\uCD94 \uB300\uD0C8\uC8FC"
+  disasterDescription: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!"
   monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
   spawnCells:
   - {x: 4, y: 7}
   - {x: 6, y: 7}
+  spawnChance: 0.7
+  duration: 180

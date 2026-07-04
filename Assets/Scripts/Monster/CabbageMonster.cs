@@ -14,6 +14,11 @@ public class CabbageMonster : MonoBehaviour, IInteractable
         currentHealth = maxHealth;
     }
 
+    public void Init(float duration)
+    {
+        if (duration > 0f) Invoke(nameof(Despawn), duration);
+    }
+
     public void Interact(PlayerController player)
     {
         TakeDamage(1);
@@ -31,6 +36,7 @@ public class CabbageMonster : MonoBehaviour, IInteractable
 
     private void Despawn()
     {
+        CancelInvoke(nameof(Despawn));
         Destroy(gameObject);
     }
 }

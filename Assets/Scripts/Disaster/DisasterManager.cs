@@ -17,27 +17,47 @@ public class DisasterManager : KSingleton<DisasterManager>
     [SerializeField] private BuildingTrigger[] buildingTriggers;
 
     private float nextTimeTrigger;
+    private float disasterEndTime = -1f;
     private readonly List<(IngredientSource source, Action<IngredientSource, PlayerController> handler)> buildingSubscriptions = new();
 
     private void OnEnable()
     {
         GameManager.OnTimeTick += HandleTimeTick;
+        DisasterEvent.OnAnyDisasterTriggered += HandleDisasterTriggered;
         SubscribeBuildingTriggers();
     }
 
     private void OnDisable()
     {
         GameManager.OnTimeTick -= HandleTimeTick;
+        DisasterEvent.OnAnyDisasterTriggered -= HandleDisasterTriggered;
         UnsubscribeBuildingTriggers();
     }
 
     private void HandleTimeTick(float elapsedTime)
     {
+        // 이전 재앙 효과가 끝날 때까지 대기 — 끝나면 그 시점부터 인터벌 재계산
+        if (disasterEndTime >= 0f)
+        {
+            if (elapsedTime < disasterEndTime) return;
+
+            disasterEndTime = -1f;
+            nextTimeTrigger = elapsedTime + triggerIntervalSeconds;
+            return;
+        }
+
         if (nextTimeTrigger <= 0f) nextTimeTrigger = firstTriggerSeconds;
         if (elapsedTime < nextTimeTrigger) return;
 
-        nextTimeTrigger += triggerIntervalSeconds;
-        TriggerRandomEvent(timeTriggerPool);
+        DisasterEvent triggered = TriggerRandomEvent(timeTriggerPool);
+        if (triggered != null) disasterEndTime = elapsedTime + triggered.Duration;
+    }
+
+    private void HandleDisasterTriggered(DisasterEvent disasterEvent)
+    {
+        if (UIManager.Instance == null) return;
+
+        UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(disasterEvent.DisasterName, disasterEvent.DisasterDescription);
     }
 
     private void SubscribeBuildingTriggers()
@@ -64,10 +84,12 @@ public class DisasterManager : KSingleton<DisasterManager>
         buildingSubscriptions.Clear();
     }
 
-    private void TriggerRandomEvent(DisasterEvent[] pool)
+    private DisasterEvent TriggerRandomEvent(DisasterEvent[] pool)
     {
-        if (pool == null || pool.Length == 0) return;
+        if (pool == null || pool.Length == 0) return null;
 
-        pool[UnityEngine.Random.Range(0, pool.Length)].Trigger();
+        DisasterEvent chosen = pool[UnityEngine.Random.Range(0, pool.Length)];
+        chosen.Trigger();
+        return chosen;
     }
 }
