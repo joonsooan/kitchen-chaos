@@ -14,8 +14,8 @@ public enum CustomerState
 public class Customer : MonoBehaviour
 {
     public event Action<CustomerState> OnStateChanged;
-    public event Action OnOrderSucceeded;
-    public event Action OnOrderFailed;
+    public event Action<Customer, RecipeData> OnOrderSucceeded;
+    public event Action<Customer, RecipeData> OnOrderFailed;
 
     [SerializeField] private CustomerData customerData;
 
@@ -24,6 +24,7 @@ public class Customer : MonoBehaviour
     private IObjectPool<GameObject> pool;
 
     public CustomerData CustomerData => customerData;
+    public float RemainingPatience => waitTimer;
 
     public CustomerState CurrentState
     {
@@ -85,11 +86,11 @@ public class Customer : MonoBehaviour
 
         if (success)
         {
-            OnOrderSucceeded?.Invoke();
+            OnOrderSucceeded?.Invoke(this, customerData.requiredRecipe);
         }
         else
         {
-            OnOrderFailed?.Invoke();
+            OnOrderFailed?.Invoke(this, customerData.requiredRecipe);
         }
     }
 }

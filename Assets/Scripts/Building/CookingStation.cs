@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -14,9 +15,16 @@ public class CookingStation : MonoBehaviour, IInteractable
     [SerializeField] private float cookDuration = 5f;
     [SerializeField] private bool requiresPresence;
 
+    public event Action<CookingStation> OnCookingStarted;
+    public event Action<CookingStation, IngredientInstance> OnCookingFinished;
+
     private Building building;
     private IngredientPickup loadedItem;
     private bool isCooking;
+    private float cookStartTime;
+
+    public float CookProgress01 =>
+        isCooking ? Mathf.Clamp01((Time.time - cookStartTime) / cookDuration) : 0f;
 
     private CookingMethod Method =>
         building.BuildingData != null ? building.BuildingData.cookingMethod : CookingMethod.None;
@@ -77,11 +85,14 @@ public class CookingStation : MonoBehaviour, IInteractable
     private IEnumerator Cook(PlayerController player)
     {
         isCooking = true;
+        cookStartTime = Time.time;
         if (requiresPresence) player.ChangeState(PlayerState.Busy);
+        OnCookingStarted?.Invoke(this);
 
         yield return new WaitForSeconds(cookDuration);
 
         loadedItem.Instance.ApplyCookingMethod(Method);
+        OnCookingFinished?.Invoke(this, loadedItem.Instance);
         isCooking = false;
         if (requiresPresence) player.ChangeState(PlayerState.Idle);
         Debug.Log($"[CookingStation] {name}: done - {loadedItem.Instance.Data.ingredientName} is now {Method}");

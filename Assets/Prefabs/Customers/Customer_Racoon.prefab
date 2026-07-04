@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6031369913390506939}
   - component: {fileID: 3124925169295739312}
   m_Layer: 0
-  m_Name: Customer_Racoon_1
+  m_Name: Customer_Racoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,8 @@ using UnityEngine;
 public class TableServing : MonoBehaviour, IInteractable
 {
     private const float SeatMatchEpsilon = 0.05f;
+
+    public static event Action<Table, Customer, RecipeData, bool> OnDishServed;
 
     private Table table;
 
@@ -54,13 +57,14 @@ public class TableServing : MonoBehaviour, IInteractable
             return;
         }
         bool succeeded = false;
-        System.Action markSucceeded = () => succeeded = true;
+        Action<Customer, RecipeData> markSucceeded = (c, r) => succeeded = true;
 
         customer.OnOrderSucceeded += markSucceeded;
         customer.ReceiveRecipe(recipe);
         customer.OnOrderSucceeded -= markSucceeded;
 
         if (succeeded) GameManager.Instance.AddReward(recipe);
+        OnDishServed?.Invoke(table, customer, recipe, succeeded);
         string dishName = recipe != null ? recipe.recipeName : "unfinished dish";
         Debug.Log($"[TableServing] Delivered {dishName} - {(succeeded ? "correct order!" : "wrong order...")}");
 
