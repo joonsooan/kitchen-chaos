@@ -34,12 +34,11 @@ public class DisasterPopup : UIPopup
 
         // 재앙 팝업이 실제로 표시(ShowPopupUI<DisasterPopup>)되면 자동 발화. 표시 트리거 미구현이라 지금은 휴면.
         SoundManager.Instance?.PlaySFX(SFXType.DisasterOpen);
-
-        PlayDisasterFx();
+        // 임팩트 연출(PlayDisasterFx)은 Setup에서 플래시 색 지정 후 재생.
     }
 
-    // 재앙 임팩트 — 카메라 흔들림 + 딤 붉은 플래시
-    private void PlayDisasterFx()
+    // 재앙 임팩트 — 카메라 흔들림 + 딤 플래시(색 지정: 재앙=빨강, 긍정/중립=하늘색)
+    private void PlayDisasterFx(Color flashColor)
     {
         var cam = Camera.main;
         if (cam != null)
@@ -55,16 +54,17 @@ public class DisasterPopup : UIPopup
         {
             float baseAlpha = dim.color.a;
             var seq = DG.Tweening.DOTween.Sequence().SetUpdate(true).SetLink(gameObject);
-            seq.Append(dim.DOColor(new Color(0.55f, 0.05f, 0.05f, 0.5f), 0.12f));
+            seq.Append(dim.DOColor(flashColor, 0.12f));
             seq.Append(dim.DOColor(new Color(0f, 0f, 0f, baseAlpha), 0.4f));
         }
     }
 
-    // 재앙 정보 주입 — 예: Setup("어패류 재앙 발생", "1분간 재료 조달이 막힙니다.")
-    public void Setup(string title, string description)
+    // 재앙 정보 주입 + 임팩트 연출(플래시 색 지정)
+    public void Setup(string title, string description, Color flashColor)
     {
         if (titleText != null) titleText.text = title;
         if (descText != null)  descText.text  = description;
+        PlayDisasterFx(flashColor);
     }
 
     private void OnCloseClicked(PointerEventData evt)

@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
     public event Action InteractPressed;
 
-    // 재난 이벤트(키보드 반전)가 켜고 끄는 플래그. 상하좌우 입력을 벡터 negate로 동시 반전.
+    // 환각 마법이 켜고 끄는 플래그. 좌우(x축) 입력만 반전.
     public bool InputInverted { get; set; }
 
     private void Awake()
@@ -37,8 +37,9 @@ public class PlayerMovement : MonoBehaviour
             .With("Left", "<Keyboard>/a")
             .With("Right", "<Keyboard>/d");
 
-        // 상호작용·타격 키 = F (모든 상호작용 통합 — 괴물·잡초 타격도 F)
+        // 상호작용·타격 = F 키 + 마우스 좌클릭 (모든 상호작용 통합 — 괴물·잡초 타격도 동일)
         interactAction = new InputAction("Interact", InputActionType.Button, "<Keyboard>/f");
+        interactAction.AddBinding("<Mouse>/leftButton");
     }
 
     private void OnEnable()
@@ -58,7 +59,7 @@ public class PlayerMovement : MonoBehaviour
     private void Update()
     {
         moveInput = moveAction.ReadValue<Vector2>();
-        if (InputInverted) moveInput = -moveInput;
+        if (InputInverted) moveInput.x = -moveInput.x;   // 환각 마법: 좌우만 반전
         if (moveInput.sqrMagnitude > 0f) FacingDirection = moveInput.normalized;
 
         if (playerController.CurrentState == PlayerState.Busy) return;

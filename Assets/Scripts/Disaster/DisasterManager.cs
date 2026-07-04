@@ -14,6 +14,7 @@ public class DisasterManager : KSingleton<DisasterManager>
     [SerializeField] private float firstTriggerSeconds = 60f;
     [SerializeField] private float triggerIntervalSeconds = 60f;
     [SerializeField] private DisasterEvent[] timeTriggerPool;
+    [SerializeField] private float[] timeTriggerWeights;   // timeTriggerPool과 1:1. 비었거나 짧으면 가중치 1.
     [SerializeField] private BuildingTrigger[] buildingTriggers;
     [SerializeField] private bool infiniteDisasters;
     [SerializeField] private int disasterCountToEnd = 5;
@@ -63,7 +64,7 @@ public class DisasterManager : KSingleton<DisasterManager>
     private void HandleDisasterTriggered(DisasterEvent disasterEvent)
     {
         if (disasterEvent.ShowsPopup && UIManager.Instance != null)
-            UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(disasterEvent.DisasterName, disasterEvent.DisasterDescription);
+            UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(disasterEvent.DisasterName, disasterEvent.DisasterDescription, disasterEvent.PopupFlashColor);
 
         if (infiniteDisasters || gameOverTriggered) return;
 
@@ -84,7 +85,7 @@ public class DisasterManager : KSingleton<DisasterManager>
             if (trigger.source == null || trigger.disasterEvent == null) continue;
 
             DisasterEvent disasterEvent = trigger.disasterEvent;
-            Action<IngredientSource, PlayerController> handler = (source, player) => disasterEvent.Trigger();
+            Action<IngredientSource, PlayerController> handler = (source, player) => disasterEvent.OnBuildingInteract(player);
             trigger.source.OnInteracted += handler;
             buildingSubscriptions.Add((trigger.source, handler));
         }
@@ -103,8 +104,30 @@ public class DisasterManager : KSingleton<DisasterManager>
     {
         if (pool == null || pool.Length == 0) return null;
 
-        DisasterEvent chosen = pool[UnityEngine.Random.Range(0, pool.Length)];
+        DisasterEvent chosen = pool[PickWeightedIndex(pool)];
         chosen.Trigger();
         return chosen;
+    }
+
+    // 가중 랜덤 (CustomerSpawner와 동일 패턴). 매번 합산 → 합이 얼마든 자동 정규화.
+    private float GetWeight(int index)
+    {
+        if (timeTriggerWeights != null && index < timeTriggerWeights.Length) return Mathf.Max(0f, timeTriggerWeights[index]);
+        return 1f;
+    }
+
+    private int PickWeightedIndex(DisasterEvent[] pool)
+    {
+        float total = 0f;
+        for (int i = 0; i < pool.Length; i++) total += GetWeight(i);
+        if (total <= 0f) return UnityEngine.Random.Range(0, pool.Length);
+
+        float r = UnityEngine.Random.value * total;
+        for (int i = 0; i < pool.Length; i++)
+        {
+            r -= GetWeight(i);
+            if (r < 0f) return i;
+        }
+        return pool.Length - 1;
     }
 }
