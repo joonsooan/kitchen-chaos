@@ -8,7 +8,7 @@ public class UISlot : UIBase
     enum Sliders      { Gauge }
     enum GameObjects  { IngredientRow }
 
-    private const string IngredientPrefabPath = "UI/Slot/IngredientSlot";
+    private const string IngredientPrefabPath = "UI/Slot/RecipeSlot";   // 재료 + 조리방법 아이콘
 
     private static readonly Color GaugeGreen  = new Color(0.35f, 0.85f, 0.35f);
     private static readonly Color GaugeYellow = new Color(0.95f, 0.8f, 0.25f);
@@ -152,19 +152,14 @@ public class UISlot : UIBase
         for (int i = _ingredientRow.childCount - 1; i >= 0; i--)
             Destroy(_ingredientRow.GetChild(i).gameObject);
 
-        // 레시피 재료마다 IngredientSlot 프리팹 스폰
+        // 레시피 재료마다 RecipeSlot 프리팹 스폰 (재료 아이콘 + 아래 조리방법)
         var prefab = Resources.Load<GameObject>(IngredientPrefabPath);
         foreach (var entry in recipe.ingredients)
         {
             if (entry.ingredientType == null) continue;
 
-            var go   = Instantiate(prefab, _ingredientRow);
-            var icon = go.transform.Find("Icon")?.GetComponent<Image>();
-            if (icon != null)
-            {
-                var combinedIcon = entry.ingredientType.GetCookingMethodIcon(entry.requiredCookingMethod);
-                icon.sprite = combinedIcon != null ? combinedIcon : entry.ingredientType.ingredientIcon;
-            }
+            var go = Instantiate(prefab, _ingredientRow);
+            go.GetComponent<RecipeSlotView>()?.Setup(entry);
         }
     }
 
