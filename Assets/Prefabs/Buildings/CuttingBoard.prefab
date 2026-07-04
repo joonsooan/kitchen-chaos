@@ -191,3 +191,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878f2067e28aa2c4884cf052fbdcad18, type: 3}
   m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::CookingStation
+  cookDuration: 2
+  requiresPresence: 1

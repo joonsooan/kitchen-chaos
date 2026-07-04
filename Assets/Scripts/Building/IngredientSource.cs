@@ -1,20 +1,47 @@
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Marks an ingredient basket and knows which ingredient it hands out. Identification
-/// only for now - the pickup flow starts once carried-ingredient identity is designed
-/// (consumers should read the Ingredient property).
+/// Ingredient basket. With empty hands, F spawns this basket's ingredient item and
+/// hands it straight to the player; full hands or Busy dispense nothing.
 /// </summary>
 [DisallowMultipleComponent]
 public class IngredientSource : MonoBehaviour, IInteractable
 {
-    [SerializeField] private Ingredient ingredient;
+    [SerializeField] private GameObject itemPrefab;
 
-    public Ingredient Ingredient => ingredient;
+    private bool pendingPickup;
 
     public void Interact(PlayerController player)
     {
-        string ingredientName = ingredient != null ? ingredient.ingredientName : "UNASSIGNED";
-        Debug.Log($"[IngredientSource] {name}: ingredient={ingredientName}, item={player.CurrentItemType}");
+        if (pendingPickup) return;
+
+        if (player.CurrentItemType != CarryingItemType.None || player.CurrentState == PlayerState.Busy)
+        {
+            Debug.Log($"[IngredientSource] {name}: hands full or busy - nothing dispensed");
+            return;
+        }
+
+        if (itemPrefab == null)
+        {
+            Debug.LogWarning($"[IngredientSource] {name}: itemPrefab unassigned");
+            return;
+        }
+
+        StartCoroutine(SpawnAndPickUp(player));
+    }
+
+    // GridPlaceable.Start auto-places a fresh spawn on its current cell one frame after
+    // Instantiate, which would yank a same-frame pickup back out of the player's hands.
+    // Let that frame pass (it parks on the basket cell, harmless), then hand it over.
+    private IEnumerator SpawnAndPickUp(PlayerController player)
+    {
+        pendingPickup = true;
+        GameObject item = Instantiate(itemPrefab, transform.position, Quaternion.identity);
+        yield return null;
+        pendingPickup = false;
+
+        IngredientPickup pickup = item.GetComponent<IngredientPickup>();
+        if (pickup != null) pickup.Interact(player);
     }
 }

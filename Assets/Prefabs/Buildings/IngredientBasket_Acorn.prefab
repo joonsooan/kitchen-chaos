@@ -191,4 +191,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce12ac7216cc03549b431491f28d3371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IngredientSource
-  ingredient: {fileID: 11400000, guid: 1c73a5e4601b2ee44b887561f685d510, type: 2}
+  itemPrefab: {fileID: 8400000000000000001, guid: 31bd1ac074c64621b72646a7706016ae, type: 3}

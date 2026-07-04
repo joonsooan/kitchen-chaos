@@ -60,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (playerController.CurrentState == PlayerState.Busy) return;
         rb.MovePosition(rb.position + moveInput.normalized * (moveSpeed * Time.fixedDeltaTime));
     }
 
