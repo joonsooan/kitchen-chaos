@@ -33,6 +33,7 @@ public class CookingStation : MonoBehaviour, IInteractable
     private bool isCooking;
     private float cookStartTime;
     private Sprite defaultSprite;
+    private Vector3 defaultVisualLocalPosition;
     private Tween shakeTween;
 
     public float CookProgress01 =>
@@ -49,6 +50,7 @@ public class CookingStation : MonoBehaviour, IInteractable
         if (visualSpriteRenderer != null)
         {
             defaultSprite = visualSpriteRenderer.sprite;
+            defaultVisualLocalPosition = visualSpriteRenderer.transform.localPosition;
         }
     }
 
@@ -158,11 +160,11 @@ public class CookingStation : MonoBehaviour, IInteractable
         }
 
         shakeTween?.Kill();
-        Vector3 pos = visualSpriteRenderer.transform.localPosition;
-        pos.x = -shakeStrength;
+        Vector3 pos = defaultVisualLocalPosition;
+        pos.x -= shakeStrength;
         visualSpriteRenderer.transform.localPosition = pos;
         shakeTween = visualSpriteRenderer.transform
-            .DOLocalMoveX(shakeStrength, shakeSpeed)
+            .DOLocalMoveX(defaultVisualLocalPosition.x + shakeStrength, shakeSpeed)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
     }
@@ -173,7 +175,7 @@ public class CookingStation : MonoBehaviour, IInteractable
 
         shakeTween?.Kill();
         shakeTween = null;
-        visualSpriteRenderer.transform.localPosition = Vector3.zero;
+        visualSpriteRenderer.transform.localPosition = defaultVisualLocalPosition;
         visualSpriteRenderer.sprite = defaultSprite;
     }
 
