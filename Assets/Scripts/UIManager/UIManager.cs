@@ -99,8 +99,11 @@ public class UIManager : KSingleton<UIManager>
 
     public void ClosePopupUI()
     {
-        if (_popupStack.Count > 0)
-            Destroy(_popupStack.Pop().gameObject);
+        if (_popupStack.Count == 0) return;
+
+        var popup = _popupStack.Pop();
+        // 닫힘 연출 후 파괴 (연출 중 스택엔 이미 없음)
+        popup.PlayHideFx(() => { if (popup != null) Destroy(popup.gameObject); });
     }
 
     public void CloseAllPopupUI()

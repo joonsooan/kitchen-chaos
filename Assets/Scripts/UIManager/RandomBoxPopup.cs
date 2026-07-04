@@ -1,8 +1,9 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-// 랜덤박스 팝업 — 선물 클릭 → 버프 롤 → 결과 표시, X로 닫기
+// 랜덤박스 팝업 — 선물 클릭 → 흔들·펑 연출 → 버프 롤 → 결과 표시, X로 닫기
 public class RandomBoxPopup : UIPopup
 {
     enum Texts
@@ -33,17 +34,32 @@ public class RandomBoxPopup : UIPopup
         giftRow  = Get<GameObject>((int)GameObjects.GiftRow);
 
         BindEvent(Get<GameObject>((int)GameObjects.CloseButton), OnCloseClicked);
-        BindEvent(Get<GameObject>((int)GameObjects.Gift0), evt => OnGiftClicked());
-        BindEvent(Get<GameObject>((int)GameObjects.Gift1), evt => OnGiftClicked());
-        BindEvent(Get<GameObject>((int)GameObjects.Gift2), evt => OnGiftClicked());
-        BindEvent(Get<GameObject>((int)GameObjects.Gift3), evt => OnGiftClicked());
+
+        for (int i = 0; i < 4; i++)
+        {
+            var gift = Get<GameObject>((int)GameObjects.Gift0 + i);
+            BindEvent(gift, evt => OnGiftClicked(gift));
+        }
     }
 
-    private void OnGiftClicked()
+    private void OnGiftClicked(GameObject gift)
     {
         if (opened) return;   // 1회만 개봉
         opened = true;
 
+        // 흔들흔들 → 커졌다 → 펑(축소 소멸) → 결과 공개
+        var t   = gift.transform;
+        var seq = DOTween.Sequence().SetUpdate(true).SetLink(gameObject);
+
+        seq.Append(t.DOShakeRotation(0.6f, new Vector3(0f, 0f, 30f), 20, 90f));
+        seq.Join(t.DOShakePosition(0.6f, new Vector3(8f, 8f, 0f), 20));
+        seq.Append(t.DOScale(1.45f, 0.14f).SetEase(Ease.OutQuad));
+        seq.Append(t.DOScale(0f, 0.12f).SetEase(Ease.InBack));
+        seq.OnComplete(Reveal);
+    }
+
+    private void Reveal()
+    {
         BuffData buff = RandomBoxManager.Instance != null
             ? RandomBoxManager.Instance.Roll()
             : null;
