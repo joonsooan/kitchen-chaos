@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2d1d09558cf6dc41a51eca8cbf263bd, type: 3}
   m_Name: Customer_1
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
-  customerName: "\uB9E4\uC2E4 \uAD70"
+  customerName: "\uB108\uAD6C\uB9AC"
   requiredRecipe: {fileID: 11400000, guid: 9a56b327c40d39c4d9d90862aef3fc43, type: 2}
   toleranceSeconds: 10
