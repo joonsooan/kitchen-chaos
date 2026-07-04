@@ -16,6 +16,7 @@ public class InGameHUD : UIHUD
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     private const string OrderPrefabPath = "UI/Slot/OrderSlot";
 
     private TextMeshProUGUI timeText;
@@ -28,6 +29,13 @@ public class InGameHUD : UIHUD
     private Transform _orderLayout;
     private float _elapsed;
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
+=======
+    private const string OrderPrefabPath = "UI/Slot/OrderSlot";
+
+    private TextMeshProUGUI timeText;
+    private Transform orderLayout;
+    private float elapsed;
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -37,14 +45,16 @@ public class InGameHUD : UIHUD
         Bind<GameObject>(typeof(GameObjects));
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
         timeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
         orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
     }
 
-    private void OnEnable()
-    {
-        Customer.OnAnyCustomerSeated += HandleCustomerSeated;
-        Customer.OnAnyCustomerLeft += HandleCustomerLeft;
+        AddOrder();
+        AddOrder();
+<<<<<<< HEAD
     }
 
     private void OnDisable()
@@ -76,13 +86,19 @@ public class InGameHUD : UIHUD
 =======
         TimeText     = Get<TextMeshProUGUI>((int)Texts.TimeText);
         _orderLayout = Get<GameObject>((int)GameObjects.OrderLayout).transform;
+=======
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
     }
 
     // 주문 1개 추가 — 게임 로직에서 호출
-    public UISlot AddOrder(RecipeData recipe)
+    public UISlot AddOrder(CustomerData customer)
     {
+<<<<<<< HEAD
         var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), _orderLayout);
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
+=======
+        var go   = Instantiate(Resources.Load<GameObject>(OrderPrefabPath), orderLayout);
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
         var slot = go.GetComponent<UISlot>();
         if (slot == null)
         {
@@ -90,10 +106,14 @@ public class InGameHUD : UIHUD
         }
         slot.Init();
 <<<<<<< HEAD
+<<<<<<< HEAD
         slot.Setup(customer);
 =======
         slot.Setup(recipe);
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
+=======
+        slot.Setup(customer);
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
         return slot;
     }
 
@@ -101,6 +121,7 @@ public class InGameHUD : UIHUD
     void Update()
     {
         //시간따라 mm:ss
+<<<<<<< HEAD
 <<<<<<< HEAD
         elapsed += Time.deltaTime;
 
@@ -126,5 +147,22 @@ public class InGameHUD : UIHUD
         
         
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
+=======
+        elapsed += Time.deltaTime;
+
+        int minutes = (int)(elapsed / 60f);
+        int seconds = (int)(elapsed % 60f);
+        timeText.text = $"{minutes:00}:{seconds:00}";
+    }
+
+    // 풀에서 랜덤 손님 1명으로 주문 추가 (test용도)
+    public void AddOrder()
+    {
+        var customers = DataTable.Customers;
+        if (customers == null || customers.Length == 0) return;
+
+        var customer = customers[Random.Range(0, customers.Length)];
+        AddOrder(customer);
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
     }
 }

@@ -243,6 +243,9 @@ Transform:
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 --- !u!1 &555717624
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,8 +347,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+<<<<<<< HEAD
 =======
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
+=======
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 --- !u!1 &882640170
 GameObject:
   m_ObjectHideFlags: 0
@@ -491,6 +497,10 @@ SceneRoots:
   - {fileID: 415926897}
   - {fileID: 407479936}
 <<<<<<< HEAD
+<<<<<<< HEAD
   - {fileID: 555717628}
 =======
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
+=======
+  - {fileID: 555717628}
+>>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
