@@ -84,6 +84,7 @@ public class RandomBoxPopup : UIPopup
             descText.transform.localScale = Vector3.zero;
             descText.transform.DOScale(1f, 0.3f)
                     .SetEase(Ease.OutBack)
+                    .SetUpdate(true)
                     .SetLink(descText.gameObject);
         }
     }
