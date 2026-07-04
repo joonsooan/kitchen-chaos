@@ -34,6 +34,25 @@ public class GameOverTester : MonoBehaviour
         // F8 — 버프 강제 발동 (누를 때마다 다음 버프로 순환, 꽝 제외)
         if (Keyboard.current.f8Key.wasPressedThisFrame)
             ForceNextBuff();
+
+        // F7 — 컵/접시 재고 소진 경고 강제 표시 (스테이션 순환)
+        if (Keyboard.current.f7Key.wasPressedThisFrame)
+            ForceStationWarning();
+    }
+
+    private int nextStationIndex;   // F7 순환용
+
+    private void ForceStationWarning()
+    {
+        var bridge = GetComponent<OrderUIBridge>();
+        var stations = FindObjectsByType<ReturnStation>(FindObjectsSortMode.None);
+        if (bridge == null || stations.Length == 0) return;
+
+        var station = stations[nextStationIndex % stations.Length];
+        nextStationIndex++;
+
+        bridge.HandleStationEmpty(station);
+        Debug.Log($"[StationTest] F7 경고 표시: {station.name}");
     }
 
     private void ForceNextBuff()
