@@ -14,6 +14,18 @@ public class CustomerGaugeView : MonoBehaviour
     {
         target = customer;
         cam = Camera.main;
+        BringToFront();
+    }
+
+    // 다른 스프라이트·월드 UI에 가려지지 않도록 최상위 정렬 레이어의 최대 오더로 올림
+    private void BringToFront()
+    {
+        var canvas = GetComponent<Canvas>();
+        if (canvas == null) return;
+
+        SortingLayer[] layers = SortingLayer.layers;
+        if (layers.Length > 0) canvas.sortingLayerID = layers[layers.Length - 1].id;
+        canvas.sortingOrder = short.MaxValue;
     }
 
     private void LateUpdate()

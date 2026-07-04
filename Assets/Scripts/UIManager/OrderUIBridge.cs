@@ -82,7 +82,7 @@ public class OrderUIBridge : MonoBehaviour
             : "접시가 모두 나가 있어요!";
         var popup = Instantiate(prefab).GetComponent<ServeResultPopup>();
         popup.Show(station.transform.position + new Vector3(0f, 1.0f, 0f),
-                   message, new Color(0.95f, 0.4f, 0.2f));
+                   message, Color.black);
     }
 
     private void HandleSeated(Customer customer)
