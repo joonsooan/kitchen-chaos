@@ -9,6 +9,7 @@ public class WeedTile : MonoBehaviour, IAttackable, IHasHealth
     private Vector2Int cell;
     private int hitsRemaining;
     private bool despawned;
+    private bool hpBarShown;
 
     public int MaxHealth     => hitsToRemove;
     public int CurrentHealth => hitsRemaining;
@@ -25,11 +26,15 @@ public class WeedTile : MonoBehaviour, IAttackable, IHasHealth
         grid = GridSystem.Instance;
         grid.SetOccupant(cell, gameObject);
         StartCoroutine(LifetimeRoutine(lifetime));
-        MonsterHPBarView.Show(this);   // 스폰 즉시 HP 바 노출 (피격 전에도 표시)
     }
 
     public void Hit(PlayerController player)
     {
+        if (!hpBarShown)   // 첫 피격 시에만 HP 바 노출 (스폰 시엔 숨김)
+        {
+            MonsterHPBarView.Show(this);
+            hpBarShown = true;
+        }
         hitsRemaining -= PowerBuff.OneShotActive ? hitsRemaining : 1;   // 파워 업 버프: 한 방
         if (hitsRemaining <= 0) Despawn();
     }
