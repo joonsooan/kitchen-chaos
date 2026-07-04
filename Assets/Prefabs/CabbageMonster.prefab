@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4511cf6ceacc6944bba396ed4833192d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterMovement
-  moveSpeed: 5
+  moveSpeed: 3
   waitDurationAtTarget: 2
   searchMinCell: {x: 1, y: 1}
   searchMaxCell: {x: 23, y: 10}

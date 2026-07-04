@@ -62,7 +62,7 @@ public class DisasterManager : KSingleton<DisasterManager>
 
     private void HandleDisasterTriggered(DisasterEvent disasterEvent)
     {
-        if (UIManager.Instance != null)
+        if (disasterEvent.ShowsPopup && UIManager.Instance != null)
             UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(disasterEvent.DisasterName, disasterEvent.DisasterDescription);
 
         if (infiniteDisasters || gameOverTriggered) return;

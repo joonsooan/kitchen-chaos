@@ -64,8 +64,19 @@ public class TableServing : MonoBehaviour, IInteractable
         // Same judgment as Customer.ReceiveRecipe, done here so we can pay the reward
         // up front and still route the dish into the eat-and-return sequence.
         bool succeeded = recipe != null && customer.CustomerData.requiredRecipe == recipe;
-        if (succeeded) GameManager.Instance.AddReward(recipe);
-        else SoundManager.Instance?.PlaySFX(SFXType.OrderFailed);   // 잘못된 접시 = 주문 실패
+        if (succeeded)
+        {
+            float tolerance = customer.CustomerData.toleranceSeconds;
+            float remainingRatio = tolerance > 0f
+                ? Mathf.Clamp01(customer.RemainingPatience / tolerance)
+                : 0f;
+            GameManager.Instance.AddReward(recipe, remainingRatio);
+        }
+        else
+        {
+            GameManager.Instance.ApplyOrderFailurePenalty();     // 잘못된 접시 = 주문 실패
+            SoundManager.Instance?.PlaySFX(SFXType.OrderFailed);
+        }
 
         OnDishServed?.Invoke(table, customer, recipe, succeeded);
 

@@ -105,7 +105,9 @@ MonoBehaviour:
   buildingTriggers:
   - source: {fileID: 0}
     disasterEvent: {fileID: 7723300903781883990}
+  infiniteDisasters: 1
   disasterCountToEnd: 3
+  minScoreToSucceed: 5
 --- !u!1 &4956198993572794468
 GameObject:
   m_ObjectHideFlags: 0
@@ -202,7 +204,7 @@ MonoBehaviour:
   disasterDescription: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!"
   monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
   spawnCells:
-  - {x: 4, y: 7}
-  - {x: 6, y: 7}
+  - {x: 2, y: 4}
+  - {x: 4, y: 4}
   spawnChance: 0.7
   duration: 180
