@@ -44,8 +44,8 @@ public class SoundManager : KSingleton<SoundManager>
     int           _sfx3DIndex;
     Tween         _bgmTween;
 
-    readonly Dictionary<SFXType,   AudioClip[]> _sfxMap = new();
-    readonly Dictionary<GamePhase, AudioClip>   _bgmMap = new();
+    readonly Dictionary<SFXType,   (AudioClip[] clips, float volume)> _sfxMap = new();
+    readonly Dictionary<GamePhase, (AudioClip clip, float volume)>    _bgmMap = new();
 
     protected override void Awake()
     {
@@ -74,8 +74,8 @@ public class SoundManager : KSingleton<SoundManager>
             Debug.LogError("[SoundManager] SoundLibrary가 연결되지 않았습니다.");
             return;
         }
-        foreach (var e in _library.sfxEntries) _sfxMap[e.type]  = e.clips;
-        foreach (var e in _library.bgmEntries) _bgmMap[e.phase] = e.clip;
+        foreach (var e in _library.sfxEntries) _sfxMap[e.type]  = (e.clips, e.volume);
+        foreach (var e in _library.bgmEntries) _bgmMap[e.phase] = (e.clip, e.volume);
     }
 
     // BGM·2D SFX는 매니저에 직접, 3D SFX는 위치별 자식 소스 voice 풀. 모두 시작 시 1회 생성.
@@ -130,15 +130,18 @@ public class SoundManager : KSingleton<SoundManager>
     /// <summary>게임 페이즈 BGM으로 crossfade. 같은 곡이면 무시.</summary>
     public void SetPhase(GamePhase phase)
     {
-        if (_bgmMap.TryGetValue(phase, out var clip))
-            PlayBGM(clip, true);
+        if (_bgmMap.TryGetValue(phase, out var e))
+            PlayBGM(e.clip, true, e.volume);
     }
 
     /// <summary>지정 클립으로 crossfade(라이브러리 미등록 곡도 가능). 같은 곡이면 무시.</summary>
-    public void PlayBGM(AudioClip clip) => PlayBGM(clip, true);
+    public void PlayBGM(AudioClip clip) => PlayBGM(clip, true, kBgmVolume);
 
     /// <summary>지정 클립으로 crossfade. loop=false면 한 번만 재생한다.</summary>
-    public void PlayBGM(AudioClip clip, bool loop)
+    public void PlayBGM(AudioClip clip, bool loop) => PlayBGM(clip, loop, kBgmVolume);
+
+    /// <summary>지정 클립·볼륨으로 crossfade. 같은 곡이면 무시.</summary>
+    public void PlayBGM(AudioClip clip, bool loop, float volume)
     {
         if (clip == null) return;
 
@@ -161,7 +164,7 @@ public class SoundManager : KSingleton<SoundManager>
                 _bgmSource.volume = 0f;
                 _bgmSource.Play();
             })
-           .Append(_bgmSource.DOFade(kBgmVolume, _bgmFadeDuration));   // 새 곡 fade-in
+           .Append(_bgmSource.DOFade(volume, _bgmFadeDuration));   // 새 곡 fade-in (페이즈별 볼륨)
         _bgmTween = seq;
     }
 
@@ -188,8 +191,13 @@ public class SoundManager : KSingleton<SoundManager>
 
     // ── SFX ──────────────────────────────────────────────
 
-    /// <summary>2D 효과음 (거리 무관).</summary>
-    public void PlaySFX(SFXType type) => PlaySFX(PickClip(type));
+    /// <summary>2D 효과음 (거리 무관). 라이브러리 개별 볼륨 적용.</summary>
+    public void PlaySFX(SFXType type)
+    {
+        if (!_sfxMap.TryGetValue(type, out var e) || e.clips == null || e.clips.Length == 0) return;
+        var clip = e.clips[Random.Range(0, e.clips.Length)];
+        if (clip != null) _sfx2D.PlayOneShot(clip, e.volume);
+    }
 
     /// <summary>2D 효과음 — 클립 직접 지정(미등록 1회성).</summary>
     public void PlaySFX(AudioClip clip)
@@ -197,17 +205,22 @@ public class SoundManager : KSingleton<SoundManager>
         if (clip != null) _sfx2D.PlayOneShot(clip);   // 한 소스로 겹쳐 재생
     }
 
-    /// <summary>3D 효과음 (월드 위치 기준 — 멀면 작게).</summary>
-    public void PlaySFXAt(SFXType type, Vector3 worldPos) => PlaySFXAt(PickClip(type), worldPos);
+    /// <summary>3D 효과음 (월드 위치 기준 — 멀면 작게). 라이브러리 개별 볼륨 적용.</summary>
+    public void PlaySFXAt(SFXType type, Vector3 worldPos)
+    {
+        if (!_sfxMap.TryGetValue(type, out var e) || e.clips == null || e.clips.Length == 0) return;
+        var clip = e.clips[Random.Range(0, e.clips.Length)];
+        PlaySFXAt(clip, worldPos, e.volume);
+    }
 
     /// <summary>3D 효과음 — 클립 직접 지정. 다음 3D 소스를 그 위치로 옮겨 PlayOneShot(round-robin).</summary>
-    public void PlaySFXAt(AudioClip clip, Vector3 worldPos)
+    public void PlaySFXAt(AudioClip clip, Vector3 worldPos, float volume = 1f)
     {
         if (clip == null) return;
         var src = _sfx3D[_sfx3DIndex];
         _sfx3DIndex = (_sfx3DIndex + 1) % _sfx3D.Length;
         src.transform.position = worldPos;
-        src.PlayOneShot(clip);
+        src.PlayOneShot(clip, volume);
     }
 
     /// <summary>모든 SFX 즉시 정지 (2D + 3D 전부).</summary>
@@ -215,13 +228,6 @@ public class SoundManager : KSingleton<SoundManager>
     {
         _sfx2D.Stop();
         foreach (var s in _sfx3D) s.Stop();
-    }
-
-    // SoundLibrary에서 랜덤 클립 선택
-    AudioClip PickClip(SFXType type)
-    {
-        if (!_sfxMap.TryGetValue(type, out var clips) || clips.Length == 0) return null;
-        return clips[Random.Range(0, clips.Length)];
     }
 
     // ── 볼륨 (AudioMixer logarithmic scale) ──────────────
