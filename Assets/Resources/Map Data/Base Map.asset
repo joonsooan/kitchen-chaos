@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d3336fb7fc12964185f38892248f612, type: 3}
   m_Name: Base Map
   m_EditorClassIdentifier: Assembly-CSharp::MapData
-  width: 25
+  width: 28
   height: 15
   cellSize: 1.5
   defaultTile: 0
@@ -102,12 +102,6 @@ MonoBehaviour:
   - cell: {x: 23, y: 0}
     type: 1
   - cell: {x: 24, y: 0}
-    type: 1
-  - cell: {x: 25, y: 0}
-    type: 1
-  - cell: {x: 26, y: 0}
-    type: 1
-  - cell: {x: 27, y: 0}
     type: 1
   - cell: {x: 28, y: 0}
     type: 1
@@ -293,12 +287,6 @@ MonoBehaviour:
     type: 1
   - cell: {x: 24, y: 1}
     type: 1
-  - cell: {x: 24, y: 2}
-    type: 1
-  - cell: {x: 24, y: 3}
-    type: 1
-  - cell: {x: 24, y: 4}
-    type: 1
   - cell: {x: 24, y: 5}
     type: 1
   - cell: {x: 24, y: 7}
@@ -438,6 +426,22 @@ MonoBehaviour:
   - cell: {x: 14, y: 6}
     type: 1
   - cell: {x: 15, y: 6}
+    type: 1
+  - cell: {x: 16, y: 13}
+    type: 1
+  - cell: {x: 17, y: 13}
+    type: 1
+  - cell: {x: 18, y: 13}
+    type: 1
+  - cell: {x: 19, y: 13}
+    type: 1
+  - cell: {x: 20, y: 13}
+    type: 1
+  - cell: {x: 21, y: 13}
+    type: 1
+  - cell: {x: 22, y: 13}
+    type: 1
+  - cell: {x: 23, y: 13}
     type: 1
   playerSpawn: {x: 1, y: 0}
   monsterSpawns: []

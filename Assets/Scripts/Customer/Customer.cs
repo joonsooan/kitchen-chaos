@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Pool;
 
 public enum CustomerState
 {
@@ -20,6 +21,7 @@ public class Customer : MonoBehaviour
 
     private CustomerState currentState = CustomerState.Idle;
     private float waitTimer;
+    private IObjectPool<GameObject> pool;
 
     public CustomerData CustomerData => customerData;
 
@@ -39,6 +41,17 @@ public class Customer : MonoBehaviour
     public void ChangeState(CustomerState newState)
     {
         CurrentState = newState;
+    }
+
+    public void SetPool(IObjectPool<GameObject> ownerPool)
+    {
+        pool = ownerPool;
+    }
+
+    public void ReturnToPool()
+    {
+        if (pool != null) pool.Release(gameObject);
+        else Destroy(gameObject);
     }
 
     public void Seat()

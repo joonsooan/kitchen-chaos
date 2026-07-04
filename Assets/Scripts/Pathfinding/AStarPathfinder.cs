@@ -18,7 +18,7 @@ public static class AStarPathfinder
     {
         GridSystem grid = GridSystem.Instance;
         if (grid == null) return null;
-        if (!grid.IsWalkable(goal)) return null;
+        if (grid.GetTileType(goal) == TileType.Blocked) return null;
         if (start == goal) return new List<Vector2Int> { start };
 
         Dictionary<Vector2Int, Node> openMap = new();

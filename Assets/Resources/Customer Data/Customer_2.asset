@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2d1d09558cf6dc41a51eca8cbf263bd, type: 3}
-  m_Name: Customer_1
+  m_Name: Customer_2
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
-  customerName: "\uB9E4\uC2E4 \uAD70"
-  requiredRecipe: {fileID: 11400000, guid: 9a56b327c40d39c4d9d90862aef3fc43, type: 2}
-  toleranceSeconds: 30
+  customerName: "\uCD08\uB85D \uAD70"
+  requiredRecipe: {fileID: 11400000, guid: f71a6151ac457f94a94337f21ac0d12c, type: 2}
+  toleranceSeconds: 20
