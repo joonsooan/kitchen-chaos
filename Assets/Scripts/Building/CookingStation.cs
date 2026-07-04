@@ -44,7 +44,7 @@ public class CookingStation : MonoBehaviour, IInteractable
 
         if (loadedItem != null)
         {
-            RetrieveCooked(player);
+            TakeCooked(player);
             return;
         }
 
@@ -98,17 +98,35 @@ public class CookingStation : MonoBehaviour, IInteractable
         Debug.Log($"[CookingStation] {name}: done - {loadedItem.Instance.Data.ingredientName} is now {Method}");
     }
 
-    private void RetrieveCooked(PlayerController player)
+    private void TakeCooked(PlayerController player)
     {
-        if (player.CurrentItemType != CarryingItemType.None)
+        HeldItem held = player.CurrentHeldItem;
+
+        // 접시/컵을 들고 있으면 조리물을 그 그릇에 담는다 (조리법 무관).
+        if (held.Type == CarryingItemType.Plate || held.Type == CarryingItemType.Cup)
         {
-            Debug.Log($"[CookingStation] {name}: empty your hands to take the cooked ingredient");
+            ContainerKitchenObject container = held.WorldObject.GetComponent<ContainerKitchenObject>();
+            if (container.TryAddIngredient(loadedItem.Instance))
+            {
+                Destroy(loadedItem.gameObject);
+                loadedItem = null;
+            }
             return;
         }
 
-        IngredientPickup item = loadedItem;
-        loadedItem = null;
-        item.transform.SetParent(null);
-        item.Interact(player);
+        // 빈손 → 도마(requiresPresence)의 조리물만 맨손 회수 허용, 나머지는 접시로만.
+        if (held.Type == CarryingItemType.None)
+        {
+            if (!requiresPresence)
+            {
+                Debug.Log($"[CookingStation] {name}: 조리된 재료는 접시나 컵을 들고 와서 담으세요");
+                return;
+            }
+
+            IngredientPickup item = loadedItem;
+            loadedItem = null;
+            item.transform.SetParent(null);
+            item.Interact(player);
+        }
     }
 }

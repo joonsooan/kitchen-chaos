@@ -17,9 +17,22 @@ public class IngredientPickup : GridPlaceable, IInteractable
 
     public void Interact(PlayerController player)
     {
-        if (player.CurrentHeldItem.Type != CarryingItemType.None) return;
+        HeldItem held = player.CurrentHeldItem;
 
-        PrepareForHold();
-        player.PickUpIngredient(instance, gameObject);
+        // 접시/컵을 들고 있으면 이 재료를 그 그릇에 담는다 (재료 들고 접시 F 와 대칭).
+        if (held.Type == CarryingItemType.Plate || held.Type == CarryingItemType.Cup)
+        {
+            ContainerKitchenObject container = held.WorldObject.GetComponent<ContainerKitchenObject>();
+            if (container.TryAddIngredient(instance))
+                Destroy(gameObject);
+            return;
+        }
+
+        // 빈손이면 집는다. 바닥 재료는 생재료 또는 도마조리물뿐이라 조리상태 제한 불필요.
+        if (held.Type == CarryingItemType.None)
+        {
+            PrepareForHold();
+            player.PickUpIngredient(instance, gameObject);
+        }
     }
 }

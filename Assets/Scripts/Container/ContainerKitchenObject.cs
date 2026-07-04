@@ -26,15 +26,11 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
 
         if (held.Type == CarryingItemType.Ingredient)
         {
-            if (HasCompletedDish)
+            if (TryAddIngredient(held.Ingredient))
             {
-                Debug.Log($"이미 완성된 요리가 있습니다. ({CompletedRecipe.recipeName})");
-                return;
+                if (held.WorldObject != null) Destroy(held.WorldObject);
+                player.ClearHeldItem();
             }
-
-            AddIngredient(held.Ingredient);
-            if (held.WorldObject != null) Destroy(held.WorldObject);
-            player.ClearHeldItem();
             return;
         }
 
@@ -43,6 +39,19 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
             PrepareForHold();
             player.PickUpContainer(containerType, contents, CompletedRecipe, gameObject);
         }
+    }
+
+    // 재료 픽업·조리대 등 외부에서 든 그릇에 담을 때도 쓰는 공용 진입점.
+    public bool TryAddIngredient(IngredientInstance ingredient)
+    {
+        if (HasCompletedDish)
+        {
+            Debug.Log($"이미 완성된 요리가 있습니다. ({CompletedRecipe.recipeName})");
+            return false;
+        }
+
+        AddIngredient(ingredient);
+        return true;
     }
 
     private void AddIngredient(IngredientInstance ingredient)

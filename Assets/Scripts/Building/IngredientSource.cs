@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -12,8 +13,12 @@ public class IngredientSource : MonoBehaviour, IInteractable
 
     private bool pendingPickup;
 
+    public event Action<IngredientSource, PlayerController> OnInteracted;
+
     public void Interact(PlayerController player)
     {
+        OnInteracted?.Invoke(this, player);
+
         if (pendingPickup) return;
 
         if (player.CurrentItemType != CarryingItemType.None || player.CurrentState == PlayerState.Busy)
