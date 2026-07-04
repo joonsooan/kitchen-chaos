@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 // TableServing.OnDishServed → 테이블 위 서빙 결과 플로팅 스폰.
@@ -33,5 +34,41 @@ public class ServeResultView : MonoBehaviour
 
         var popup = Instantiate(popupPrefab);
         popup.Show(table.transform.position + worldOffset, text, succeeded ? successColor : failColor);
+
+        if (succeeded) FlyCoins(table.transform.position);
+    }
+
+    // 테이블에서 HUD 코인 카운터로 동전 날리기
+    private void FlyCoins(Vector3 worldPos)
+    {
+        if (UIManager.Instance == null || Camera.main == null) return;
+
+        var hud = UIManager.Instance.ShowHUDUI<InGameHUD>();
+        if (hud == null || hud.CoinAnchor == null) return;
+
+        var coinPrefab = Resources.Load<GameObject>("UI/HUD/CoinFly");
+        if (coinPrefab == null) return;
+
+        Vector3 start  = Camera.main.WorldToScreenPoint(worldPos);
+        Vector3 target = hud.CoinAnchor.position;   // Overlay 캔버스 = 스크린 좌표
+
+        for (int i = 0; i < 3; i++)
+        {
+            var coin = Instantiate(coinPrefab, hud.CoinAnchor.root);
+            coin.transform.position = start + (Vector3)(Random.insideUnitCircle * 40f);
+
+            coin.transform.DOMove(target, 0.55f)
+                .SetDelay(i * 0.07f)
+                .SetEase(DG.Tweening.Ease.InCubic)
+                .SetLink(coin)
+                .OnComplete(() =>
+                {
+                    Destroy(coin);
+                    hud.CoinAnchor.DOKill();
+                    hud.CoinAnchor.localScale = Vector3.one;
+                    hud.CoinAnchor.DOPunchScale(Vector3.one * 0.2f, 0.15f, 5, 0.5f)
+                       .SetLink(hud.CoinAnchor.gameObject);
+                });
+        }
     }
 }

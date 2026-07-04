@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -25,7 +26,17 @@ public class CookingGaugeView : MonoBehaviour
 
     private void HandleFinished(CookingStation station, IngredientInstance ingredient)
     {
-        Destroy(gameObject);
+        // 완료 펑 — 흰 플래시 + 펀치 후 소멸
+        if (fill != null)
+            fill.color = Color.white;
+
+        transform.DOKill();
+        var seq = DG.Tweening.DOTween.Sequence().SetLink(gameObject);
+        seq.Append(transform.DOScale(transform.localScale * 1.35f, 0.12f));
+        seq.Append(transform.DOScale(Vector3.zero, 0.12f));
+        seq.OnComplete(() => Destroy(gameObject));
+
+        enabled = false;   // LateUpdate 폴링 중단 (색·스케일 유지)
     }
 
     private void LateUpdate()

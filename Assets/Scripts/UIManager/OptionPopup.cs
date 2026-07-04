@@ -16,6 +16,7 @@ public class OptionPopup : UIPopup
     {
         MainButton,
         QuitButton,
+        CloseButton,
     }
 
     private Slider bgmSlider;
@@ -50,6 +51,8 @@ public class OptionPopup : UIPopup
 
         BindEvent(Get<GameObject>((int)GameObjects.MainButton), OnMainClicked);
         BindEvent(Get<GameObject>((int)GameObjects.QuitButton), OnQuitClicked);
+        BindEvent(Get<GameObject>((int)GameObjects.CloseButton),
+            evt => UIManager.Instance.ClosePopupUI(this));
     }
 
     private void OnDestroy()

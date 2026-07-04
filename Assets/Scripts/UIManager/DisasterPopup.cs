@@ -1,3 +1,4 @@
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -31,6 +32,30 @@ public class DisasterPopup : UIPopup
 
         // 재앙 팝업이 실제로 표시(ShowPopupUI<DisasterPopup>)되면 자동 발화. 표시 트리거 미구현이라 지금은 휴면.
         SoundManager.Instance?.PlaySFX(SFXType.DisasterOpen);
+
+        PlayDisasterFx();
+    }
+
+    // 재앙 임팩트 — 카메라 흔들림 + 딤 붉은 플래시
+    private void PlayDisasterFx()
+    {
+        var cam = Camera.main;
+        if (cam != null)
+        {
+            cam.transform.DOKill(true);
+            cam.transform.DOShakePosition(0.45f, 0.35f, 18)
+               .SetUpdate(true)
+               .SetLink(cam.gameObject);
+        }
+
+        var dim = GetComponent<UnityEngine.UI.Image>();
+        if (dim != null)
+        {
+            float baseAlpha = dim.color.a;
+            var seq = DG.Tweening.DOTween.Sequence().SetUpdate(true).SetLink(gameObject);
+            seq.Append(dim.DOColor(new Color(0.55f, 0.05f, 0.05f, 0.5f), 0.12f));
+            seq.Append(dim.DOColor(new Color(0f, 0f, 0f, baseAlpha), 0.4f));
+        }
     }
 
     // 재앙 정보 주입 — 예: Setup("어패류 재앙 발생", "1분간 재료 조달이 막힙니다.")
