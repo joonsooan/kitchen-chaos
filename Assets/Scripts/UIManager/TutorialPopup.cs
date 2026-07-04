@@ -38,6 +38,8 @@ public class TutorialPopup : UIPopup
 
     [SerializeField] private Page[] pages;
 
+    public override bool PauseGameWhileOpen => true;
+
     private TextMeshProUGUI titleText;
     private TextMeshProUGUI descText;
     private Image tutorialImage;

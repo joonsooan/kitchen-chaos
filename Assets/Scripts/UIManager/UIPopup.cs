@@ -5,6 +5,9 @@ public class UIPopup : UIBase
 {
     [SerializeField] private float showDuration = 0.3f;
 
+    // 이 팝업이 떠 있는 동안 Time.timeScale을 0으로 고정할지 — UIManager가 open/close 시 관리
+    public virtual bool PauseGameWhileOpen => false;
+
     public override void Init()
     {
     }

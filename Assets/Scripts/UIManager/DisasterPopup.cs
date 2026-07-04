@@ -20,6 +20,8 @@ public class DisasterPopup : UIPopup
     private TextMeshProUGUI titleText;
     private TextMeshProUGUI descText;
 
+    public override bool PauseGameWhileOpen => true;
+
     public override void Init()
     {
         Bind<TextMeshProUGUI>(typeof(Texts));

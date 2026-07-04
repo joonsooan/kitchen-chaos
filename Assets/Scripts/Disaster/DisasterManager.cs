@@ -15,9 +15,16 @@ public class DisasterManager : KSingleton<DisasterManager>
     [SerializeField] private float triggerIntervalSeconds = 60f;
     [SerializeField] private DisasterEvent[] timeTriggerPool;
     [SerializeField] private BuildingTrigger[] buildingTriggers;
+    [SerializeField] private bool infiniteDisasters;
+    [SerializeField] private int disasterCountToEnd = 5;
+    [SerializeField] private int minScoreToSucceed = 0;
+
+    public static event Action<bool> OnDisasterGameOver;
 
     private float nextTimeTrigger;
     private float disasterEndTime = -1f;
+    private int disasterCount;
+    private bool gameOverTriggered;
     private readonly List<(IngredientSource source, Action<IngredientSource, PlayerController> handler)> buildingSubscriptions = new();
 
     private void OnEnable()
@@ -55,9 +62,17 @@ public class DisasterManager : KSingleton<DisasterManager>
 
     private void HandleDisasterTriggered(DisasterEvent disasterEvent)
     {
-        if (UIManager.Instance == null) return;
+        if (UIManager.Instance != null)
+            UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(disasterEvent.DisasterName, disasterEvent.DisasterDescription);
 
-        UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(disasterEvent.DisasterName, disasterEvent.DisasterDescription);
+        if (infiniteDisasters || gameOverTriggered) return;
+
+        disasterCount++;
+        if (disasterCount < disasterCountToEnd) return;
+
+        gameOverTriggered = true;
+        int score = GameManager.Instance != null ? GameManager.Instance.Score : 0;
+        OnDisasterGameOver?.Invoke(score >= minScoreToSucceed);
     }
 
     private void SubscribeBuildingTriggers()

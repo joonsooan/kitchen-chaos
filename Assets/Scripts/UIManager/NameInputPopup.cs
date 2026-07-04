@@ -15,6 +15,8 @@ public class NameInputPopup : UIPopup
         NameInput,
     }
 
+    public override bool PauseGameWhileOpen => true;
+
     private TMP_InputField nameField;
 
     public override void Init()
