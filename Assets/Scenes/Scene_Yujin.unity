@@ -348,9 +348,12 @@ RectTransform:
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
 <<<<<<< HEAD
+=======
+>>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
 --- !u!1 &556481892
 GameObject:
   m_ObjectHideFlags: 0
@@ -400,10 +403,13 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 >>>>>>> bba8312 (add: 리더보드팝업, 홈화면 hud)
+=======
+>>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
 --- !u!1 &882640170
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,6 +557,7 @@ SceneRoots:
 <<<<<<< HEAD
 <<<<<<< HEAD
   - {fileID: 555717628}
+<<<<<<< HEAD
 =======
 >>>>>>> 75ee4b2 (add: 인게임 HUD 모양잡기)
 <<<<<<< HEAD
@@ -560,3 +567,6 @@ SceneRoots:
   - {fileID: 555717628}
 >>>>>>> d837ca0 (add: 리더보드팝업, 홈화면 hud)
 >>>>>>> bba8312 (add: 리더보드팝업, 홈화면 hud)
+=======
+  - {fileID: 556481894}
+>>>>>>> e0ddd75 (feat(ui): add popups, buff system, world gauge, integration scene)
