@@ -17,6 +17,10 @@ public class Customer : MonoBehaviour
     public event Action<Customer, RecipeData> OnOrderSucceeded;
     public event Action<Customer, RecipeData> OnOrderFailed;
 
+    // 주문 UI(InGameHUD)가 손님 스폰과 무관하게 주문 등록/제거 시점만 알면 되도록 static 이벤트로 노출
+    public static event Action<Customer> OnAnyCustomerSeated;
+    public static event Action<Customer> OnAnyCustomerLeft;
+
     [SerializeField] private CustomerData customerData;
 
     private CustomerState currentState = CustomerState.Idle;
@@ -59,6 +63,7 @@ public class Customer : MonoBehaviour
     {
         CurrentState = CustomerState.Waiting;
         waitTimer = customerData.toleranceSeconds;
+        OnAnyCustomerSeated?.Invoke(this);
     }
 
     public void ReceiveRecipe(RecipeData deliveredRecipe)
@@ -92,5 +97,7 @@ public class Customer : MonoBehaviour
         {
             OnOrderFailed?.Invoke(this, customerData.requiredRecipe);
         }
+
+        OnAnyCustomerLeft?.Invoke(this);
     }
 }

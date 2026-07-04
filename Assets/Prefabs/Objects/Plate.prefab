@@ -150,4 +150,4 @@ MonoBehaviour:
   ingredientVisualAnchor: {fileID: 0}
   sortingLayerName: Object
   sortingOrder: 10
-  visualScale: 0.2
+  visualScale: 0.9
