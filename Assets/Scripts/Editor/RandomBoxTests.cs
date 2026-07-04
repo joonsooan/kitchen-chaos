@@ -28,7 +28,7 @@ public static class RandomBoxTests
         try
         {
             var buffs = DataTable.Buffs;
-
+            
             // 1) 풀 로드 확인
             Check("버프 풀 로드 (4종)", buffs != null && buffs.Length == 4,
                   $"— {buffs?.Length ?? 0}개");

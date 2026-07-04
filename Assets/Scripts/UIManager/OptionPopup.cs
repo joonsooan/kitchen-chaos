@@ -66,9 +66,7 @@ public class OptionPopup : UIPopup
 
     private void OnMainClicked(PointerEventData evt)
     {
-        // TODO: 메인 화면 흐름 확정되면 전환 연결
-        Debug.Log("[OptionPopup] 메인 화면으로 (흐름 미정)");
-        UIManager.Instance.ClosePopupUI(this);
+        LeaderboardPopup.GoToTitle();
     }
 
     private void OnQuitClicked(PointerEventData evt)
