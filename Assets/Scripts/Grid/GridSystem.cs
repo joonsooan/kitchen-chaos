@@ -217,6 +217,34 @@ public class GridSystem : MonoBehaviour
         return CellToWorld(cell);
     }
 
+    /// <summary>
+    /// Picks a random walkable cell (in bounds, not Blocked, no occupant). Falls back to a linear
+    /// scan if random sampling misses, then to (0,0) if the grid has no walkable cell at all.
+    /// </summary>
+    public Vector2Int GetRandomWalkableCell()
+    {
+        EnsureRuntimeState();
+        int cellCount = Width * Height;
+
+        for (int attempt = 0; attempt < 50; attempt++)
+        {
+            int index = Random.Range(0, cellCount);
+            Vector2Int cell = new Vector2Int(index % Width, index / Width);
+            if (IsWalkable(cell)) return cell;
+        }
+
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                Vector2Int cell = new Vector2Int(x, y);
+                if (IsWalkable(cell)) return cell;
+            }
+        }
+
+        return Vector2Int.zero;
+    }
+
     public int MonsterSpawnCount => mapData != null ? mapData.MonsterSpawnCount : 0;
 
     public Vector3 GetMonsterSpawnWorld(int index)

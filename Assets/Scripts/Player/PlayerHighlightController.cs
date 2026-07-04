@@ -52,14 +52,14 @@ public class PlayerHighlightController : MonoBehaviour
             return;
         }
 
-        GridPlaceable placeable = hitTransform.GetComponentInParent<GridPlaceable>();
-        if (placeable == null)
+        IInteractable interactable = hitTransform.GetComponentInParent<IInteractable>();
+        if (interactable == null)
         {
             objectHighlight.Hide();
             return;
         }
 
-        SpriteRenderer sourceRenderer = placeable.GetComponentInChildren<SpriteRenderer>();
+        SpriteRenderer sourceRenderer = ((Component)interactable).GetComponentInChildren<SpriteRenderer>();
         if (sourceRenderer == null || sourceRenderer.sprite == null)
         {
             objectHighlight.Hide();
