@@ -301,5 +301,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40316189ff3a0b24ca576cb86a27617a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerIdleBobber
-  bobHeight: 0.08
-  bobDuration: 1
+  squashAmount: 0.06
+  squashDuration: 1
