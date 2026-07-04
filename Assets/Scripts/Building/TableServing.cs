@@ -3,10 +3,11 @@ using UnityEngine;
 
 /// <summary>
 /// Table serving point. F with a dish (any non-empty container) delivers it instantly
-/// to the waiting customer seated at this table: the customer judges it against their
-/// order - wrong or unfinished dishes fail (no reward) - and the container is consumed
-/// either way. Wires the delivery -> reward chain (Customer.ReceiveRecipe then
-/// GameManager.AddReward on success).
+/// to the waiting customer seated at this table. Serving judges the dish here (matching
+/// the customer's order) and pays the reward at once on success, then hands the container
+/// to CustomerDishReturn so the customer eats and later returns it - the dish is NOT
+/// destroyed. (This bypasses Customer.ReceiveRecipe, which would send the customer
+/// straight out and skip the eat-and-return sequence.)
 /// </summary>
 [RequireComponent(typeof(Table))]
 [DisallowMultipleComponent]
@@ -43,8 +44,8 @@ public class TableServing : MonoBehaviour, IInteractable
             return;
         }
 
-        // CompletedRecipe may be null (unfinished/wrong mix) - the customer's own
-        // comparison then fails it, which is exactly the intended judgment.
+        // CompletedRecipe may be null (unfinished/wrong mix) - the judgment below
+        // then fails it, which is exactly the intended outcome.
         RecipeData recipe = container.CompletedRecipe;
 
         Customer customer = FindWaitingCustomer(recipe);
@@ -53,18 +54,15 @@ public class TableServing : MonoBehaviour, IInteractable
             Debug.Log($"[TableServing] {name}: no waiting customer at this table");
             return;
         }
-        bool succeeded = false;
-        System.Action markSucceeded = () => succeeded = true;
-
-        customer.OnOrderSucceeded += markSucceeded;
-        customer.ReceiveRecipe(recipe);
-        customer.OnOrderSucceeded -= markSucceeded;
-
+        // Same judgment as Customer.ReceiveRecipe, done here so we can pay the reward
+        // up front and still route the dish into the eat-and-return sequence.
+        bool succeeded = recipe != null && customer.CustomerData.requiredRecipe == recipe;
         if (succeeded) GameManager.Instance.AddReward(recipe);
+
         string dishName = recipe != null ? recipe.recipeName : "unfinished dish";
         Debug.Log($"[TableServing] Delivered {dishName} - {(succeeded ? "correct order!" : "wrong order...")}");
 
-        Destroy(held.WorldObject);
+        customer.GetComponent<CustomerDishReturn>().Begin(container, succeeded);
         player.ServeDish();
     }
 

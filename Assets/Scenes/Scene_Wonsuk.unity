@@ -2832,31 +2832,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3343210351010524239, guid: dafadcca43a48b648aa9dc4ffe2c29f2, type: 3}
   m_PrefabInstance: {fileID: 1935723678}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1947440415 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9037563834889129279, guid: cc64dddaaceda9244a7ba4b72b867b7f, type: 3}
-  m_PrefabInstance: {fileID: 7973243349665885063}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1947440422
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1947440415}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 24743d02e32b3ce40991ad22856e49a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DeskItemSpawner
-  cupPrefab: {fileID: 8889469565768764011, guid: c03fa3176cebc5f4bb8a23f45c9c2ea5, type: 3}
-  platePrefab: {fileID: 4312298083396238070, guid: 42ef4238a2dd609408cf8d78b869f97c, type: 3}
-  cupSpawnCells:
-  - {x: 8, y: 6}
-  - {x: 9, y: 6}
-  plateSpawnCells:
-  - {x: 2, y: 6}
-  - {x: 3, y: 6}
 --- !u!1 &1964056505
 GameObject:
   m_ObjectHideFlags: 0
@@ -3818,10 +3793,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9037563834889129279, guid: cc64dddaaceda9244a7ba4b72b867b7f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1947440422}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc64dddaaceda9244a7ba4b72b867b7f, type: 3}
 --- !u!1001 &8445998181348140817
 PrefabInstance:
