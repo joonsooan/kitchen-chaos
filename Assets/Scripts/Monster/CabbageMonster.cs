@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class CabbageMonster : MonoBehaviour, IAttackable
+public class CabbageMonster : MonoBehaviour, IAttackable, IHasHealth
 {
     [SerializeField] private int maxHealth = 3;
 
@@ -16,6 +16,7 @@ public class CabbageMonster : MonoBehaviour, IAttackable
 
     public void Init(float duration)
     {
+        MonsterHPBarView.Show(this);   // 스폰 즉시 HP 바 노출 (피격 전에도 표시)
         if (duration > 0f) Invoke(nameof(Despawn), duration);
     }
 

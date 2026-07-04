@@ -8,7 +8,6 @@ public class CabbageMonsterSpawnEvent : DisasterEvent
     [SerializeField] private float duration = 20f;
 
     public override float Duration => duration;
-    public override bool ShowsPopup => false;
 
     protected override bool TryTrigger()
     {

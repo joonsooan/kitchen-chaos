@@ -102,9 +102,7 @@ MonoBehaviour:
   - {fileID: 7723300903781883990}
   - {fileID: 34184425458625168}
   - {fileID: 8264524626042938441}
-  buildingTriggers:
-  - source: {fileID: 0}
-    disasterEvent: {fileID: 7723300903781883990}
+  buildingTriggers: []
   infiniteDisasters: 1
   disasterCountToEnd: 3
   minScoreToSucceed: 5
