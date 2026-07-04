@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f2d1d09558cf6dc41a51eca8cbf263bd, type: 3}
-  m_Name: Customer_GreenJuice
+  m_Name: Customer_Rabbit_GreenJuice
   m_EditorClassIdentifier: Assembly-CSharp::CustomerData
-  customerName: "녹즙"
+  customerName: "토끼"
   requiredRecipe: {fileID: 11400000, guid: 6ed440dcc1f14259a462c38f17af0c00, type: 2}
   toleranceSeconds: 40
