@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8721830324672261732}
   - component: {fileID: 5383739955041838011}
   - component: {fileID: 2094780124921482671}
+  - component: {fileID: 307550733878735973}
   m_Layer: 0
   m_Name: _GameManager
   m_TagString: Untagged
@@ -73,12 +74,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c817f5d9e7d8c5e449289e362aac9eaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerSpawner
-  spawnInterval: 1
+  spawnInterval: 5
   spawnCell: {x: 27, y: 3}
   customerPrefabs:
   - {fileID: 7808573775356351771, guid: 7bba90334c3f48644a0578b7cb193521, type: 3}
+  - {fileID: 7808573775356351771, guid: 9672556857398b847a99f934227904c4, type: 3}
+  - {fileID: 7808573775356351771, guid: f4968b5c815492a4c98709ca47ae4e61, type: 3}
+  - {fileID: 7808573775356351771, guid: 7fa540d9dea7204438824f1f328964d9, type: 3}
+  - {fileID: 7808573775356351771, guid: b3c0d4713dd59954eb7f20f072625289, type: 3}
+  - {fileID: 7808573775356351771, guid: 5cde8d981fd3bfb4eb12b906eb2d85dc, type: 3}
   - {fileID: 7808573775356351771, guid: 07f10bbddb60f3b4b826b65721d3362e, type: 3}
   randomOrder: 0
+  poolParent: {fileID: 0}
 --- !u!114 &5383739955041838011
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -105,3 +112,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bc6bfae11a4170418702a9500a1450b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeatManager
+--- !u!114 &307550733878735973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9037563834889129279}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24743d02e32b3ce40991ad22856e49a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DeskItemSpawner
+  cupPrefab: {fileID: 8889469565768764011, guid: c03fa3176cebc5f4bb8a23f45c9c2ea5, type: 3}
+  platePrefab: {fileID: 4312298083396238070, guid: 42ef4238a2dd609408cf8d78b869f97c, type: 3}
+  cupSpawnCells:
+  - {x: 8, y: 6}
+  - {x: 9, y: 6}
+  plateSpawnCells:
+  - {x: 2, y: 6}
+  - {x: 3, y: 6}

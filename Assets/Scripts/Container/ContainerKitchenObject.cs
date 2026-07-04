@@ -6,7 +6,14 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     [SerializeField] private CarryingItemType containerType = CarryingItemType.Plate;
     [SerializeField] private RecipeData[] availableRecipes;
 
+    [Header("Ingredient Visual")]
+    [SerializeField] private Transform ingredientVisualAnchor;
+    [SerializeField] private string sortingLayerName = "Default";
+    [SerializeField] private int sortingOrder;
+    [SerializeField] private float visualScale = 0.5f;
+
     private readonly List<IngredientInstance> contents = new List<IngredientInstance>();
+    private readonly List<GameObject> ingredientVisuals = new List<GameObject>();
 
     public CarryingItemType ContainerType => containerType;
     public IReadOnlyList<IngredientInstance> Contents => contents;
@@ -41,17 +48,48 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     private void AddIngredient(IngredientInstance ingredient)
     {
         contents.Add(ingredient);
+        SpawnIngredientVisual(ingredient.Data != null ? ingredient.Data.ingredientIcon : null);
 
         if (RecipeMatcher.TryMatch(contents, availableRecipes, out RecipeData matched))
         {
             CompletedRecipe = matched;
             contents.Clear();
+            ClearIngredientVisuals();
+            SpawnIngredientVisual(matched.recipeIcon);
         }
+    }
+
+    private void SpawnIngredientVisual(Sprite sprite)
+    {
+        if (sprite == null) return;
+
+        Transform anchor = ingredientVisualAnchor != null ? ingredientVisualAnchor : transform;
+        GameObject visual = new GameObject(sprite.name);
+        visual.transform.SetParent(anchor, false);
+        visual.transform.localPosition = Vector3.zero;
+        visual.transform.localScale = Vector3.one * visualScale;
+
+        SpriteRenderer spriteRenderer = visual.AddComponent<SpriteRenderer>();
+        spriteRenderer.sprite = sprite;
+        spriteRenderer.sortingLayerName = sortingLayerName;
+        spriteRenderer.sortingOrder = sortingOrder;
+
+        ingredientVisuals.Add(visual);
+    }
+
+    private void ClearIngredientVisuals()
+    {
+        for (int i = 0; i < ingredientVisuals.Count; i++)
+        {
+            if (ingredientVisuals[i] != null) Destroy(ingredientVisuals[i]);
+        }
+        ingredientVisuals.Clear();
     }
 
     public void Empty()
     {
         contents.Clear();
         CompletedRecipe = null;
+        ClearIngredientVisuals();
     }
 }

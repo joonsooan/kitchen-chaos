@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6031369913390506939}
   - component: {fileID: 3124925169295739312}
   m_Layer: 0
-  m_Name: Customer_Racoon
+  m_Name: Customer_Rabbit_BerrySalad
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84,7 +84,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -105,7 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e17dd0cc1d36feb4d80d26c50147b9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Customer
-  customerData: {fileID: 11400000, guid: 5b4ae2ef536337e45aa1dad76280477d, type: 2}
+  customerData: {fileID: 11400000, guid: 3ccbb9f787fd35c49a556416161230ee, type: 2}
 --- !u!114 &3124925169295739312
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,4 +118,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be6ca1bf8d9e6ed4d83a8b6dd2cb1fed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerMovement
-  moveSpeed: 5
+  moveSpeed: 8
