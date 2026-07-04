@@ -44,5 +44,8 @@ TagManager:
   - name: Object
     uniqueID: 3897497951
     locked: 0
+  - name: Higlight Material
+    uniqueID: 2274350129
+    locked: 0
   m_RenderingLayers:
   - Default
