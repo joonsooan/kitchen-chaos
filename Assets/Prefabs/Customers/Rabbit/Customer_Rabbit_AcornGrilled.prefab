@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6031369913390506939}
   - component: {fileID: 3124925169295739312}
   - component: {fileID: 3124925169295739313}
+  - component: {fileID: -1030984270152811973}
   m_Layer: 0
   m_Name: Customer_Rabbit_AcornGrilled
   m_TagString: Untagged
@@ -136,3 +137,19 @@ MonoBehaviour:
   failureEatSeconds: 1.5
   moveSpeed: 5
   carryOffset: {x: 0, y: 0.9, z: -0.01}
+--- !u!114 &-1030984270152811973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7808573775356351771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e48156631dab35840a766fe76a7edf57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerSpriteAnimator
+  upSprite: {fileID: 0}
+  downSprite: {fileID: 0}
+  leftSprite: {fileID: 0}
+  rightSprite: {fileID: 0}
