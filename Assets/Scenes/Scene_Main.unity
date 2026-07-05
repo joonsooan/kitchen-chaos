@@ -8511,7 +8511,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -3864219608844767671, guid: 7875f9d547a4a244187032450be269b3, type: 3}
+  m_Sprite: {fileID: -2234965161366754557, guid: f5c6e37c914d3fc45b44215b2d138b2c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -9987,10 +9987,6 @@ PrefabInstance:
     - target: {fileID: 1764774685301756242, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
       propertyPath: m_Name
       value: _DisasterManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1764774685301756242, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3127648254957125243, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
       propertyPath: buildingTriggers.Array.data[0].source

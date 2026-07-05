@@ -18,9 +18,13 @@ public class DisasterManager : KSingleton<DisasterManager>
     [SerializeField] private BuildingTrigger[] buildingTriggers;
     [SerializeField] private bool infiniteDisasters;
     [SerializeField] private int disasterCountToEnd = 5;
-    [SerializeField] private int minScoreToSucceed = 0;
+    [SerializeField] private int initialTargetScore = 50;      // 1번째 재앙 시점 요구 점수
+    [SerializeField] private int targetScoreIncrement = 50;    // 재앙마다 목표 증가량
 
     public static event Action<bool> OnDisasterGameOver;
+
+    // 다음 재앙 때 요구될 목표 점수 (HUD 표시용)
+    public int CurrentTargetScore => initialTargetScore + disasterCount * targetScoreIncrement;
 
     private float nextTimeTrigger;
     private float disasterEndTime = -1f;
@@ -69,11 +73,24 @@ public class DisasterManager : KSingleton<DisasterManager>
         if (infiniteDisasters || gameOverTriggered) return;
 
         disasterCount++;
-        if (disasterCount < disasterCountToEnd) return;
 
-        gameOverTriggered = true;
-        int score = GameManager.Instance != null ? GameManager.Instance.Score : 0;
-        OnDisasterGameOver?.Invoke(score >= minScoreToSucceed);
+        // 재앙마다 판정 — N번째 재앙 시점 목표 = 초기값 + (N-1) × 증가량
+        int score  = GameManager.Instance != null ? GameManager.Instance.Score : 0;
+        int target = initialTargetScore + (disasterCount - 1) * targetScoreIncrement;
+
+        if (score < target)
+        {
+            gameOverTriggered = true;
+            OnDisasterGameOver?.Invoke(false);
+            return;
+        }
+
+        // 마지막 재앙까지 전부 충족 → 성공
+        if (disasterCount >= disasterCountToEnd)
+        {
+            gameOverTriggered = true;
+            OnDisasterGameOver?.Invoke(true);
+        }
     }
 
     private void SubscribeBuildingTriggers()

@@ -316,17 +316,14 @@ public class InGameHUD : UIHUD
         if (phaseLabelText != null && PhaseManager.CurrentPhase > 0)
             phaseLabelText.text = PhaseManager.IsResting ? "쉬는 시간" : $"{PhaseManager.CurrentPhase}페이즈";
 
-        // 목표 시각화 — "mm:ss까지 N점" (페이즈 마감까지 남은 시간 기준)
+        // 목표 시각화 — 다음 재앙 판정 목표 (DisasterManager 기준)
         if (targetText != null)
         {
-            bool show = PhaseManager.CurrentPhase > 0;
+            var disaster = DisasterManager.Instance;
+            bool show = disaster != null;
             if (targetText.gameObject.activeSelf != show) targetText.gameObject.SetActive(show);
             if (show)
-            {
-                targetText.text = PhaseManager.IsResting
-                    ? $"다음 목표 점수 : {PhaseManager.CurrentTarget}점"
-                    : $"목표 점수 : {PhaseManager.CurrentTarget}점";
-            }
+                targetText.text = $"목표 점수 : {disaster.CurrentTargetScore}점";
         }
 
         // 장난 남은시간 — 끝나면(사라지면) 같이 사라짐
