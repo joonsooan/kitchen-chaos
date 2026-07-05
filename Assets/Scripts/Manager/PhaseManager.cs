@@ -2,10 +2,8 @@ using System;
 using UnityEngine;
 
 // 임시 페이즈 시스템 — 3분 페이즈 → 2분 쉬는 시간 반복, 4페이즈까지.
-// 각 페이즈 종료 시 점수 >= 목표 확인: 미달이면 게임오버(실패), 4페이즈까지 충족하면 성공.
-// HUD가 CurrentPhase/IsResting/SegmentRemaining을 폴링해 남은 시간 표시.
+// 시간 구간·HUD 표시 전용. 점수 판정·게임오버는 DisasterManager가 재앙마다 수행.
 // 팀에서 정식 페이즈 이벤트 만들면 이 파일 삭제하고 그쪽 구독으로 교체.
-[RequireComponent(typeof(GameOverTester))]
 public class PhaseManager : MonoBehaviour
 {
     // (페이즈 번호 1~4, 목표 점수) — 페이즈 시작 시 발행
@@ -21,14 +19,8 @@ public class PhaseManager : MonoBehaviour
     [SerializeField] private float phaseSeconds = 180f;   // 페이즈 길이 (테스트 시 인스펙터에서 줄이기)
     [SerializeField] private float restSeconds  = 120f;   // 쉬는 시간 길이
 
-    private GameOverTester gameOver;
     private int  lastSegment = -1;   // 0=1페이즈, 1=휴식, 2=2페이즈, 3=휴식 ... 6=4페이즈
     private bool ended;
-
-    private void Awake()
-    {
-        gameOver = GetComponent<GameOverTester>();
-    }
 
     private void OnEnable()
     {
@@ -61,12 +53,10 @@ public class PhaseManager : MonoBehaviour
         if (segment == lastSegment) return;
         lastSegment = segment;
 
-        int score = GameManager.Instance != null ? GameManager.Instance.Score : 0;
-
-        // 4페이즈(segment 6) 종료 → 최종 판정
+        // 4페이즈(segment 6) 종료 → 페이즈 진행만 정지 (게임오버는 DisasterManager 담당)
         if (segment >= 7)
         {
-            EndGame(score >= Targets[Targets.Length - 1]);
+            ended = true;
             return;
         }
 
@@ -80,22 +70,11 @@ public class PhaseManager : MonoBehaviour
         }
         else
         {
-            // 페이즈 종료 → 목표 판정 후 휴식 진입
+            // 페이즈 종료 → 휴식 진입 (판정 없음)
             int endedPhase = (segment + 1) / 2;
-            if (score < Targets[endedPhase - 1])
-            {
-                EndGame(false);
-                return;
-            }
             IsResting = true;
-            // 휴식 동안엔 다음 페이즈 목표를 미리 표시 (표시 전용 — 판정은 Targets 직접 참조)
+            // 휴식 동안엔 다음 페이즈 목표를 미리 표시 (표시 전용)
             if (endedPhase < Targets.Length) CurrentTarget = Targets[endedPhase];
         }
-    }
-
-    private void EndGame(bool success)
-    {
-        ended = true;
-        if (gameOver != null) gameOver.TriggerGameOver(success);
     }
 }

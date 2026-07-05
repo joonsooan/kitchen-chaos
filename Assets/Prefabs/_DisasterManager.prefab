@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeedSpawnEvent
   disasterName: "\uC7A1\uCD08 \uBC88\uC2DD"
-  disasterDescription: "\uC7A1\uCD08\uAC00 \uBB34\uC131\uD558\uAC8C \uC790\uB77C\uB0A9\uB2C8\uB2E4!\n1\uBD84
-    \uB3D9\uC548 \uC7A1\uCD08\uAC00 \uBB34\uC791\uC704 \uC704\uCE58\uC5D0 \uC0DD\uC131\uB429\uB2C8\uB2E4.\n\uB9C8\uC6B0\uC2A4
-    \uC88C\uD074\uB9AD\uC73C\uB85C \uACF5\uACA9\uD558\uC5EC \uC81C\uAC70\uD560 \uC218
+  disasterDescription: "\uC7A1\uCD08\uAC00 \uBB34\uC131\uD558\uAC8C \uC790\uB77C\uB0A9\uB2C8\uB2E4!
+    1\uBD84 \uB3D9\uC548 \uC7A1\uCD08\uAC00 \uBB34\uC791\uC704 \uC704\uCE58\uC5D0
+    \uC0DD\uC131\uB429\uB2C8\uB2E4. \uACF5\uACA9\uD558\uC5EC \uC81C\uAC70\uD560 \uC218
     \uC788\uC2B5\uB2C8\uB2E4."
   weedPrefabA: {fileID: 8891624871928063836, guid: b2c290d201d110a4f979c8f79bcc5752, type: 3}
   weedPrefabB: {fileID: 8891624871928063836, guid: 56d250c78b570074ca0ba83673fd41a6, type: 3}
@@ -121,8 +121,9 @@ MonoBehaviour:
   - source: {fileID: 0}
     disasterEvent: {fileID: 7723300903781883990}
   infiniteDisasters: 1
-  disasterCountToEnd: 3
-  minScoreToSucceed: 5
+  disasterCountToEnd: 6
+  initialTargetScore: 50
+  targetScoreIncrement: 100
 --- !u!1 &4956198993572794468
 GameObject:
   m_ObjectHideFlags: 0
@@ -169,7 +170,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InvertControlsEvent
   disasterName: "\uD658\uAC01 \uB9C8\uBC95"
   disasterDescription: "\uC138\uC0C1\uC774 \uBE59\uAE00\uBE59\uAE00 \uB3CC\uC544\uAC00\uAE30
-    \uC2DC\uC791\uD569\uB2C8\uB2E4\u2026\n30\uCD08 \uB3D9\uC548 \uC88C\uC6B0 \uC774\uB3D9
+    \uC2DC\uC791\uD569\uB2C8\uB2E4\u2026 30\uCD08 \uB3D9\uC548 \uC88C\uC6B0 \uC774\uB3D9
     \uD0A4\uAC00 \uB4A4\uBC14\uB01D\uB2C8\uB2E4."
   duration: 30
 --- !u!1 &6100000000000000001
@@ -265,8 +266,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SurpriseGiftEvent
   disasterName: "\uAE5C\uC9DD \uC120\uBB3C"
   disasterDescription: "\uB73B\uBC16\uC758 \uC120\uBB3C\uC774 \uAE30\uB2E4\uB9AC\uACE0
-    \uC788\uC2B5\uB2C8\uB2E4!\n3\uBD84 \uB3D9\uC548 \uC810\uC218 \uBC0F \uCF54\uC778
-    \uD68D\uB4DD\uB7C9\uC774 2\uBC30\uAC00 \uB429\uB2C8\uB2E4."
+    \uC788\uC2B5\uB2C8\uB2E4. 3\uBD84 \uB3D9\uC548 \uC810\uC218 \uBC0F \uCF54\uC778
+    \uD68D\uB4DD\uB7C9 2\uBC30!"
   duration: 60
   rewardMultiplier: 2
 --- !u!1 &7718800067837846822
@@ -314,11 +315,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterSpawnEvent
   disasterName: "\uC591\uC0C1\uCD94 \uB300\uD0C8\uC8FC"
-  disasterDescription: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!\n1\uBD84
-    \uB3D9\uC548 \uC591\uC0C1\uCD94\uB97C \uD68D\uB4DD \uC2DC \uB192\uC740 \uD655\uB960\uB85C
-    \u2019\uC591\uBC30\uCD94\u2019 \uBAAC\uC2A4\uD130\uAC00 \uC0DD\uC131\uB429\uB2C8\uB2E4.\n\uB9C8\uC6B0\uC2A4
-    \uC88C\uD074\uB9AD\uC73C\uB85C \uACF5\uACA9\uD558\uC5EC \uC81C\uAC70\uD560 \uC218
-    \uC788\uC2B5\uB2C8\uB2E4."
+  disasterDescription: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!
+    1\uBD84 \uB3D9\uC548 \uC591\uC0C1\uCD94\uB97C \uD68D\uB4DD \uC2DC \uB192\uC740
+    \uD655\uB960\uB85C \u2019\uC591\uBC30\uCD94\u2019 \uBAAC\uC2A4\uD130\uAC00 \uC0DD\uC131\uB429\uB2C8\uB2E4.
+    \uACF5\uACA9\uD558\uC5EC \uC81C\uAC70\uD560 \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
   monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
   spawnCells:
   - {x: 2, y: 4}
