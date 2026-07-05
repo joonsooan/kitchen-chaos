@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41383859ae1d2ef4194812a1a41152f5, type: 3}
   m_Name: Acorn_Grilled
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
-  recipeIcon: {fileID: 21300000, guid: 5f59e2fe1a923884dae6c30027fcfdb1, type: 3}
+  recipeIcon: {fileID: 21300000, guid: 1b4c27073a2b240439d7fa64cf681e27, type: 3}
   recipeName: "\uB3C4\uD1A0\uB9AC \uAD6C\uC774"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 1c73a5e4601b2ee44b887561f685d510, type: 2}

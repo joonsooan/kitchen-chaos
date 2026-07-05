@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 4319136894262134805}
   - component: {fileID: 4626722697323578356}
   - component: {fileID: 2214495298537391007}
+  - component: {fileID: 7538532109214433246}
+  - component: {fileID: 2447468481478896351}
   m_Layer: 0
   m_Name: CabbageMonster
   m_TagString: Untagged
@@ -80,11 +82,11 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: -397469345
+  m_SortingLayer: 1
+  m_SortingOrder: 10
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b790ae1a843ddb54e9dad9f6cd057db6, type: 3}
+  m_Sprite: {fileID: 21300000, guid: fe9dbcd9a2139014881b945d48e0e01e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -143,6 +145,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CabbageMonster
   maxHealth: 3
+  voiceIntervalMin: 1
+  voiceIntervalMax: 4
 --- !u!114 &2214495298537391007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -159,3 +163,33 @@ MonoBehaviour:
   waitDurationAtTarget: 2
   searchMinCell: {x: 1, y: 4}
   searchMaxCell: {x: 9, y: 5}
+--- !u!114 &7538532109214433246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141737737231636562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 714fad2b001794640a6314c63f46463a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterSpriteAnimator
+  upSprite: {fileID: 21300000, guid: ba1a3f53a8100f84fbfb8b557a809515, type: 3}
+  downSprite: {fileID: 21300000, guid: fe9dbcd9a2139014881b945d48e0e01e, type: 3}
+  leftSprite: {fileID: 21300000, guid: 6279fab0fda1de74aa5344973a88409d, type: 3}
+  rightSprite: {fileID: 21300000, guid: 43dd41b1a7193fd41af5a5ec0372671f, type: 3}
+--- !u!114 &2447468481478896351
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1141737737231636562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8517d51140d48244945e2980f4b39f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterIdleBobber
+  squashAmount: 0.1
+  squashDuration: 1

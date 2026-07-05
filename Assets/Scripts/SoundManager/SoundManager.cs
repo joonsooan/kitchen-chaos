@@ -76,6 +76,22 @@ public class SoundManager : KSingleton<SoundManager>
         }
         foreach (var e in _library.sfxEntries) _sfxMap[e.type]  = (e.clips, e.volume);
         foreach (var e in _library.bgmEntries) _bgmMap[e.phase] = (e.clip, e.volume);
+
+        PreloadClips();
+    }
+
+    // 첫 재생 시점에 오디오 엔진이 클립을 동기 디코드하면서 생기는 프레임 스파이크(SoundManager.LoadFMODSound)를
+    // 피하려고, 실제 재생 전에 미리 메모리에 올려둔다.
+    void PreloadClips()
+    {
+        foreach (var e in _sfxMap.Values)
+        {
+            if (e.clips == null) continue;
+            foreach (var clip in e.clips)
+                if (clip != null) clip.LoadAudioData();
+        }
+        foreach (var e in _bgmMap.Values)
+            if (e.clip != null) e.clip.LoadAudioData();
     }
 
     // BGM·2D SFX는 매니저에 직접, 3D SFX는 위치별 자식 소스 voice 풀. 모두 시작 시 1회 생성.

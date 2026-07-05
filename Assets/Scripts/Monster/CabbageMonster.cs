@@ -9,6 +9,7 @@ public class CabbageMonster : MonoBehaviour, IAttackable, IHasHealth
     [SerializeField] private float voiceIntervalMax = 4f;
 
     private int currentHealth;
+    private bool hpBarShown;
 
     public int MaxHealth => maxHealth;
     public int CurrentHealth => currentHealth;
@@ -30,12 +31,16 @@ public class CabbageMonster : MonoBehaviour, IAttackable, IHasHealth
 
     public void Init(float duration)
     {
-        MonsterHPBarView.Show(this);   // 스폰 즉시 HP 바 노출 (피격 전에도 표시)
         if (duration > 0f) Invoke(nameof(Despawn), duration);
     }
 
     public void Hit(PlayerController player)
     {
+        if (!hpBarShown)   // 첫 피격 시에만 HP 바 노출 (스폰 시엔 숨김)
+        {
+            MonsterHPBarView.Show(this);
+            hpBarShown = true;
+        }
         TakeDamage(PowerBuff.OneShotActive ? currentHealth : 1);   // 파워 업 버프: 한 방
     }
 

@@ -15,7 +15,7 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public class TableServing : MonoBehaviour, IInteractable
 {
-    private const float SeatMatchEpsilon = 0.05f;
+    private const float SeatMatchEpsilon = 0.1f;   // TeleportServeRunner와 동일하게 통일
 
     // Raised after a delivery is judged (success flag included) so UI (order slots etc.)
     // can react. Fires whether or not the order was correct.
@@ -89,15 +89,19 @@ public class TableServing : MonoBehaviour, IInteractable
 
     // Seated customers snap exactly onto Seat.SitWorldPosition, so a position match
     // finds this table's customers without needing a seat->customer reference.
-    // Prefers the customer whose order matches the delivered recipe, so with two
-    // seated customers the dish never lands on the wrong one by seat order.
+    // 우선순위: 배달된 요리를 주문한 손님이 있으면 무조건 그 손님. 후보가 여럿이면
+    // (둘 다 주문 일치이거나, 아무도 일치하지 않을 때) 남은 인내심이 가장 적은 =
+    // 가장 급한 손님에게 준다. 이 tie-break는 TeleportServeBuff의 "가장 급한 매칭
+    // 손님" 선정과 동일하므로, 순간이동 버프가 그 손님을 지목해 Interact를 대신
+    // 호출해도 여기서 같은 손님이 선택된다.
     private Customer FindWaitingCustomer(RecipeData deliveredRecipe)
     {
         IReadOnlyList<Seat> seats = table.LinkedSeats;
         if (seats == null) return null;
 
         Customer[] customers = FindObjectsByType<Customer>(FindObjectsSortMode.None);
-        Customer fallback = null;
+        Customer bestMatch = null;      // 주문 일치 손님 중 남은 인내심이 가장 적은 손님
+        Customer bestFallback = null;   // 일치 손님이 없을 때, 남은 인내심이 가장 적은 손님
 
         for (int s = 0; s < seats.Count; s++)
         {
@@ -114,16 +118,21 @@ public class TableServing : MonoBehaviour, IInteractable
                 delta.z = 0f;
                 if (delta.sqrMagnitude > SeatMatchEpsilon * SeatMatchEpsilon) continue;
 
-                if (deliveredRecipe != null && candidate.CustomerData != null
-                    && candidate.CustomerData.requiredRecipe == deliveredRecipe)
-                {
-                    return candidate;
-                }
+                bool matches = deliveredRecipe != null && candidate.CustomerData != null
+                    && candidate.CustomerData.requiredRecipe == deliveredRecipe;
 
-                if (fallback == null) fallback = candidate;
+                if (matches)
+                {
+                    if (bestMatch == null || candidate.RemainingPatience < bestMatch.RemainingPatience)
+                        bestMatch = candidate;
+                }
+                else if (bestFallback == null || candidate.RemainingPatience < bestFallback.RemainingPatience)
+                {
+                    bestFallback = candidate;
+                }
             }
         }
 
-        return fallback;
+        return bestMatch != null ? bestMatch : bestFallback;
     }
 }

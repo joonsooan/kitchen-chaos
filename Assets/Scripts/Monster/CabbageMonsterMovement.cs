@@ -15,6 +15,8 @@ public class CabbageMonsterMovement : MonoBehaviour
     private int waypointIndex;
     private float waitTimer;
 
+    public Vector2 FacingDirection { get; private set; } = Vector2.down;
+
     private void OnEnable()
     {
         waypoints = null;
@@ -35,7 +37,11 @@ public class CabbageMonsterMovement : MonoBehaviour
         Vector3 target = waypoints[waypointIndex];
         target.z = z;
 
+        Vector3 previousPosition = transform.position;
         transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+
+        Vector2 delta = transform.position - previousPosition;
+        if (delta.sqrMagnitude > 0f) FacingDirection = delta.normalized;
 
         if ((transform.position - target).sqrMagnitude > ArriveEpsilon * ArriveEpsilon) return;
 

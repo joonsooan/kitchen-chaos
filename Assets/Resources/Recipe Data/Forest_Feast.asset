@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41383859ae1d2ef4194812a1a41152f5, type: 3}
   m_Name: Forest_Feast
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
-  recipeIcon: {fileID: 21300000, guid: 51a53b8eb5c7c3547875f74812a629dd, type: 3}
+  recipeIcon: {fileID: 21300000, guid: 4f25c4b24836fec42a937fabb27bf735, type: 3}
   recipeName: "\uC232\uC18D \uB9CC\uCC2C \uC138\uD2B8"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 91d838b6fb503d846b866c973322cca3, type: 2}
