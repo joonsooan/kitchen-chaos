@@ -9988,6 +9988,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 34184425458625168, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
+      propertyPath: disasterDescription
+      value: "\uC7A1\uCD08\uAC00 \uBB34\uC131\uD558\uAC8C \uC790\uB77C\uB0A9\uB2C8\uB2E4!
+        1\uBD84 \uB3D9\uC548 \uC7A1\uCD08\uAC00 \uBB34\uC791\uC704 \uC704\uCE58\uC5D0
+        \uC0DD\uC131\uB429\uB2C8\uB2E4. \uACF5\uACA9\uD558\uC5EC \uC81C\uAC70\uD560
+        \uC218 \uC788\uC2B5\uB2C8\uB2E4."
+      objectReference: {fileID: 0}
     - target: {fileID: 1764774685301756242, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
       propertyPath: m_Name
       value: _DisasterManager
@@ -10000,6 +10007,20 @@ PrefabInstance:
       propertyPath: buildingTriggers.Array.data[0].source
       value: 
       objectReference: {fileID: 1762139524371388890}
+    - target: {fileID: 6200000000000000003, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
+      propertyPath: disasterDescription
+      value: "\uB73B\uBC16\uC758 \uC120\uBB3C\uC774 \uAE30\uB2E4\uB9AC\uACE0 \uC788\uC2B5\uB2C8\uB2E4.
+        3\uBD84 \uB3D9\uC548 \uC810\uC218 \uBC0F \uCF54\uC778 \uD68D\uB4DD\uB7C9
+        2\uBC30!"
+      objectReference: {fileID: 0}
+    - target: {fileID: 7723300903781883990, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
+      propertyPath: disasterDescription
+      value: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!
+        1\uBD84 \uB3D9\uC548 \uC591\uC0C1\uCD94\uB97C \uD68D\uB4DD \uC2DC \uB192\uC740
+        \uD655\uB960\uB85C \u2019\uC591\uBC30\uCD94\u2019 \uBAAC\uC2A4\uD130\uAC00
+        \uC0DD\uC131\uB429\uB2C8\uB2E4. \uACF5\uACA9\uD558\uC5EC \uC81C\uAC70\uD560
+        \uC218 \uC788\uC2B5\uB2C8\uB2E4. "
+      objectReference: {fileID: 0}
     - target: {fileID: 8244220884098111768, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -10039,6 +10060,12 @@ PrefabInstance:
     - target: {fileID: 8244220884098111768, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8264524626042938441, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
+      propertyPath: disasterDescription
+      value: "\uC138\uC0C1\uC774 \uBE59\uAE00\uBE59\uAE00 \uB3CC\uC544\uAC00\uAE30
+        \uC2DC\uC791\uD569\uB2C8\uB2E4\u2026 30\uCD08 \uB3D9\uC548 \uC88C\uC6B0 \uC774\uB3D9
+        \uD0A4\uAC00 \uB4A4\uBC14\uB01D\uB2C8\uB2E4."
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
