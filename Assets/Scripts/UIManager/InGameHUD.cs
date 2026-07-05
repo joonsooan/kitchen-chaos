@@ -323,12 +323,9 @@ public class InGameHUD : UIHUD
             if (targetText.gameObject.activeSelf != show) targetText.gameObject.SetActive(show);
             if (show)
             {
-                float deadline = PhaseManager.SegmentRemaining;
-                int tm = (int)(deadline / 60f);
-                int ts = (int)(deadline % 60f);
                 targetText.text = PhaseManager.IsResting
-                    ? $"다음 목표 {PhaseManager.CurrentTarget}점"
-                    : $"{tm:00}:{ts:00}까지 {PhaseManager.CurrentTarget}점";
+                    ? $"다음 목표 점수 : {PhaseManager.CurrentTarget}점"
+                    : $"목표 점수 : {PhaseManager.CurrentTarget}점";
             }
         }
 
