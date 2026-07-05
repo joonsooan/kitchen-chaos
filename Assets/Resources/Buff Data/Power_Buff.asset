@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d7e2b9a5c1f4083b6a8d0c3e5f79216, type: 3}
   m_Name: Power_Buff
   m_EditorClassIdentifier: Assembly-CSharp::PowerBuff
-  buffName: 파워 업
-  description: 내 안에 잠들어 있던 힘이 깨어납니다.
+  buffName: "\uD30C\uC6CC \uC5C5"
+  description: "\uB0B4 \uC548\uC5D0 \uC7A0\uB4E4\uC5B4 \uC788\uB358 \uD798\uC774
+    \uAE68\uC5B4\uB0A9\uB2C8\uB2E4.\n\n30\uCD08 \uB3D9\uC548 \uC591\uC0C1\uCD94,
+    \uC7A1\uCD08\uB97C \uD55C \uBC88\uC5D0 \uCC98\uCE58"
   icon: {fileID: 21300000, guid: 2d3a5b7c9e1f46803c5e7a9b1d3f5728, type: 3}
   duration: 30
-  weight: 20
+  weight: 10
