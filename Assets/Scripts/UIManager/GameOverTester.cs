@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class GameOverTester : MonoBehaviour
 {
     private const string BoardKey = "Leaderboard";   // "id,score|id,score|..."
-    private const int MaxRows = 5;
+    private const int MaxRows = 3;
 
     private bool triggered;   // 페이즈 판정·재앙 판정 둘 다 쏴도 결과창 1번만
 
@@ -38,6 +38,31 @@ public class GameOverTester : MonoBehaviour
         // F7 — 컵/접시 재고 소진 경고 강제 표시 (스테이션 순환)
         if (Keyboard.current.f7Key.wasPressedThisFrame)
             ForceStationWarning();
+
+        // F5 — 장난 팝업 테스트 (연타하면 멘트 순환)
+        if (Keyboard.current.f5Key.wasPressedThisFrame)
+            ForceDisasterPopup();
+    }
+
+    private static readonly (string title, string desc)[] TestPranks =
+    {
+        ("양상추 대탈주", "양상추들이 도망가기 시작합니다!\n3분 동안 양상추를 획득 시 높은 확률로\n'양배추' 몬스터가 생성됩니다.\n공격하여 제거할 수 있습니다."),
+        ("환각 버섯", "이상한 버섯을 먹었습니다!\n눈앞이 빙글빙글 돕니다...\n3분 동안 좌우 이동 키가 뒤바뀝니다."),
+        ("잡초 번식", "잡초가 무성하게 자라납니다!\n3분 동안 잡초가 무작위 위치에 생성됩니다.\n공격하여 제거할 수 있습니다."),
+    };
+    private int nextPrankIndex;   // F5 순환용
+
+    private void ForceDisasterPopup()
+    {
+        var (title, desc) = TestPranks[nextPrankIndex % TestPranks.Length];
+        nextPrankIndex++;
+
+        // 이미 장난 팝업이 떠 있으면 그것만 닫고 새로 (연타 시 멘트 교체 — 다른 팝업은 안 건드림)
+        var existing = FindFirstObjectByType<DisasterPopup>();
+        if (existing != null) UIManager.Instance.ClosePopupUI(existing);
+
+        UIManager.Instance.ShowPopupUI<DisasterPopup>().Setup(title, desc, new Color(0.55f, 0.05f, 0.05f));
+        Debug.Log($"[PrankTest] F5 팝업: {title}");
     }
 
     private int nextStationIndex;   // F7 순환용
@@ -120,7 +145,7 @@ public class GameOverTester : MonoBehaviour
         for (int i = 0; i < top.Count; i++)
         {
             string mark = (top[i].id == myId && top[i].score == myScore) ? " ◀" : "";
-            lines.Add($"{i + 1:00}   {top[i].id}   {top[i].score}{mark}");
+            lines.Add($"{i + 1:00} {top[i].id} {top[i].score}점{mark}");
         }
         return string.Join("\n", lines);
     }

@@ -28,14 +28,6 @@ public class OrderUIBridge : MonoBehaviour
             foreach (var station in FindObjectsByType<ReturnStation>(FindObjectsSortMode.None))
                 Instantiate(stockPrefab).GetComponent<StockCountView>().Bind(station);
         }
-
-        // 퇴식구마다 남은 그릇 수 표시 부착
-        var stockPrefab = Resources.Load<GameObject>("UI/World/StockCount");
-        if (stockPrefab != null)
-        {
-            foreach (var station in FindObjectsByType<ReturnStation>(FindObjectsSortMode.None))
-                Instantiate(stockPrefab).GetComponent<StockCountView>().Bind(station);
-        }
     }
 
     private void OnEnable()

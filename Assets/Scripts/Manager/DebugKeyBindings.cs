@@ -52,6 +52,8 @@ public class DebugKeyBindings : MonoBehaviour
 
     private void OnRestartPerformed(InputAction.CallbackContext context)
     {
+        if (TypingGuard.IsTyping) return;   // 이름 입력 중 'r' 타이핑 보호
+
         Time.timeScale = 1f;
         Scene current = SceneManager.GetActiveScene();
         SceneManager.LoadScene(current.name);
@@ -64,6 +66,7 @@ public class DebugKeyBindings : MonoBehaviour
 
     private void SetTimeScale(float scale)
     {
+        if (TypingGuard.IsTyping) return;   // 이름 입력 중 숫자 타이핑 보호
         Time.timeScale = scale;
     }
 }
