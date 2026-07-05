@@ -17,7 +17,7 @@ public class WeedSpawnEvent : DisasterEvent
 
         for (int i = 0; i < weedCount; i++)
         {
-            Vector2Int cell = grid.GetRandomWalkableCell();
+            Vector2Int cell = grid.GetRandomWalkableCell(new Vector2Int(1, 1), new Vector2Int(15, 6));
             if (!grid.IsWalkable(cell)) continue;
 
             GameObject weed = Instantiate(weedPrefab, grid.CellToWorld(cell), Quaternion.identity);

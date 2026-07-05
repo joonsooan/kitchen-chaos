@@ -7,6 +7,8 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
     [SerializeField] private float initialDelay = 5f;
     [SerializeField] private float spawnInterval = 5f;
     [SerializeField] private Vector2Int spawnCell;
+    // 입장 경로 막힘 안내 셀 — 코드 상수로 고정(직렬화 안 되므로 씬/인스펙터 값에 절대 안 밀림).
+    private static readonly Vector2Int SeatBlockedNoticeCell = new Vector2Int(15, 3);
     [SerializeField] private GameObject[] customerPrefabs;
     [SerializeField] private float[] spawnWeights;   // customerPrefabs와 1:1. 비었거나 짧으면 해당 항목 가중치 1로 취급.
     [SerializeField] private Transform poolParent;
@@ -118,5 +120,16 @@ public class CustomerSpawner : KSingleton<CustomerSpawner>
         instance.transform.SetPositionAndRotation(GridSystem.Instance.CellToWorld(spawnCell), Quaternion.identity);
         instance.SetActive(true);
         instance.GetComponent<CustomerMovement>().BeginSeating();
+    }
+
+    // 입장 경로가 막혀(잡초 등) 손님이 못 들어올 때, 화면 안 지정 셀에 검은 글씨로 안내.
+    public void ShowSeatBlockedNotice()
+    {
+        var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
+        if (prefab == null) return;
+
+        string message = UnityEngine.Random.value < 0.5f ? "들어갈래용.." : "배고파용..";
+        Instantiate(prefab).GetComponent<ServeResultPopup>()
+            .Show(GridSystem.Instance.CellToWorld(SeatBlockedNoticeCell), message, Color.black);
     }
 }

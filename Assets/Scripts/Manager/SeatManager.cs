@@ -51,4 +51,17 @@ public class SeatManager : KSingleton<SeatManager>
         seat = nearest;
         return nearest.TryReserve();
     }
+
+    // 가까운 순으로 정렬된 빈 좌석 목록 (예약은 안 함 — 호출측이 경로 확인 후 TryReserve).
+    public List<Seat> GetFreeSeatsByDistance(Vector3 fromWorldPosition)
+    {
+        List<Seat> free = new List<Seat>();
+        foreach (Seat s in seats)
+            if (!s.IsOccupied) free.Add(s);
+
+        free.Sort((a, b) =>
+            (a.transform.position - fromWorldPosition).sqrMagnitude
+                .CompareTo((b.transform.position - fromWorldPosition).sqrMagnitude));
+        return free;
+    }
 }

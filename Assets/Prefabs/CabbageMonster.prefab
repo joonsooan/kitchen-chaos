@@ -143,6 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CabbageMonster
   maxHealth: 3
+  voiceIntervalMin: 4
+  voiceIntervalMax: 10
 --- !u!114 &2214495298537391007
 MonoBehaviour:
   m_ObjectHideFlags: 0

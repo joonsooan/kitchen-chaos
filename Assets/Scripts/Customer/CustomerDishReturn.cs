@@ -91,8 +91,9 @@ public class CustomerDishReturn : MonoBehaviour
         var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
         if (prefab == null) return;
 
+        string message = UnityEngine.Random.value < 0.5f ? "다 먹었어용.." : "배불러용..";
         Instantiate(prefab).GetComponent<ServeResultPopup>()
-            .Show(transform.position + noticeOffset, "반납하러 갈 수 없습니다!", Color.black);
+            .Show(transform.position + noticeOffset, message, Color.black);
     }
 
     private static ReturnStation FindStationFor(CarryingItemType containerType)
