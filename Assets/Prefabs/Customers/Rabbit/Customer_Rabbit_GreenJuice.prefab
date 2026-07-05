@@ -86,7 +86,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 9
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 21300000, guid: b0924ef9ecce37a4b9e4e3b8d5e2f46e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: aa0c7866bbc82734f859209935dd3b49, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -122,6 +122,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerMovement
   moveSpeed: 8
+  leaveRetryInterval: 2
+  leaveNoticeOffset: {x: 0, y: 1.4, z: 0}
 --- !u!114 &3124925169295739313
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,10 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e48156631dab35840a766fe76a7edf57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerSpriteAnimator
-  upSprite: {fileID: 21300000, guid: 70d46b1c01c495b439f97090c81057b7, type: 3}
-  downSprite: {fileID: 21300000, guid: b0924ef9ecce37a4b9e4e3b8d5e2f46e, type: 3}
-  leftSprite: {fileID: 21300000, guid: fe5d20476fd5a6045a4bac6336d9441e, type: 3}
-  rightSprite: {fileID: 21300000, guid: e7a7445221458b04d95c70a84868593f, type: 3}
+  upSprite: {fileID: 21300000, guid: 74881c8fb07113645ac785b554aebcd5, type: 3}
+  downSprite: {fileID: 21300000, guid: aa0c7866bbc82734f859209935dd3b49, type: 3}
+  leftSprite: {fileID: 21300000, guid: 08e3b0cf699434346b4c1fdf0f380827, type: 3}
+  rightSprite: {fileID: 21300000, guid: f89de100128c9e4479da6748a62722eb, type: 3}
 --- !u!114 &3433506724051795314
 MonoBehaviour:
   m_ObjectHideFlags: 0

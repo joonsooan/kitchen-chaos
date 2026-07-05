@@ -19,6 +19,15 @@ public class RandomBoxManager : KSingleton<RandomBoxManager>
         return true;
     }
 
+    // 결과창 "다시 돌리기" — 코인만 차감, OnBoxOpened 미발행 (팝업 이미 열림)
+    public bool TryPayReroll()
+    {
+        if (GameManager.Instance == null || GameManager.Instance.Money < cost) return false;
+
+        GameManager.Instance.AddMoney(-cost);
+        return true;
+    }
+
     // weight 가중치 롤 — 결과 버프 반환 (팝업이 호출)
     public BuffData Roll()
     {

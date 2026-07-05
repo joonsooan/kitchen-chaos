@@ -42,6 +42,18 @@ public class BuffManager : KSingleton<BuffManager>
         OnBuffStarted?.Invoke(buff);
     }
 
+    // 버프 즉시 해제 — 리롤 교체 등 (만료와 동일한 정리 경로)
+    public void Deactivate(BuffData buff)
+    {
+        if (buff == null || !active.TryGetValue(buff, out var running)) return;
+
+        StopCoroutine(running);
+        active.Remove(buff);
+        endTimes.Remove(buff);
+        buff.Remove();
+        OnBuffEnded?.Invoke(buff);
+    }
+
     private IEnumerator ExpireAfter(BuffData buff)
     {
         yield return new WaitForSeconds(buff.duration);
