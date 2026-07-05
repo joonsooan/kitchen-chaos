@@ -52,6 +52,7 @@ public class CustomerDishReturn : MonoBehaviour
 
         // 다 먹었으니 손에 든 완성 요리를 빈 그릇으로 — 빈 접시/컵을 들고 반납하러 간다.
         carried.Empty();
+        customer.MarkOrderFulfilled();   // 다 먹음 → 주문 말풍선 제거 신호
 
         ReturnStation station = FindStationFor(carried.ContainerType);
         Vector2Int startCell = GridSystem.Instance.WorldToCell(transform.position);
