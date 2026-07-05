@@ -4,7 +4,7 @@ using UnityEngine;
 // 깜짝 선물 — duration 동안 보상(코인·점수) 배율 적용 후 복원. (InvertControlsEvent 코루틴 패턴 재사용)
 public class SurpriseGiftEvent : DisasterEvent
 {
-    [SerializeField] private float duration = 180f;
+    [SerializeField] private float duration = 60f;
     [SerializeField] private int rewardMultiplier = 2;
 
     public override float Duration => duration;

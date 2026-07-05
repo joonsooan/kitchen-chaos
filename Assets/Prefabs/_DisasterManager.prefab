@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15a13483dd539848af15f40567f3163, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisasterManager
-  firstTriggerSeconds: 30
+  firstTriggerSeconds: 60
   triggerIntervalSeconds: 30
   timeTriggerPool:
   - {fileID: 7723300903781883990}
@@ -120,7 +120,6 @@ MonoBehaviour:
   buildingTriggers:
   - source: {fileID: 0}
     disasterEvent: {fileID: 7723300903781883990}
-  infiniteDisasters: 1
   disasterCountToEnd: 6
   initialTargetScore: 50
   targetScoreIncrement: 100

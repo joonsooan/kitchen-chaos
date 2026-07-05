@@ -43,6 +43,9 @@ public class InGameHUD : UIHUD
     private GameObject buffIcon;
     private Transform randomBoxIcon;
     private Tween boxBounceTween;
+    private Tween boxGlowTween;
+    private Tween boxWiggleTween;
+    private Transform boxGlow;      // 살 수 있을 때 후광 (프리팹 optional)
     private UnityEngine.UI.Image buffIconImage;
     private bool initialized;
     private TextMeshProUGUI phaseLabelText;   // 페이즈/쉬는시간 탭 (프리팹 optional)
@@ -68,6 +71,7 @@ public class InGameHUD : UIHUD
         if (buffIcon != null) buffIconImage = buffIcon.GetComponent<UnityEngine.UI.Image>();
 
         randomBoxIcon = Get<GameObject>((int)GameObjects.RandomBoxIcon).transform;
+        boxGlow       = transform.Find("BoxGlow");
 
         if (timeText != null)
         {
@@ -207,17 +211,47 @@ public class InGameHUD : UIHUD
 
         if (affordable && !bouncing)
         {
+            // 통통 바운스 (기존보다 크게)
             boxBounceTween = randomBoxIcon
-                .DOScale(1.12f, 0.45f)
+                .DOScale(1.18f, 0.4f)
                 .SetEase(Ease.InOutSine)
                 .SetLoops(-1, LoopType.Yoyo)
                 .SetLink(randomBoxIcon.gameObject);
+
+            // 주기적 좌우 흔들기 — 1.4초마다 도리도리
+            boxWiggleTween = randomBoxIcon
+                .DOShakeRotation(0.5f, new Vector3(0f, 0f, 14f), 14)
+                .SetDelay(0.9f)
+                .SetLoops(-1, LoopType.Restart)
+                .SetLink(randomBoxIcon.gameObject);
+
+            // 후광 펄스 — 노란 빛이 커졌다 작아졌다
+            if (boxGlow != null)
+            {
+                boxGlow.gameObject.SetActive(true);
+                boxGlow.localScale = Vector3.one * 0.9f;
+                boxGlowTween = boxGlow
+                    .DOScale(1.25f, 0.6f)
+                    .SetEase(Ease.InOutSine)
+                    .SetLoops(-1, LoopType.Yoyo)
+                    .SetLink(boxGlow.gameObject);
+            }
         }
         else if (!affordable && bouncing)
         {
             boxBounceTween.Kill();
             boxBounceTween = null;
+            boxWiggleTween?.Kill();
+            boxWiggleTween = null;
             randomBoxIcon.localScale = Vector3.one;
+            randomBoxIcon.localRotation = Quaternion.identity;
+
+            if (boxGlow != null)
+            {
+                boxGlowTween?.Kill();
+                boxGlowTween = null;
+                boxGlow.gameObject.SetActive(false);
+            }
         }
     }
 
@@ -307,19 +341,19 @@ public class InGameHUD : UIHUD
     {
         if (timeText == null) return;
 
-        // 페이즈 시스템 있으면 "구간 남은 시간", 없으면 기존 누적 시간
-        float shown = PhaseManager.CurrentPhase > 0 ? PhaseManager.SegmentRemaining : elapsedTime;
+        // 재앙 기준 페이즈 (DisasterManager) — 구간 남은 시간, 없으면 기존 누적 시간
+        var disaster = DisasterManager.Instance;
+        float shown = disaster != null ? disaster.SegmentRemaining : elapsedTime;
         int minutes = (int)(shown / 60f);
         int seconds = (int)(shown % 60f);
         timeText.text = $"{minutes:00}:{seconds:00}";
 
-        if (phaseLabelText != null && PhaseManager.CurrentPhase > 0)
-            phaseLabelText.text = PhaseManager.IsResting ? "쉬는 시간" : $"{PhaseManager.CurrentPhase}페이즈";
+        if (phaseLabelText != null && disaster != null)
+            phaseLabelText.text = disaster.IsResting ? "쉬는 시간" : $"{disaster.CurrentPhase}페이즈";
 
-        // 목표 시각화 — 다음 재앙 판정 목표 (DisasterManager 기준)
+        // 목표 시각화 — 페이즈 중엔 이번 판정 목표, 휴식 중엔 다음 페이즈 목표
         if (targetText != null)
         {
-            var disaster = DisasterManager.Instance;
             bool show = disaster != null;
             if (targetText.gameObject.activeSelf != show) targetText.gameObject.SetActive(show);
             if (show)
