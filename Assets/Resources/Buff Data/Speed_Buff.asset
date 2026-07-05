@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpeedBuff
   buffName: 바람의 가호
   description: 산들바람의 축복을 받아 발걸음이 가벼워진다.
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 4f5c7d9e1a3b68025e7a9c1d3f5b794a, type: 3}
   duration: 30
   weight: 20
   multiplier: 1.5

@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::JumpBuff
   buffName: 스프링 장화
   description: 통통 튀는 장화로 장애물을 뛰어넘을 수 있다.
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 1c2f4a6b8d0e35792b4d6f8a0c2e4617, type: 3}
   duration: 30
   weight: 20

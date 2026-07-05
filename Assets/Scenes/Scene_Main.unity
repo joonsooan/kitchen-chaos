@@ -9988,6 +9988,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: _DisasterManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1764774685301756242, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3127648254957125243, guid: f4d4bbc3670c6cd4a94581fd7120d51a, type: 3}
       propertyPath: buildingTriggers.Array.data[0].source
       value: 
