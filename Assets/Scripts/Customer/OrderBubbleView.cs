@@ -32,6 +32,13 @@ public class OrderBubbleView : MonoBehaviour
             return;
         }
 
+        // 다 먹고 반납 시작(빈 그릇 전환)하면 주문 말풍선 제거
+        if (target.OrderFulfilled)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         transform.position = target.transform.position + worldOffset;
 
         if (cam != null)

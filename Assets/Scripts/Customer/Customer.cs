@@ -29,6 +29,10 @@ public class Customer : MonoBehaviour
 
     public CustomerData CustomerData => customerData;
     public float RemainingPatience => waitTimer;
+    public bool OrderFulfilled { get; private set; }   // 다 먹고 빈 그릇으로 바뀐 시점부터 true — 주문 말풍선 제거용
+
+    // 반납 파이프라인이 "다 먹음(빈 그릇 전환)"을 알릴 때 호출.
+    public void MarkOrderFulfilled() => OrderFulfilled = true;
 
     public CustomerState CurrentState
     {
@@ -67,6 +71,7 @@ public class Customer : MonoBehaviour
 
     public void Seat()
     {
+        OrderFulfilled = false;
         CurrentState = CustomerState.Waiting;
         waitTimer = customerData.toleranceSeconds;
         SoundManager.Instance?.PlaySFX(SFXType.OrderCreated);
