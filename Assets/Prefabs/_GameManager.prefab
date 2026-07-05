@@ -65,7 +65,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dba0833152dc5a34b91ad3a815ed859b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RandomBoxManager
-  cost: 20
+  cost: 10
 --- !u!114 &8721830324672261732
 MonoBehaviour:
   m_ObjectHideFlags: 0
