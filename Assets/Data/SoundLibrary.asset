@@ -69,7 +69,7 @@ MonoBehaviour:
     clips:
     - {fileID: 8300000, guid: a349172414007e0478225bbf625cc030, type: 3}
   - type: 14
-    volume: 0.91
+    volume: 0.8
     clips:
     - {fileID: 8300000, guid: 18bde8c8c6b15864bba0348688965839, type: 3}
   bgmEntries:

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -5,6 +6,8 @@ using UnityEngine;
 public class CustomerMovement : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 2f;
+    [SerializeField] private float leaveRetryInterval = 2f;                          // 퇴장 경로 막힘 시 재탐색 간격
+    [SerializeField] private Vector3 leaveNoticeOffset = new Vector3(0f, 1.4f, 0f);   // 퇴장 안내 위치(머리 위)
 
     private const float ArriveEpsilon = 0.01f;
 
@@ -34,24 +37,23 @@ public class CustomerMovement : MonoBehaviour
         reservedSeat = null;
         waypoints = null;
 
-        if (!SeatManager.Instance.TryReserveNearestSeat(transform.position, out Seat seat))
-        {
-            customer.ReturnToPool();
-            return;
-        }
-
-        reservedSeat = seat;
-
         Vector2Int startCell = GridSystem.Instance.WorldToCell(transform.position);
-        if (!TryBuildPath(startCell, seat.Cell))
+
+        // 가까운 순으로 '실제 경로가 뚫린' 첫 좌석 예약. 가장 가까운 좌석이 막혀도
+        // 도달 가능한 다른 좌석으로 입장 → 한 좌석 막혔다고 입장 전체가 멈추지 않게.
+        foreach (Seat candidate in SeatManager.Instance.GetFreeSeatsByDistance(transform.position))
         {
-            reservedSeat.Release();
-            reservedSeat = null;
-            customer.ReturnToPool();
+            if (!TryBuildPath(startCell, candidate.Cell)) continue;   // 이 좌석 경로 막힘 → 다음 후보
+            if (!candidate.TryReserve()) continue;                    // (동시 예약 방지)
+
+            reservedSeat = candidate;
+            customer.ChangeState(CustomerState.Moving);
             return;
         }
 
-        customer.ChangeState(CustomerState.Moving);
+        // 도달 가능한 빈 좌석이 하나도 없음 → 안내 후 풀로 반환(다음 스폰/좌석 해제 때 재시도).
+        CustomerSpawner.Instance.ShowSeatBlockedNotice();
+        customer.ReturnToPool();
     }
 
     private bool TryBuildPath(Vector2Int fromCell, Vector2Int toCell)
@@ -160,13 +162,33 @@ public class CustomerMovement : MonoBehaviour
     private void BeginLeaving()
     {
         isLeaving = true;
+        StartCoroutine(LeaveWhenPathClears());
+    }
 
-        Vector2Int startCell = GridSystem.Instance.WorldToCell(transform.position);
+    // 퇴장 경로가 막혀 있으면 제자리에서 대기하며 재탐색 → 뚫리면 waypoints가 채워져
+    // Update가 이어서 걸어 나간다. (반납 로직과 동일한 대기·재시도 방식)
+    private IEnumerator LeaveWhenPathClears()
+    {
         Vector2Int spawnCell = CustomerSpawner.Instance.SpawnCell;
 
-        if (!TryBuildPath(startCell, spawnCell))
+        while (true)
         {
-            customer.ReturnToPool();
+            Vector2Int startCell = GridSystem.Instance.WorldToCell(transform.position);
+            if (TryBuildPath(startCell, spawnCell)) yield break;
+
+            ShowLeaveBlockedNotice();
+            yield return new WaitForSeconds(leaveRetryInterval);
         }
+    }
+
+    // 퇴장 경로가 막혔을 때 손님 머리 위에 검은 글씨로 안내 (재탐색마다 재노출).
+    private void ShowLeaveBlockedNotice()
+    {
+        var prefab = Resources.Load<GameObject>("UI/World/ServeResultPopup");
+        if (prefab == null) return;
+
+        string message = UnityEngine.Random.value < 0.5f ? "나갈래용.." : "내보내 줘..";
+        Instantiate(prefab).GetComponent<ServeResultPopup>()
+            .Show(transform.position + leaveNoticeOffset, message, Color.black);
     }
 }
