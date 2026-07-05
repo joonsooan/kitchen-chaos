@@ -33,6 +33,9 @@ public class UISlot : UIBase
         Bind<GameObject>(typeof(GameObjects));
 
         _menuImage     = Get<Image>((int)Images.MenuImage);
+        // 새 오더슬롯 구조: MenuImage는 박스 배경, 실제 아이콘은 자식 MenuIcon
+        var menuIcon = _menuImage != null ? _menuImage.transform.Find("MenuIcon") : null;
+        if (menuIcon != null) _menuImage = menuIcon.GetComponent<Image>();
         _gauge         = Get<Slider>((int)Sliders.Gauge);
         _ingredientRow = Get<GameObject>((int)GameObjects.IngredientRow).transform;
 

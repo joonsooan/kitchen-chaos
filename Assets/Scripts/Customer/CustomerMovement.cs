@@ -19,6 +19,13 @@ public class CustomerMovement : MonoBehaviour
 
     public Vector2 FacingDirection { get; private set; } = Vector2.down;
 
+    // CustomerDishReturn처럼 이 컴포넌트를 거치지 않고 직접 transform을 옮기는 외부 이동 코드가
+    // 매 프레임 이동 delta로 호출해서 FacingDirection을 갱신한다.
+    public void ReportExternalMove(Vector2 delta)
+    {
+        if (delta.sqrMagnitude > 0f) FacingDirection = delta.normalized;
+    }
+
     private void Awake()
     {
         customer = GetComponent<Customer>();

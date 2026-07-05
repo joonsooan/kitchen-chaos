@@ -22,6 +22,9 @@ public class NameInputPopup : UIPopup
     public override void Init()
     {
         CloseOnEsc = false;   // 필수 팝업 — ESC로 못 닫음
+
+        // 이름 타이핑 중 WASD(방향 전환)/F(상호작용) 차단
+        FindFirstObjectByType<PlayerMovement>()?.SetInputEnabled(false);
         Bind<GameObject>(typeof(GameObjects));
 
         var input = Get<GameObject>((int)GameObjects.NameInput);
@@ -46,4 +49,10 @@ public class NameInputPopup : UIPopup
         UIManager.Instance.ClosePopupUI(this);
         OnNameConfirmed?.Invoke();
     }
+    private void OnDestroy()
+    {
+        // 팝업 닫히면 입력 복원
+        FindFirstObjectByType<PlayerMovement>()?.SetInputEnabled(true);
+    }
+
 }

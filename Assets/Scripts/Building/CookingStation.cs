@@ -18,7 +18,12 @@ public class CookingStation : MonoBehaviour, IInteractable
 
     [Header("Mix Visual (Mixer only)")]
     [SerializeField] private SpriteRenderer visualSpriteRenderer;
-    [SerializeField] private Sprite mixingSprite;
+    [SerializeField] private Ingredient mixIngredientA;
+    [SerializeField] private Sprite mixingSpriteA;
+    [SerializeField] private Ingredient mixIngredientB;
+    [SerializeField] private Sprite mixingSpriteB;
+    [SerializeField] private Ingredient mixIngredientC;
+    [SerializeField] private Sprite mixingSpriteC;
     [SerializeField] private float shakeStrength = 0.15f;
     [SerializeField] private float shakeSpeed = 0.05f;
 
@@ -99,6 +104,13 @@ public class CookingStation : MonoBehaviour, IInteractable
         itemTransform.position = transform.position;
         player.ClearHeldItem();
 
+        // 믹서는 자체 mix visual로 표현하므로 재료 스프라이트는 숨긴다.
+        if (Method == CookingMethod.Mix)
+        {
+            SpriteRenderer itemRenderer = pickup.GetComponent<SpriteRenderer>();
+            if (itemRenderer != null) itemRenderer.enabled = false;
+        }
+
         StartCoroutine(Cook(player));
     }
 
@@ -124,7 +136,7 @@ public class CookingStation : MonoBehaviour, IInteractable
 
         if (Method == CookingMethod.Mix)
         {
-            StartMixVisual();
+            StartMixVisual(loadedItem.Instance.Data);
         }
 
         if (cookingParticles != null) cookingParticles.Play(true);
@@ -150,10 +162,19 @@ public class CookingStation : MonoBehaviour, IInteractable
         Debug.Log($"[CookingStation] {name}: done - {loadedItem.Instance.Data.ingredientName} is now {Method}");
     }
 
-    private void StartMixVisual()
+    private Sprite GetMixingSprite(Ingredient ingredient)
+    {
+        if (ingredient == mixIngredientA) return mixingSpriteA;
+        if (ingredient == mixIngredientB) return mixingSpriteB;
+        if (ingredient == mixIngredientC) return mixingSpriteC;
+        return null;
+    }
+
+    private void StartMixVisual(Ingredient ingredient)
     {
         if (visualSpriteRenderer == null) return;
 
+        Sprite mixingSprite = GetMixingSprite(ingredient);
         if (mixingSprite != null)
         {
             visualSpriteRenderer.sprite = mixingSprite;
@@ -169,6 +190,7 @@ public class CookingStation : MonoBehaviour, IInteractable
             .SetEase(Ease.InOutSine);
     }
 
+    // 흔들림/위치만 정리. 믹서 스프라이트는 재료를 비울 때(ResetMixVisual)까지 유지한다.
     private void StopMixVisual()
     {
         if (visualSpriteRenderer == null) return;
@@ -176,6 +198,12 @@ public class CookingStation : MonoBehaviour, IInteractable
         shakeTween?.Kill();
         shakeTween = null;
         visualSpriteRenderer.transform.localPosition = defaultVisualLocalPosition;
+    }
+
+    private void ResetMixVisual()
+    {
+        if (visualSpriteRenderer == null) return;
+
         visualSpriteRenderer.sprite = defaultSprite;
     }
 
@@ -196,6 +224,7 @@ public class CookingStation : MonoBehaviour, IInteractable
             {
                 Destroy(loadedItem.gameObject);
                 loadedItem = null;
+                if (Method == CookingMethod.Mix) ResetMixVisual();
             }
             return;
         }
@@ -211,6 +240,7 @@ public class CookingStation : MonoBehaviour, IInteractable
 
             IngredientPickup item = loadedItem;
             loadedItem = null;
+            if (Method == CookingMethod.Mix) ResetMixVisual();
             item.transform.SetParent(null);
             item.Interact(player);
         }

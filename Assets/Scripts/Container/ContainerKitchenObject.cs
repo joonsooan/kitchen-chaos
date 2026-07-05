@@ -68,7 +68,7 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
     private void AddIngredient(IngredientInstance ingredient)
     {
         contents.Add(ingredient);
-        SpawnIngredientVisual(ingredient.Data != null ? ingredient.Data.ingredientIcon : null);
+        SpawnIngredientVisual(GetIngredientVisualSprite(ingredient));
 
         if (RecipeMatcher.TryMatch(contents, availableRecipes, out RecipeData matched))
         {
@@ -85,6 +85,14 @@ public class ContainerKitchenObject : GridPlaceable, IInteractable
         State = RecipeMatcher.CanEventuallyMatch(contents, availableRecipes)
             ? ContainerState.InProgress
             : ContainerState.Failed;
+    }
+
+    private static Sprite GetIngredientVisualSprite(IngredientInstance ingredient)
+    {
+        if (ingredient.Data == null) return null;
+
+        Sprite cookedIcon = ingredient.Data.GetCookingMethodIcon(ingredient.CurrentState);
+        return cookedIcon != null ? cookedIcon : ingredient.Data.ingredientIcon;
     }
 
     private void SpawnIngredientVisual(Sprite sprite)

@@ -22,11 +22,13 @@ public class CustomerDishReturn : MonoBehaviour
     private const float ArriveEpsilon = 0.01f;
 
     private Customer customer;
+    private CustomerMovement movement;
     private ContainerKitchenObject carried;
 
     private void Awake()
     {
         customer = GetComponent<Customer>();
+        movement = GetComponent<CustomerMovement>();
     }
 
     // Called by TableServing; takes ownership of the container's world object.
@@ -73,7 +75,9 @@ public class CustomerDishReturn : MonoBehaviour
             target.z = transform.position.z;
             while ((transform.position - target).sqrMagnitude > ArriveEpsilon * ArriveEpsilon)
             {
+                Vector3 previousPosition = transform.position;
                 transform.position = Vector3.MoveTowards(transform.position, target, moveSpeed * Time.deltaTime);
+                if (movement != null) movement.ReportExternalMove(transform.position - previousPosition);
                 yield return null;
             }
         }

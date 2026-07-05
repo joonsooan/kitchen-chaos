@@ -19,6 +19,7 @@ public class RandomBoxPopup : UIPopup
         Gift1,
         Gift2,
         Gift3,
+        Gift4,
     }
 
     private TextMeshProUGUI descText;
@@ -35,7 +36,7 @@ public class RandomBoxPopup : UIPopup
 
         BindEvent(Get<GameObject>((int)GameObjects.CloseButton), OnCloseClicked);
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < 5; i++)
         {
             var gift = Get<GameObject>((int)GameObjects.Gift0 + i);
             BindEvent(gift, evt => OnGiftClicked(gift));

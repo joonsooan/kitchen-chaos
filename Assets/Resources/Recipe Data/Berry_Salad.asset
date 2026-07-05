@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41383859ae1d2ef4194812a1a41152f5, type: 3}
   m_Name: Berry_Salad
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
-  recipeIcon: {fileID: 21300000, guid: c2038740327598c47852050aa4a80bcd, type: 3}
+  recipeIcon: {fileID: 21300000, guid: a27658ae9cbf9694687356ebc348e514, type: 3}
   recipeName: "\uBCA0\uB9AC \uC0D0\uB7EC\uB4DC"
   ingredients:
   - ingredientType: {fileID: 11400000, guid: 91d838b6fb503d846b866c973322cca3, type: 2}

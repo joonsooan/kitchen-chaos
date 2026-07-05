@@ -2,15 +2,17 @@ using UnityEngine;
 
 public class WeedSpawnEvent : DisasterEvent
 {
-    [SerializeField] private GameObject weedPrefab;
+    [SerializeField] private GameObject weedPrefabA;
+    [SerializeField] private GameObject weedPrefabB;
     [SerializeField] private int weedCount = 3;
     [SerializeField] private float duration = 15f;
+    [SerializeField] private Vector2 randomScaleRange = new Vector2(0.8f, 1.2f);
 
     public override float Duration => duration;
 
     protected override bool TryTrigger()
     {
-        if (weedPrefab == null || weedCount <= 0) return false;
+        if ((weedPrefabA == null && weedPrefabB == null) || weedCount <= 0) return false;
 
         GridSystem grid = GridSystem.Instance;
         if (grid == null) return false;
@@ -20,11 +22,19 @@ public class WeedSpawnEvent : DisasterEvent
             Vector2Int cell = grid.GetRandomWalkableCell(new Vector2Int(1, 1), new Vector2Int(15, 6));
             if (!grid.IsWalkable(cell)) continue;
 
-            GameObject weed = Instantiate(weedPrefab, grid.CellToWorld(cell), Quaternion.identity);
+            GameObject weed = Instantiate(GetRandomWeedPrefab(), grid.CellToWorld(cell), Quaternion.identity);
+            weed.transform.localScale *= Random.Range(randomScaleRange.x, randomScaleRange.y);
             WeedTile weedTile = weed.GetComponent<WeedTile>();
             if (weedTile != null) weedTile.Init(cell, duration);
         }
 
         return true;
+    }
+
+    private GameObject GetRandomWeedPrefab()
+    {
+        if (weedPrefabA == null) return weedPrefabB;
+        if (weedPrefabB == null) return weedPrefabA;
+        return Random.value < 0.5f ? weedPrefabA : weedPrefabB;
     }
 }

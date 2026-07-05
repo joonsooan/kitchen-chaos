@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89010c02d9d6bb4d8395a0a52cd5435, type: 3}
   m_Name: Acorn
   m_EditorClassIdentifier: Assembly-CSharp::Ingredient
-  ingredientIcon: {fileID: 21300000, guid: d70ccc86f4acf474db58f78a0265df04, type: 3}
+  ingredientIcon: {fileID: 21300000, guid: 4235a2817c3b782479fb12726b6c2426, type: 3}
   ingredientName: "\uB3C4\uD1A0\uB9AC"
   cookingMethodIcons:
   - {fileID: 0}
-  - {fileID: 21300000, guid: d70ccc86f4acf474db58f78a0265df04, type: 3}
+  - {fileID: 21300000, guid: 1b4c27073a2b240439d7fa64cf681e27, type: 3}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
