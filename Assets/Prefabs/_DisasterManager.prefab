@@ -42,11 +42,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9650293afce86f14094b2fd3b8429f17, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeedSpawnEvent
-  disasterName: "잡초 번식"
-  disasterDescription: "잡초가 무성하게 자라납니다!"
-  weedPrefab: {fileID: 8891624871928063836, guid: b2c290d201d110a4f979c8f79bcc5752, type: 3}
+  disasterName: "\uC7A1\uCD08 \uBC88\uC2DD"
+  disasterDescription: "\uC7A1\uCD08\uAC00 \uBB34\uC131\uD558\uAC8C \uC790\uB77C\uB0A9\uB2C8\uB2E4!"
+  weedPrefabA: {fileID: 8891624871928063836, guid: b2c290d201d110a4f979c8f79bcc5752, type: 3}
+  weedPrefabB: {fileID: 8891624871928063836, guid: 56d250c78b570074ca0ba83673fd41a6, type: 3}
   weedCount: 20
   duration: 180
 --- !u!1 &1764774685301756242
@@ -96,7 +97,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b15a13483dd539848af15f40567f3163, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DisasterManager
   firstTriggerSeconds: 30
   triggerIntervalSeconds: 120
@@ -160,63 +161,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4eb452b54d56980459b1a4093d933a10, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InvertControlsEvent
-  disasterName: "환각 마법"
-  disasterDescription: "세상이 빙글빙글 돌아가기 시작합니다…"
+  disasterName: "\uD658\uAC01 \uB9C8\uBC95"
+  disasterDescription: "\uC138\uC0C1\uC774 \uBE59\uAE00\uBE59\uAE00 \uB3CC\uC544\uAC00\uAE30
+    \uC2DC\uC791\uD569\uB2C8\uB2E4\u2026"
   duration: 30
---- !u!1 &7718800067837846822
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1247952116175096993}
-  - component: {fileID: 7723300903781883990}
-  m_Layer: 0
-  m_Name: CabbageMonsterDisaster
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1247952116175096993
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7718800067837846822}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8244220884098111768}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7723300903781883990
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7718800067837846822}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d740e2bf1fc5ea24d9e78d046f0c2c15, type: 3}
-  m_Name:
-  m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterSpawnEvent
-  disasterName: "양상추 대탈주"
-  disasterDescription: "양상추들이 도망가기 시작합니다!"
-  monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
-  spawnCells:
-  - {x: 2, y: 4}
-  - {x: 4, y: 4}
-  spawnChance: 0.7
-  duration: 180
 --- !u!1 &6100000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -259,10 +209,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bb75473c11a4bee9d4ed9d6171d9f4b, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CalmDayEvent
-  disasterName: "잠잠한 하루"
-  disasterDescription: "잠시 숨을 고를 시간입니다."
+  disasterName: "\uC7A0\uC7A0\uD55C \uD558\uB8E8"
+  disasterDescription: "\uC7A0\uC2DC \uC228\uC744 \uACE0\uB97C \uC2DC\uAC04\uC785\uB2C8\uB2E4."
 --- !u!1 &6200000000000000001
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,9 +255,62 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 583289a024e845509afdc1ac26e0f119, type: 3}
-  m_Name:
+  m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SurpriseGiftEvent
-  disasterName: "깜짝 선물"
-  disasterDescription: "뜻밖의 선물이 기다리고 있습니다"
+  disasterName: "\uAE5C\uC9DD \uC120\uBB3C"
+  disasterDescription: "\uB73B\uBC16\uC758 \uC120\uBB3C\uC774 \uAE30\uB2E4\uB9AC\uACE0
+    \uC788\uC2B5\uB2C8\uB2E4"
   duration: 180
   rewardMultiplier: 2
+--- !u!1 &7718800067837846822
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1247952116175096993}
+  - component: {fileID: 7723300903781883990}
+  m_Layer: 0
+  m_Name: CabbageMonsterDisaster
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1247952116175096993
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7718800067837846822}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8244220884098111768}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7723300903781883990
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7718800067837846822}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d740e2bf1fc5ea24d9e78d046f0c2c15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CabbageMonsterSpawnEvent
+  disasterName: "\uC591\uC0C1\uCD94 \uB300\uD0C8\uC8FC"
+  disasterDescription: "\uC591\uC0C1\uCD94\uB4E4\uC774 \uB3C4\uB9DD\uAC00\uAE30 \uC2DC\uC791\uD569\uB2C8\uB2E4!"
+  monsterPrefab: {fileID: 1141737737231636562, guid: 28990ab0af6da234f96ad1159ff03fc8, type: 3}
+  spawnCells:
+  - {x: 2, y: 4}
+  - {x: 4, y: 4}
+  spawnChance: 0.7
+  duration: 180
